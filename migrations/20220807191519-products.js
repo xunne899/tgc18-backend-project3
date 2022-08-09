@@ -49,6 +49,7 @@ exports.up = function(db) {
     vegan: {
       type: 'string',
       length: 100,
+      notNull: true,
       defaultValue: false,
     },
     halal: {

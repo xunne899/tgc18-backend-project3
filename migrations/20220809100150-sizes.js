@@ -15,7 +15,7 @@ exports.setup = function(options, seedLink) {
 };
 
 exports.up = function(db) {
-  return db.createTable('products', {
+  return db.createTable('sizes', {
     id: {
       type: 'int',
       primaryKey: true,
@@ -23,47 +23,19 @@ exports.up = function(db) {
       unsigned: true,
       notnull:true
     },
-    name: {
+    size: {
       type: 'string',
       length: 100,
       notNull: true,
     },
-    country: {
-      type: 'string',
-      length: 100,
-      notNull: true,
-    },
-    description:  {
-      type: 'text',
-      notNull: true,
-    },
-    packaging: {
-      type: 'string',
-      length: 100,
-      notNull: true,
-    },
-    shelf_life: {
-      type: 'string',
-      length: 100,
-      notNull: true,
-    },
-    vegan: {
-      type: 'string',
-      length: 100,
-      notNull: true,
-     
-    },
-    halal: {
-      type: 'string',
-      length: 100,
-      notNull: true,
-    }
-  });
+});
 };
 
+
 exports.down = function(db) {
-  return db.dropTable('products');
+  return db.dropTable('sizes');
 };
+
 
 exports._meta = {
   "version": 1

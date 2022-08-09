@@ -1,8 +1,8 @@
 {
     "dev": {
       "driver": "mysql",
-      "user": "foo",
-      "password":"bar",
+      "user": "admin",
+      "password":"owner",
       "database":"spice_sauce"
     }
   }

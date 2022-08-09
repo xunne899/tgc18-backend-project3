@@ -15,11 +15,53 @@ exports.setup = function(options, seedLink) {
 };
 
 exports.up = function(db) {
-  return null;
+  return db.createTable('products', {
+    id: {
+      type: 'int',
+      primaryKey: true,
+      autoIncrement: true,
+      unsigned: true
+    },
+    name: {
+      type: 'string',
+      length: 100,
+      notNull: true,
+    },
+    country: {
+      type: 'string',
+      length: 100,
+      notNull: true,
+    },
+    description:  {
+      type: 'text',
+      notNull: true,
+    },
+    packaging: {
+      type: 'string',
+      length: 100,
+      notNull: true,
+    },
+    shelf_life: {
+      type: 'string',
+      length: 100,
+      notNull: true,
+    },
+    vegan: {
+      type: 'string',
+      length: 100,
+      defaultValue: false,
+    },
+    halal: {
+      type: 'string',
+      length: 100,
+      notNull: true,
+      defaultValue: false,
+    }
+  });
 };
 
 exports.down = function(db) {
-  return null;
+  return db.dropTable('posters');
 };
 
 exports._meta = {

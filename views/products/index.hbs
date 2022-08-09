@@ -1,0 +1,47 @@
+{{#extends 'base'}}
+
+{{#block 'content'}}
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Country</th>
+            <th>Description</th>
+            <th>Packaging</th>
+             <th>Vegan</th>
+             <th>Halal</th>
+        </tr>
+
+    </thead>
+    <tbody>
+        {{#each products}}
+            <tr>
+                <td>
+                    {{this.id}}
+                </td>
+                <td>
+                    {{this.name}}
+                </td>
+                <td>
+                    {{this.country}}
+                </td>
+                <td>
+                    {{this.description}}
+                </td>
+                 <td>
+                    {{this.packaging}}
+                </td>
+                 <td>
+                    {{this.vegan}}
+                </td>
+                  <td>
+                    {{this.halal}}
+                </td>
+            </tr>
+        {{/each}}
+    </tbody>
+</table>
+{{/block}}
+
+{{/extends}}

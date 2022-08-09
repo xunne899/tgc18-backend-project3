@@ -5,10 +5,18 @@
     <thead>
         <tr>
             <th>ID</th>
+             <th>Type</th>
+            <th>Thumbnail</th>
+            <th>Stock</th>
+            <th>Cost</th>
             <th>Name</th>
             <th>Country</th>
             <th>Description</th>
+            <th>Ingredients</th>
+            <th>Size</th>
             <th>Packaging</th>
+            <th>Spiciness</th>
+            <th>Cuisine Style</th>
              <th>Vegan</th>
              <th>Halal</th>
         </tr>
@@ -20,6 +28,18 @@
                 <td>
                     {{this.id}}
                 </td>
+                 <td>
+                    {{this.types.type}}
+                </td>
+                 <td>
+                    {{this.variants.thumbnail_url}}
+                </td>
+                <td>
+                    {{this.variants.stock}}
+                </td>
+                 <td>
+                    {{this.variants.cost}}
+                </td>
                 <td>
                     {{this.name}}
                 </td>
@@ -29,8 +49,20 @@
                 <td>
                     {{this.description}}
                 </td>
+                  <td>
+                    {{this.ingredients.ingredient}}
+                </td>
+                  <td>
+                    {{this.sizes.size}}
+                </td>
                  <td>
                     {{this.packaging}}
+                </td>
+               <td>
+                    {{this.spiciness.spiciness}}
+                </td>
+                  <td>
+                    {{this.cuisine_styles.cuisine_style}}
                 </td>
                  <td>
                     {{this.vegan}}

@@ -28,20 +28,34 @@ const Type = bookshelf.model('Type', {
   
 const Ingredient = bookshelf.model('Ingredient', {
     tableName: 'ingredients',
-    ingredients : function () {
-      return this.belongsToMany('Ingredient');
+    products : function () {
+      return this.belongsToMany('Product');
     }
    
   });
 
   const Cuisine_style = bookshelf.model('Cuisine_style', {
     tableName: 'cuisine_styles',
-    cuisine_styles : function () {
-      return this.belongsToMany('Cuisine_style');
+    products : function () {
+      return this.belongsToMany('Product');
     }
    
   });
 
+
+  const Spiciness = bookshelf.model('Spiciness',{
+    tableName:'spiciness',
+    variants: function(){
+      return this.hasMany('Variant')
+    }
+  })
+
+  const Size = bookshelf.model('Size',{
+    tableName:'sizes',
+    variants: function(){
+      return this.hasMany('Variant')
+    }
+  })
 
   const Variant = bookshelf.model('Variant', {
     tableName: 'variants',
@@ -51,10 +65,10 @@ const Ingredient = bookshelf.model('Ingredient', {
     spiciness : function () {
         return this.belongsTo('Spiciness');
       },
-      size : function () {
+    size : function () {
         return this.belongsTo('Size');
       }
    
   });
 
-  module.exports = { Product, Type, Ingredient, Cuisine_style };
+  module.exports = { Product, Type, Ingredient, Cuisine_style, Variant, Size, Spiciness };

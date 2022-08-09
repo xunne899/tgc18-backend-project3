@@ -61,7 +61,7 @@ exports.up = function(db) {
 };
 
 exports.down = function(db) {
-  return db.dropTable('posters');
+  return db.dropTable('products');
 };
 
 exports._meta = {

@@ -21,7 +21,6 @@ exports.up = function(db) {
       primaryKey: true,
       autoIncrement: true,
       unsigned: true,
-      notnull:true
     },
     size: {
       type: 'string',

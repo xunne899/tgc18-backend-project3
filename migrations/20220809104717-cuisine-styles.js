@@ -21,7 +21,6 @@ exports.up = function(db) {
       primaryKey: true,
       autoIncrement: true,
       unsigned: true,
-      notnull:true
     },
     cuisine_style: {
       type: 'string',

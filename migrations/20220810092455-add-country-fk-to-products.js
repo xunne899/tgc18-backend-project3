@@ -15,19 +15,19 @@ exports.setup = function(options, seedLink) {
 };
 
 exports.up =  function(db) {
-  return db.addColumn('products', 'type_id', {
+  return db.addColumn('products', 'country_id',{
       type: 'int',
       unsigned:true,
       notNull : true,
       foreignKey: {
-          name: 'product_type_fk',
-          table: 'types',
+          name: 'product_country_fk',
+          table: 'countries',
           rules: {
               onDelete:'cascade',
               onUpdate:'restrict'
           },
           mapping: 'id'
-      }
+      }   
   })
 }
 
@@ -37,4 +37,3 @@ exports.down = function(db) {
 exports._meta = {
   "version": 1
 };
-

@@ -24,3 +24,18 @@ const bootstrapField = function (name, object) {
     var widget = object.widget.toHTML(name, object);
     return '<div class="form-group">' + label + widget + error + '</div>';
 };
+
+const createProductForm = () => {
+    return forms.create({
+        'name': fields.string({
+            required: true,
+            errorAfterField: true,
+         
+        }),
+        'description': fields.string({
+            required: true,
+            errorAfterField: true
+        
+        }),
+    })
+};

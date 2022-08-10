@@ -15,14 +15,14 @@ exports.setup = function(options, seedLink) {
 };
 
 exports.up = function (db) {
-  return db.createTable('products_cuisine_styles', {
+  return db.createTable('ingredients_products', {
       id: { type: 'int', primaryKey: true, autoIncrement: true },
       product_id: {
           type: 'int',
           notNull: true,
           unsigned: true,
           foreignKey: {
-              name: 'products_cuisine_styles_product_fk',
+              name: 'products_ingredients_product_fk',
               table: 'products',
               rules: {
                   onDelete: 'CASCADE',
@@ -31,13 +31,13 @@ exports.up = function (db) {
               mapping: 'id'
           }
       },
-      cuisine_style_id: {
+      ingredient_id: {
           type: 'int',
           notNull: true,
           unsigned:true,
           foreignKey: {
-              name: 'products_cuisine_styles_cuisine_style_fk',
-              table: 'cuisine_styles',
+              name: 'products_ingredients_ingredient_fk',
+              table: 'ingredients',
               rules: {
                   onDelete: 'CASCADE',
                   onUpdate: 'RESTRICT'

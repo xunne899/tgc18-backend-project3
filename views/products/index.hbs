@@ -1,75 +1,94 @@
 {{#extends 'base'}}
 
 {{#block 'content'}}
+<h1>Products</h1>
+<a href="/products/create" class="btn btn-primary">New</a>
 <table class="table">
     <thead>
         <tr>
             <th>ID</th>
+            <th>Created Date</th>
              <th>Type</th>
-            <th>Thumbnail</th>
-            <th>Stock</th>
-            <th>Cost</th>
+            {{!-- <th>Thumbnail</th>
+            <th>Stock</th>  --}}
+            {{!-- <th>Cost</th> --}}
             <th>Name</th>
             <th>Country</th>
             <th>Description</th>
             <th>Ingredients</th>
-            <th>Size</th>
+            {{!-- <th>Size</th> --}}
             <th>Packaging</th>
-            <th>Spiciness</th>
+            {{!-- <th>Spiciness</th> --}}
             <th>Cuisine Style</th>
              <th>Vegan</th>
              <th>Halal</th>
+            <th></th>
         </tr>
 
     </thead>
     <tbody>
         {{#each products}}
-            <tr>
-                <td>
+            <tr >
+                <td >
                     {{this.id}}
                 </td>
-                 <td>
-                    {{this.types.type}}
+                  <td >
+                    {{this.created_date}}
                 </td>
-                 <td>
+                 <td >
+                    {{this.type.type}}
+                </td>
+                 {{!-- <td >
                     {{this.variants.thumbnail_url}}
                 </td>
-                <td>
+                <td >
                     {{this.variants.stock}}
-                </td>
-                 <td>
+                </td> 
+                 <td >
                     {{this.variants.cost}}
-                </td>
-                <td>
+                </td> --}}
+                <td >
                     {{this.name}}
                 </td>
-                <td>
-                    {{this.country}}
+                <td >
+                    {{this.country.country}}
                 </td>
                 <td>
                     {{this.description}}
                 </td>
-                  <td>
-                    {{this.ingredients.ingredient}}
+               
+                  <td >
+                    {{#each this.ingredients}}
+                     <span>{{this.ingredient}}</span>
+                      {{/each}}
                 </td>
-                  <td>
+                  {{!-- <td >
                     {{this.sizes.size}}
-                </td>
+                </td> --}}
                  <td>
-                    {{this.packaging}}
+                    {{this.packaging.packaging}}
                 </td>
-               <td>
-                    {{this.spiciness.spiciness}}
-                </td>
-                  <td>
-                    {{this.cuisine_styles.cuisine_style}}
+               {{!-- <td >
+                    
+                     {{this.spiciness.spiciness}}</span>
+                   
+                </td> --}}
+                  <td >
+                     {{#each this.cuisine_styles}}
+                     <span>{{this.cuisine_style}}</span>
+                      {{/each}}
                 </td>
                  <td>
                     {{this.vegan}}
                 </td>
-                  <td>
+                  <td >
                     {{this.halal}}
                 </td>
+                  <td>
+                <a href="products/{{this.id}}/update" class="btn btn-primary btn-sm">Update</a>
+                <a href="products/{{this.id}}/delete" class="btn btn-danger btn-sm">Delete</a>
+              
+            </td>
             </tr>
         {{/each}}
     </tbody>

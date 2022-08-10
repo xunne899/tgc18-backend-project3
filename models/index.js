@@ -5,6 +5,12 @@ const Product = bookshelf.model('Product', {
   type : function () {
     return this.belongsTo('Type');
   },
+  country : function () {
+    return this.belongsTo('Country');
+  },
+  packaging : function () {
+    return this.belongsTo('Packaging');
+  },
   ingredients: function () {
     return this.belongsToMany('Ingredient');
   },
@@ -25,6 +31,21 @@ const Type = bookshelf.model('Type', {
    
   });
 
+  const Country = bookshelf.model('Country', {
+    tableName: 'countries',
+     products : function () {
+      return this.hasMany('Product');
+    }
+   
+  });
+
+  const Packaging = bookshelf.model('Packaging', {
+    tableName: 'packagings',
+     products : function () {
+      return this.hasMany('Product');
+    }
+   
+  });
   
 const Ingredient = bookshelf.model('Ingredient', {
     tableName: 'ingredients',
@@ -71,4 +92,4 @@ const Ingredient = bookshelf.model('Ingredient', {
    
   });
 
-  module.exports = { Product, Type, Ingredient, Cuisine_style, Variant, Size, Spiciness };
+  module.exports = { Product, Type, Ingredient, Cuisine_style, Variant, Size, Spiciness, Packaging, Country };

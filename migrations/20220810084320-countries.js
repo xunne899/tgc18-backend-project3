@@ -15,7 +15,7 @@ exports.setup = function(options, seedLink) {
 };
 
 exports.up = function(db) {
-  return db.createTable('products', {
+  return db.createTable('countries', {
     id: {
       type: 'int',
       primaryKey: true,
@@ -23,40 +23,19 @@ exports.up = function(db) {
       unsigned: true,
       notnull:true
     },
-    name: {
+    country: {
       type: 'string',
       length: 100,
       notNull: true,
     },
-    description:  {
-      type: 'text',
-      notNull: true,
-    },
-    shelf_life: {
-      type: 'string',
-      length: 100,
-      notNull: true,
-    },
-    vegan: {
-      type: 'string',
-      length: 100,
-      notNull: true,
-     
-    },
-    halal: {
-      type: 'string',
-      length: 100,
-      notNull: true,
-    },
-    created_date:{
-      type: 'date'
-    }
-  });
+});
 };
 
+
 exports.down = function(db) {
-  return db.dropTable('products');
+  return db.dropTable('countries');
 };
+
 
 exports._meta = {
   "version": 1

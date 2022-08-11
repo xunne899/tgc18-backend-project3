@@ -92,4 +92,8 @@ const Ingredient = bookshelf.model('Ingredient', {
    
   });
 
-  module.exports = { Product, Type, Ingredient, Cuisine_style, Variant, Size, Spiciness, Packaging, Country };
+
+  const User = bookshelf.model('User',{
+    tableName:'users'
+  })
+  module.exports = { Product, Type, Ingredient, Cuisine_style, Variant, Size, Spiciness, Packaging, Country, User };

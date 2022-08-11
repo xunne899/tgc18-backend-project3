@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const checkIfAuthenticated = function (req,res,next) {
     const user = req.session.user;
     if (!user) {
-        req.flash('error_messages', 'Only logged in users may view this page');
+        req.flash('error_messages', 'Only Users have access privilege');
         res.redirect('/users/login')
     } else {
         next();

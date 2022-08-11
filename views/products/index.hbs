@@ -25,6 +25,8 @@
              <th>Halal</th>
             <th>Image</th>
             <th></th>
+            <th></th>
+            
         </tr>
 
     </thead>
@@ -89,8 +91,8 @@
                   <td >
                     {{this.halal}}
                 </td>
-                  <td >
-                    {{this.thumbnail_url}}
+                 <td>
+                <img src="{{this.image_url}}" class="img-fluid"/>
                 </td>
                   <td>
                 <a href="products/{{this.id}}/update" class="btn btn-primary btn-sm">Update</a>

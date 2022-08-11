@@ -5,6 +5,9 @@ const router = express.Router();
 const { Product, Type, Country, Ingredient, Packaging, Cuisine_style } = require("../models");
 // import in the Forms
 const { bootstrapField, createProductForm } = require("../forms");
+
+const { checkIfAuthenticated } = require('../middlewares');
+
 router.get("/", async (req, res) => {
   // #2 - fetch all the products (ie, SELECT * from products)
   let products = await Product.collection().fetch({
@@ -24,7 +27,7 @@ router.get("/", async (req, res) => {
   });
 });
 
-router.get("/create", async function (req, res) {
+router.get("/create", checkIfAuthenticated, async function (req, res) {
   const types = await Type.fetchAll().map((type) => {
     return [type.get("id"), type.get("type")];
   });
@@ -47,12 +50,15 @@ router.get("/create", async function (req, res) {
 
   const productForm = createProductForm(types, countries, ingredients, packagings, cuisine_styles);
 
-  res.render("products/create", {
-    form: productForm.toHTML(bootstrapField),
-  });
+  res.render('products/create', {
+    'form': productForm.toHTML(bootstrapField),
+    cloudinaryName: process.env.CLOUDINARY_NAME,
+    cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
+    cloudinaryPreset: process.env.CLOUDINARY_UPLOAD_PRESET
+})
 });
 
-router.post("/create", async function (req, res) {
+router.post("/create", checkIfAuthenticated, async function (req, res) {
   const types = await Type.fetchAll().map((type) => {
     return [type.get("id"), type.get("type")];
   });
@@ -160,10 +166,10 @@ router.get("/:product_id/update", async (req, res) => {
   res.render("products/update", {
     form: productForm.toHTML(bootstrapField),
     product: product.toJSON(),
-    //   // 2 - send to the HBS file the cloudinary information
-    //   cloudinaryName: process.env.CLOUDINARY_NAME,
-    //   cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
-    //   cloudinaryPreset: process.env.CLOUDINARY_UPLOAD_PRESET,
+      // 2 - send to the HBS file the cloudinary information
+      cloudinaryName: process.env.CLOUDINARY_NAME,
+      cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
+      cloudinaryPreset: process.env.CLOUDINARY_UPLOAD_PRESET,
   });
 });
 

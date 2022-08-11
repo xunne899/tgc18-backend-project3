@@ -10,7 +10,7 @@ var helpers = require("handlebars-helpers")({
 
 
 // const session = require("express-session");
-// const flash = require("connect-flash");
+const flash = require("connect-flash");
 // const FileStore = require("session-file-store")(session);
 // const csrf = require("csurf");
 
@@ -35,7 +35,7 @@ require("dotenv").config();
 
 // app.use(flash());
 
-// // Register Flash middleware
+// Register Flash middleware
 // app.use(function (req, res, next) {
 //   res.locals.success_messages = req.flash("success_messages");
 //   res.locals.error_messages = req.flash("error_messages");

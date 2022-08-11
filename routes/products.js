@@ -53,7 +53,25 @@ router.get("/create", async function (req, res) {
 });
 
 router.post("/create", async function (req, res) {
-  const productForm = createProductForm();
+  const types = await Type.fetchAll().map((type) => {
+    return [type.get("id"), type.get("type")];
+  });
+  const countries = await Country.fetchAll().map((country) => {
+    return [country.get("id"), country.get("country")];
+  });
+
+  const ingredients = await Ingredient.fetchAll().map((ingredient) => {
+    return [ingredient.get("id"), ingredient.get("ingredient")];
+  });
+
+  const packagings = await Packaging.fetchAll().map((packaging) => {
+    return [packaging.get("id"), packaging.get("packaging")];
+  });
+
+  const cuisine_styles = await Cuisine_style.fetchAll().map((cuisine_style) => {
+    return [cuisine_style.get("id"), cuisine_style.get("cuisine_style")];
+  });
+  const productForm = createProductForm(types, countries, ingredients, packagings, cuisine_styles);
   productForm.handle(req, {
     success: async (form) => {
       const product = new Product();
@@ -62,8 +80,25 @@ router.post("/create", async function (req, res) {
       product.set("shelf_life", form.data.shelf_life);
       product.set("vegan", form.data.vegan);
       product.set("halal", form.data.halal);
-      product.save();
+      product.set("type_id", form.data.type_id);
+      product.set("created_date", new Date());
+      product.set("country_id", form.data.country_id);
+      product.set("packaging_id", form.data.packaging_id);
+      // console.log(form.data);
+      await product.save();
+      if (form.data.ingredient) {
+        await product.ingredients().attach(form.data.ingredient.split(","));
+      }
+      if (form.data.cuisine_style) {
+        await product.cuisine_styles().attach(form.data.cuisine_style.split(","));
+      }
+      // req.flash("success_messages", `New Product ${product.get("name")} has been created`);
       res.redirect("/products");
+    },
+    error: async function (form) {
+      res.render("products/create", {
+        form: form.toHTML(bootstrapField),
+      });
     },
   });
 });
@@ -75,7 +110,7 @@ router.get("/:product_id/update", async (req, res) => {
     id: parseInt(productId),
   }).fetch({
     require: true,
-    withRelated: ["cuisine_styles", "ingredients","types","countries","packagings"],
+    withRelated: ["cuisine_styles", "ingredients"],
   });
 
   // fetch all values
@@ -102,12 +137,13 @@ router.get("/:product_id/update", async (req, res) => {
   const productForm = createProductForm(types, countries, ingredients, packagings, cuisine_styles);
 
   // fill in the existing values
-  // productForm.fields.type_id.value = product.get("type_id");
+  productForm.fields.type_id.value = product.get("type_id");
   productForm.fields.name.value = product.get("name");
-  // productForm.fields.country_id.value = product.get("country_id");
+  productForm.fields.country_id.value = product.get("country_id");
   productForm.fields.description.value = product.get("description");
-  // productForm.fields.packaging_id.value = product.get("packaging_id");
+  productForm.fields.packaging_id.value = product.get("packaging_id");
   productForm.fields.shelf_life.value = product.get("shelf_life");
+  // productForm.fields.created_value.value = product.get("created_value");
   productForm.fields.vegan.value = product.get("vegan");
   productForm.fields.halal.value = product.get("halal");
   // // 1 - set the image url in the product form
@@ -155,29 +191,35 @@ router.post("/:product_id/update", async (req, res) => {
     id: req.params.product_id,
   }).fetch({
     require: true,
-    withRelated: ["cuisine_styles", "ingredients","types","countries","packagings"],
+    withRelated: ["cuisine_styles", "ingredients"],
   });
 
   // process the form
   const productForm = createProductForm(types, countries, ingredients, packagings, cuisine_styles);
   productForm.handle(req, {
     success: async (form) => {
-      //   let { cuisine_styles,ingredients, ...productData } = form.data;
-      //   product.set(productData);
-      product.set(form.data);
+      let { cuisine_style, ingredient, ...productData } = form.data;
+      console.log(cuisine_styles);
+      product.set(productData);
+      // product.set(form.data);
       product.save();
       // update the tags
 
-      //   let cuisine_styleIds = cuisine_styles
-      // //   .split(",");
-      //   let existingCuisine_styleIds = await product.related("cuisine_styles").pluck("id");
+      let cuisine_styleIds = cuisine_style.split(",").map((id) => parseInt(id));
+      let existingCuisine_styleIds = await product.related("cuisine_styles").pluck("id");
 
-      //   // remove all the tags that aren't selected anymore
-      //   let toRemove = existingCuisine_styleIds.filter((id) => cuisine_styleIds.includes(id) === false);
-      //   await product.cuisine_styles().detach(toRemove);
+      let ingredientIds = ingredient.split(",").map((id) => parseInt(id));
+      let existingIngredientIds = await product.related("ingredients").pluck("id");
 
-      //   // add in all the tags selected in the form
-      //   await product.cuisine_styles().attach(cuisine_styleIds);
+      // remove all the tags that aren't selected anymore
+      let toRemoveCuisine = existingCuisine_styleIds.filter((id) => cuisine_styleIds.includes(id) === false);
+      await product.cuisine_styles().detach(toRemoveCuisine);
+      await product.cuisine_styles().attach(cuisine_styleIds);
+
+      // remove all the tags that aren't selected anymore
+      let toRemoveIngredient = existingIngredientIds.filter((id) => ingredientIds.includes(id) === false);
+      await product.ingredients().detach(toRemoveIngredient);
+      await product.ingredients().attach(ingredientIds);
 
       res.redirect("/products");
     },

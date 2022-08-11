@@ -2,22 +2,22 @@ const bookshelf = require('../bookshelf');
 
 const Product = bookshelf.model('Product', {
   tableName: 'products',
-  type : function () {
+  type () {
     return this.belongsTo('Type');
   },
-  country : function () {
+  country () {
     return this.belongsTo('Country');
   },
-  packaging : function () {
+  packaging() {
     return this.belongsTo('Packaging');
   },
-  ingredients: function () {
+  ingredients() {
     return this.belongsToMany('Ingredient');
   },
-  cuisine_styles: function () {
+  cuisine_styles() {
     return this.belongsToMany('Cuisine_style');
   },
-  variants: function () {
+  variants() {
     return this.hasMany('Variant');
   },
 });
@@ -25,7 +25,7 @@ const Product = bookshelf.model('Product', {
 
 const Type = bookshelf.model('Type', {
     tableName: 'types',
-     products : function () {
+     products () {
       return this.hasMany('Product');
     }
    
@@ -33,7 +33,7 @@ const Type = bookshelf.model('Type', {
 
   const Country = bookshelf.model('Country', {
     tableName: 'countries',
-     products : function () {
+     products () {
       return this.hasMany('Product');
     }
    
@@ -41,7 +41,7 @@ const Type = bookshelf.model('Type', {
 
   const Packaging = bookshelf.model('Packaging', {
     tableName: 'packagings',
-     products : function () {
+     products () {
       return this.hasMany('Product');
     }
    
@@ -49,7 +49,7 @@ const Type = bookshelf.model('Type', {
   
 const Ingredient = bookshelf.model('Ingredient', {
     tableName: 'ingredients',
-    products : function () {
+    products () {
       return this.belongsToMany('Product');
     }
    
@@ -57,7 +57,7 @@ const Ingredient = bookshelf.model('Ingredient', {
 
   const Cuisine_style = bookshelf.model('Cuisine_style', {
     tableName: 'cuisine_styles',
-    products : function () {
+    products() {
       return this.belongsToMany('Product');
     }
    
@@ -66,27 +66,27 @@ const Ingredient = bookshelf.model('Ingredient', {
 
   const Spiciness = bookshelf.model('Spiciness',{
     tableName:'spiciness',
-    variants: function(){
+    variants(){
       return this.hasMany('Variant')
     }
   })
 
   const Size = bookshelf.model('Size',{
     tableName:'sizes',
-    variants: function(){
+    variants(){
       return this.hasMany('Variant')
     }
   })
 
   const Variant = bookshelf.model('Variant', {
     tableName: 'variants',
-    product : function () {
+    product () {
       return this.belongsTo('Product');
     },
-    spiciness : function () {
+    spiciness () {
         return this.belongsTo('Spiciness');
       },
-    size : function () {
+    size () {
         return this.belongsTo('Size');
       }
    

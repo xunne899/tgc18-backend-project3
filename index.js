@@ -9,9 +9,9 @@ var helpers = require("handlebars-helpers")({
 // const jwt = require('jsonwebtoken');
 
 
-// const session = require("express-session");
+const session = require("express-session");
 const flash = require("connect-flash");
-// const FileStore = require("session-file-store")(session);
+const FileStore = require("session-file-store")(session);
 // const csrf = require("csurf");
 
 
@@ -24,23 +24,23 @@ require("dotenv").config();
 // app.use(cors());
 // // set up sessions
 // // setup sessions
-// app.use(
-//   session({
-//     store: new FileStore(), // we want to use files to store sessions
-//     secret: process.env.SESSION_SECRET, // used to generate the session id
-//     resave: false, // do we automatically recreate the session even if there is no change to it
-//     saveUninitialized: true, // if a new browser connects do we create a new session
-//   })
-// );
+app.use(
+  session({
+    store: new FileStore(), // we want to use files to store sessions
+    secret: 'secret_recipe', // used to generate the session id
+    resave: false, // do we automatically recreate the session even if there is no change to it
+    saveUninitialized: true, // if a new browser connects do we create a new session
+  })
+);
 
-// app.use(flash());
+app.use(flash());
 
 // Register Flash middleware
-// app.use(function (req, res, next) {
-//   res.locals.success_messages = req.flash("success_messages");
-//   res.locals.error_messages = req.flash("error_messages");
-//   next();
-// });
+app.use(function (req, res, next) {
+  res.locals.success_messages = req.flash("success_messages");
+  res.locals.error_messages = req.flash("error_messages");
+  next();
+});
 
 
 app.use(

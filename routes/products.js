@@ -84,6 +84,8 @@ router.post("/create", async function (req, res) {
       product.set("created_date", new Date());
       product.set("country_id", form.data.country_id);
       product.set("packaging_id", form.data.packaging_id);
+      product.set("image_url", form.data.image_url);
+      product.set("thumbnail_url", form.data.thumbnail_url);
       // console.log(form.data);
       await product.save();
       if (form.data.ingredient) {
@@ -92,7 +94,7 @@ router.post("/create", async function (req, res) {
       if (form.data.cuisine_style) {
         await product.cuisine_styles().attach(form.data.cuisine_style.split(","));
       }
-      // req.flash("success_messages", `New Product ${product.get("name")} has been created`);
+      req.flash("success_messages", `New Product ${product.get("name")} has been created`);
       res.redirect("/products");
     },
     error: async function (form) {
@@ -147,7 +149,8 @@ router.get("/:product_id/update", async (req, res) => {
   productForm.fields.vegan.value = product.get("vegan");
   productForm.fields.halal.value = product.get("halal");
   // // 1 - set the image url in the product form
-  // productForm.fields.image_url.value = product.get("image_url");
+  productForm.fields.image_url.value = product.get("image_url");
+  productForm.fields.thumbnail_url.value = product.get("thumbnail_url");
 
   let selectedIngredients = await product.related("ingredients").pluck("id");
   productForm.fields.ingredient.value = selectedIngredients;
@@ -211,12 +214,12 @@ router.post("/:product_id/update", async (req, res) => {
       let ingredientIds = ingredient.split(",").map((id) => parseInt(id));
       let existingIngredientIds = await product.related("ingredients").pluck("id");
 
-      // remove all the tags that aren't selected anymore
+      // remove followings that aren't selected anymore
       let toRemoveCuisine = existingCuisine_styleIds.filter((id) => cuisine_styleIds.includes(id) === false);
       await product.cuisine_styles().detach(toRemoveCuisine);
       await product.cuisine_styles().attach(cuisine_styleIds);
 
-      // remove all the tags that aren't selected anymore
+      // remove following that aren't selected anymore
       let toRemoveIngredient = existingIngredientIds.filter((id) => ingredientIds.includes(id) === false);
       await product.ingredients().detach(toRemoveIngredient);
       await product.ingredients().attach(ingredientIds);

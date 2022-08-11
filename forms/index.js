@@ -82,6 +82,14 @@ const createProductForm = (types, countries, ingredients, packagings, cuisine_st
       required: true,
       errorAfterField: true,
     }),
+    image_url: fields.string({
+      required: true,
+      errorAfterField: true,
+    }),
+    thumbnail_url: fields.string({
+      required: true,
+      errorAfterField: true,
+    }),
   });
 };
 

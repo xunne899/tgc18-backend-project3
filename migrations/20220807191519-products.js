@@ -32,8 +32,7 @@ exports.up = function(db) {
       notNull: true,
     },
     shelf_life: {
-      type: 'string',
-      length: 100,
+      type: 'smallint',
       notNull: true,
     },
     vegan: {

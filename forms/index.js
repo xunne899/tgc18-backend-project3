@@ -64,9 +64,10 @@ const createProductForm = (types, countries, ingredients, packagings, cuisine_st
       choices: packagings,
       widget: widgets.select(),
     }),
-    shelf_life: fields.string({
+    shelf_life: fields.number({
       required: true,
       errorAfterField: true,
+      validators: [validators.integer(), validators.min(0)]
     }),
     cuisine_style: fields.string({
       required: true,
@@ -160,13 +161,22 @@ const createSearchForm = (types, countries, packagings, cuisine_styles) => {
               label: ['form-label']
           }
       }),
-      shelf_life: fields.string({
-          required: false,
-          errorAfterField: true,
-          cssClasses: {
-              label: ['form-label']
-          },
-      }),
+      min_shelf_life: fields.number({
+        required: false,
+        errorAfterField: true,
+        cssClasses: {
+            label: ['form-label']
+        },
+        validators: [validators.integer()]
+    }),
+      max_shelf_life: fields.number({
+        required: false,
+        errorAfterField: true,
+        cssClasses: {
+            label: ['form-label']
+        },
+        validators: [validators.integer()]
+    }),
         vegan: fields.string({
           required: false,
           errorAfterField: true,

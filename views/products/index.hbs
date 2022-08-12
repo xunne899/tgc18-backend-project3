@@ -3,23 +3,24 @@
 {{#block 'content'}}
 <h1>Products</h1>
 <a href="/products/create" class="btn btn-primary">New</a>
+
+<h2>Search</h2>
+<form method="GET">
+    {{{form}}}
+    <input type="submit" value="Search" class="btn btn-primary my-3"/>
+</form>
 <table class="table">
     <thead>
         <tr>
             <th>ID</th>
             <th>Created Date</th>
              <th>Type</th>
-            {{!-- <th>Thumbnail</th>
-            <th>Stock</th>  --}}
-            {{!-- <th>Cost</th> --}}
             <th>Name</th>
             <th>Country</th>
             <th>Description</th>
             <th>Ingredients</th>
-            {{!-- <th>Size</th> --}}
             <th>Packaging</th>
             <th>Shelf Life</th>
-            {{!-- <th>Spiciness</th> --}}
             <th>Cuisine Style</th>
              <th>Vegan</th>
              <th>Halal</th>
@@ -42,15 +43,6 @@
                  <td >
                     {{this.type.type}}
                 </td>
-                 {{!-- <td >
-                    {{this.variants.thumbnail_url}}
-                </td>
-                <td >
-                    {{this.variants.stock}}
-                </td> 
-                 <td >
-                    {{this.variants.cost}}
-                </td> --}}
                 <td >
                     {{this.name}}
                 </td>

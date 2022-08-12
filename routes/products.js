@@ -4,28 +4,109 @@ const router = express.Router();
 // #1 import in the Product model
 const { Product, Type, Country, Ingredient, Packaging, Cuisine_style } = require("../models");
 // import in the Forms
-const { bootstrapField, createProductForm } = require("../forms");
+const { bootstrapField, createProductForm,createSearchForm } = require("../forms");
 
 const { checkIfAuthenticated } = require('../middlewares');
 
 router.get("/", async (req, res) => {
-  // #2 - fetch all the products (ie, SELECT * from products)
-  let products = await Product.collection().fetch({
-    withRelated: ["type", "country", "packaging", "cuisine_styles", "ingredients"],
-  });
-  // let variants= await Variant.collection().fetch({
-  //     withRelated:['product','spiciness', 'size']
-  // });
 
-  // let variants = await Variant.collection().fetch();
-  // let types = await Type.collection().fetch();
-  // let sizes = await Size.collection().fetch()
-  res.render("products/index", {
-    products: products.toJSON(),
-    // 'variants': variants.toJSON(),
-    // #3 - convert collection to JSON
+  const types = await Type.fetchAll().map((type) => {
+    return [type.get("id"), type.get("type")];
   });
+  types.unshift([0, '--- Any Type ---']);
+
+  const countries = await Country.fetchAll().map((country) => {
+    return [country.get("id"), country.get("country")];
+  });
+  countries.unshift([0, '---Any Country ---']);
+
+  const packagings = await Packaging.fetchAll().map((packaging) => {
+    return [packaging.get("id"), packaging.get("packaging")];
+  });
+  packagings.unshift([0, '---Any Packaging ---']);
+
+  const cuisine_styles = await Cuisine_style.fetchAll().map((cuisine_style) => {
+    return [cuisine_style.get("id"), cuisine_style.get("cuisine_style")];
+  });
+
+
+    // create an instance of the search form
+    const searchForm = createSearchForm(types, countries, packagings, cuisine_styles );
+
+    // create a query builder
+    let query = Product.collection();
+
+    // our search logic begins here
+    searchForm.handle(req, {
+        'success': async function (form) {
+            // if the user did provide the name
+            if (form.data.name) {
+                query.where('name', 'like', '%' + form.data.name + '%');
+            }
+
+            if (form.data.shelf_life) {
+                query.where('shelf_life', 'like', '%' + form.data.shelf_life + '%');
+            }
+
+            if (form.data.vegan) {
+                query.where('vegan', 'like', '%' + form.data.vegan + '%');
+            }
+
+            if (form.data.halal) {
+              query.where('halal', 'like','%' + form.data.halal + '%');
+            }
+           
+            if (form.data.type_id && form.data.type_id != "0") {
+                query.where('type_id', '=', form.data.type_id);
+            }
+            if (form.data.country_id && form.data.country_id != "0") {
+              query.where('country_id', '=', form.data.country_id);
+            }
+            if (form.data.packaging_id && form.data.packaging_id != "0") {
+              query.where('packaging_id', '=', form.data.packaging_id);
+            }
+            if (form.data.cuisine_style) {
+
+                // first arg: sql clause
+                // second arg: which table?
+                // third arg: one of the keys
+                // fourth arg: the key to join with
+                // eqv. SELECT * from products join products_tags ON
+                //              products.id = product_id
+                //              where tag_id IN (<selected tags ID>)
+                // this method looks for OR 
+                query.query('join', 'cuisine_styles_products', 'products.id', 'product_id')
+                 .where('cuisine_style_id', 'in', form.data.cuisine_style.split(','));
+            }
+   
+
+  // #2 - fetch all the products (ie, SELECT * from products)
+  const products = await query.fetch({
+    withRelated: ["type", "country", "packaging", "cuisine_styles"],
+  });
+  res.render('products/index', {
+    products: products.toJSON(),
+    form: form.toHTML(bootstrapField)
+})
+},
+'empty': async function () {
+const products = await query.fetch({
+    withRelated: ["type", "country", "packaging", "cuisine_styles"]
 });
+
+res.render('products/index', {
+    products: products.toJSON(),
+    form: searchForm.toHTML(bootstrapField)
+})
+},
+'error': async function () {
+
+}
+
+})
+
+})
+
 
 router.get("/create", checkIfAuthenticated, async function (req, res) {
   const types = await Type.fetchAll().map((type) => {

@@ -99,28 +99,28 @@ const createProductForm = (types, countries, ingredients, packagings, cuisine_st
 
 const createRegistrationForm =()=>{
   return forms.create({
-    'username': fields.string({
+    username: fields.string({
       required: true,
       errorAfterField: true,
       cssClasses: {
           label: ['form-label']
       }
   }),
-  'email': fields.string({
+  email: fields.string({
       required: true,
       errorAfterField: true,
       cssClasses: {
           label: ['form-label']
       }
   }),
-  'password': fields.password({
+  password: fields.password({
       required: true,
       errorAfterField: true,
       cssClasses: {
           label: ['form-label']
       }
   }),
-  'confirm_password': fields.password({
+  confirm_password: fields.password({
       required: true,
       errorAfterField: true,
       cssClasses: {
@@ -133,14 +133,14 @@ const createRegistrationForm =()=>{
 
 const createLoginForm = () => {
   return forms.create({
-      'email': fields.string({
+      email: fields.string({
           required: true,
           errorAfterField: true,
           cssClasses: {
               label: ['form-label']
           }
       }),
-      'password': fields.password({
+      password: fields.password({
           required: true,
           errorAfterField: true,
           cssClasses: {
@@ -151,6 +151,73 @@ const createLoginForm = () => {
 }
 
 
+const createSearchForm = (types, countries, packagings, cuisine_styles) => {
+  return forms.create({
+      name: fields.string({
+          required: false,
+          errorAfterField: true,
+          cssClasses: {
+              label: ['form-label']
+          }
+      }),
+      shelf_life: fields.string({
+          required: false,
+          errorAfterField: true,
+          cssClasses: {
+              label: ['form-label']
+          },
+      }),
+        vegan: fields.string({
+          required: false,
+          errorAfterField: true,
+          cssClasses: {
+              label: ['form-label']
+          },
+      }),
+      halal: fields.string({
+        required: false,
+        errorAfterField: true,
+        cssClasses: {
+            label: ['form-label']
+        },
+    }),
+      type_id: fields.string({
+          label: 'Type',
+          required: false,
+          errorAfterField: true,
+          choices: types,
+          widget: widgets.select(),
+        
+      }),
+      packaging_id: fields.string({
+        label: 'Packaging',
+        required: false,
+        errorAfterField: true,
+        choices: packagings,
+        widget: widgets.select(),
+      
+    }),
+      country_id: fields.string({
+        label: "Country",
+        required: true,
+        errorAfterField: true,
+        choices: countries,
+        widget: widgets.select(),
+      }),
+      cuisine_style: fields.string({
+          required:false,
+          errorAfterField: true,
+          cssClasses: {
+              label: ['form-label']
+          },
+          widget: widgets.multipleSelect(),
+          choices: cuisine_styles
+      }),
+  })
+}
 
 
-module.exports = { createLoginForm, createProductForm, createRegistrationForm, bootstrapField };
+
+
+
+module.exports = { createLoginForm, createProductForm, createRegistrationForm,createSearchForm, bootstrapField };

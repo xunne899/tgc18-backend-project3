@@ -1,6 +1,6 @@
 
 
-const {  Product, Type, Country, Ingredient, Packaging, Cuisine_style } = require("../models");
+const {  Product, Type, Country, Ingredient, Packaging, Cuisine_style,Variant } = require("../models");
 
 async function getAllTypes() {
     const types = await Type.fetchAll().map((type) => {
@@ -44,18 +44,34 @@ const getProductByID = async (productId) => {
         'id': parseInt(productId)
     }).fetch({
         require: true,
-        withRelated: ["cuisine_styles", "ingredients"]
+        withRelated: ["type", "country", "packaging","cuisine_styles", "ingredients"]
     });
 }
 
 async function getAllProducts() {
     return await Product.fetchAll({
-        withRelated:["type", "country", "packaging", "cuisine_styles", "ingredients"]
+        withRelated:["type", "country", "packaging", "cuisine_styles", "ingredients","variants"]
     });
 }
 
+const getVariantsByProductId = async (productId) => {
+  return await Variant.where({
+      product_id: parseInt(productId)
+  }).fetchAll({
+      require: false,
+      withRelated: ['product', 'size', 'spiciness']
+  })
+}
 
+const getVariantById = async (variantId) => {
+  return await Variant.where({
+      variant_id: variantId
+  }).fetch({
+      require: true,
+      withRelated: ['product', 'size', 'spiciness']
+  })
+}
 
 module.exports = {
-    getAllTypes, getAllCountries, getAllIngredients, getAllPackagings, getAllCuisineStyles, getAllProducts ,getProductByID
+    getAllTypes, getAllCountries, getAllIngredients, getAllPackagings, getAllCuisineStyles, getAllProducts, getProductByID, getVariantsByProductId, getVariantById
 }

@@ -95,6 +95,7 @@ const products = await query.fetch({
     withRelated: ["type", "country", "packaging", "cuisine_styles","ingredients"]
 });
 
+
 res.render('products/index', {
     products: products.toJSON(),
     form: searchForm.toHTML(bootstrapField)
@@ -183,14 +184,14 @@ router.post("/create", checkIfAuthenticated, async function (req, res) {
 
 router.get("/:product_id/update", async (req, res) => {
   // retrieve the product
-  const productId = req.params.product_id;
-  const product = await Product.where({
-    id: parseInt(productId),
-  }).fetch({
-    require: true,
-    withRelated: ["cuisine_styles", "ingredients"],
-  });
-
+  // const productId = req.params.product_id;
+  // const product = await Product.where({
+  //   id: parseInt(productId),
+  // }).fetch({
+  //   require: true,
+  //   withRelated: ["cuisine_styles", "ingredients"],
+  // });
+  const product = await dataLayer.getProductByID(req.params.product_id);
   // fetch all values
     const types = await dataLayer.getAllTypes();
 
@@ -252,12 +253,14 @@ router.post("/:product_id/update", async (req, res) => {
   const ingredients = await dataLayer.getAllIngredients();
 
   // fetch the product that we want to update
-  const product = await Product.where({
-    id: req.params.product_id,
-  }).fetch({
-    require: true,
-    withRelated: ["cuisine_styles", "ingredients"],
-  });
+
+  const product = await dataLayer.getProductByID(req.params.product_id);
+  // const product = await Product.where({
+  //   id: req.params.product_id,
+  // }).fetch({
+  //   require: true,
+  //   withRelated: ["cuisine_styles", "ingredients"],
+  // });
 
   // process the form
   const productForm = createProductForm(types, countries, ingredients, packagings, cuisine_styles);
@@ -327,11 +330,13 @@ router.post("/:product_id/update", async (req, res) => {
 
 router.get("/:product_id/delete", async (req, res) => {
   // fetch the product that we want to delete
-  const product = await Product.where({
-    id: req.params.product_id,
-  }).fetch({
-    require: true,
-  });
+
+  const product = await dataLayer.getProductByID(req.params.product_id);
+  // const product = await Product.where({
+  //   id: req.params.product_id,
+  // }).fetch({
+  //   require: true,
+  // });
 
   res.render("products/delete", {
     product: product.toJSON(),
@@ -348,6 +353,17 @@ router.post("/:product_id/delete", async (req, res) => {
   await product.destroy();
   res.redirect("/products");
 });
+
+
+
+router.get('/:product_id/variant', async (req, res) => {
+  const product = await dataLayer.getProductByID(req.params.product_id);
+  const variants = await dataLayer.getVariantsByProductId(req.params.product_id)
+  res.render('products/variants', {
+      product: product.toJSON(),
+      variants: variants.toJSON()
+  })
+})
 
 module.exports = router;
 

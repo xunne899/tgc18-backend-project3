@@ -91,11 +91,61 @@ const createProductForm = (types, countries, ingredients, packagings, cuisine_st
       required: true,
       errorAfterField: true,
     }),
-    image_url:fields.string({
-      widget: widgets.hidden()
-  })
+  //   image_url:fields.string({
+  //     widget: widgets.hidden()
+  // })
   });
 };
+
+
+const createVariantForm = (color, size, tags) => {
+  return forms.create({
+      color_id: fields.string({
+          label: 'Color',
+          required: true,
+          errorAfterField: true,
+          cssClasses: {
+              label: ['form-label', 'mt-3']
+          },
+          widget: widgets.select(),
+          choices: color
+      }),
+      size_id: fields.string({
+          label: 'Size',
+          required: true,
+          errorAfterField: true,
+          cssClasses: {
+              label: ['form-label', 'mt-3']
+          },
+          widget: widgets.select(),
+          choices: size
+      }),
+      tags: fields.string({
+          required: false,
+          errorAfterField: true,
+          cssClasses: {
+              label: ['form-label', 'mt-3']
+          },
+          widget: widgets.multipleSelect(),
+          choices: tags
+      }),
+      stock: fields.string({
+          required: true,
+          errorAfterField: true,
+          validators: [validators.integer(), validators.min(0), validators.max(65535)],
+          cssClasses: {
+              label: ['form-label', 'mt-3']
+          }
+      }),
+      product_image_url: fields.string({
+          widget: widgets.hidden()
+      }),
+      product_thumbnail_url: fields.string({
+          widget: widgets.hidden()
+      })
+  })
+}
+
 
 
 const createRegistrationForm =()=>{
@@ -150,6 +200,7 @@ const createLoginForm = () => {
       }),
   })
 }
+
 
 
 const createSearchForm = (types, countries, packagings, cuisine_styles) => {

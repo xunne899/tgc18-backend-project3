@@ -8,28 +8,23 @@ var helpers = require("handlebars-helpers")({
 // const cors = require('cors');
 // const jwt = require('jsonwebtoken');
 
-
 const session = require("express-session");
 const flash = require("connect-flash");
 const FileStore = require("session-file-store")(session);
 const csrf = require("csurf");
-
-
 
 const app = express();
 
 // enable env files
 require("dotenv").config();
 
-
-
 app.use(csrf());
 // Share CSRF with hbs files
 // Share CSRF with hbs files
-app.use(function(req,res,next){
+app.use(function (req, res, next) {
   res.locals.csrfToken = req.csrfToken();
   next();
-})
+});
 app.use(function (err, req, res, next) {
   if (err && err.code == "EBADCSRFTOKEN") {
     req.flash("error_messages", "The form has expired. Please try again");
@@ -50,12 +45,11 @@ app.use(
   })
 );
 
-
 // setup a middleware to share data across all hbs files
-app.use(function(req,res,next){
+app.use(function (req, res, next) {
   res.locals.user = req.session.user;
   next();
-})
+});
 
 app.use(flash());
 
@@ -65,9 +59,6 @@ app.use(function (req, res, next) {
   res.locals.error_messages = req.flash("error_messages");
   next();
 });
-
-
-
 
 app.use(
   express.urlencoded({
@@ -83,7 +74,6 @@ app.use(express.static("public"));
 // setup wax-on
 wax.on(hbs.handlebars);
 wax.setLayoutPath("./views/layouts");
-
 
 const landingRoutes = require("./routes/landing");
 const productRoutes = require("./routes/products");

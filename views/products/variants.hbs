@@ -78,8 +78,9 @@
                     {{product.halal}}
                 </td>
                  <td>
-                <img src="{{product.image_url}}" class="img-fluid"/>
+                <img src="{{product.image_url}}" style="height:200px, width:400px" class="img-fluid"/>
                 </td>
+                 </tr>
                  </tbody>
 </table>
 
@@ -104,7 +105,7 @@
         {{#each variants}}
             <tr >
                   <td >
-                  <img src="{{this.image_url}}" class="img-fluid"/>
+                  <img src="{{this.image_url}}" width="200" height="500" class="img-fluid"/>
                 </td>
                 <td >
                     {{this.id}}
@@ -121,9 +122,14 @@
                 <td>
                     {{this.size.size}}
                 </td>
-                  
+                <td>
+                 <a href="/products/{{product.id}}/variant/{{this.id}}/update" class="btn btn-primary btn-sm">Update</a>
+                  </td>
                   {{/each}}
+                    <a  href="/products/{{product.id}}/variant/create" class="btn btn-primary">Add Variant</a>
+                    {{!-- <a  href="/products/create-variants" class="btn btn-primary">Add Variant</a> --}}
                    </tbody>
+                    </tr>
 </table>
 {{/block}}
 

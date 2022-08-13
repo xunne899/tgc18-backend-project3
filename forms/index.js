@@ -67,7 +67,7 @@ const createProductForm = (types, countries, ingredients, packagings, cuisine_st
     shelf_life: fields.number({
       required: true,
       errorAfterField: true,
-      validators: [validators.integer(), validators.min(0)]
+      validators: [validators.integer(), validators.min(0)],
     }),
     cuisine_style: fields.string({
       required: true,
@@ -83,202 +83,193 @@ const createProductForm = (types, countries, ingredients, packagings, cuisine_st
       required: true,
       errorAfterField: true,
     }),
+    // image_url: fields.string({
+    //   required: true,
+    //   errorAfterField: true,
+    // }),
     image_url: fields.string({
-      required: true,
-      errorAfterField: true,
+      widget: widgets.hidden(),
     }),
     thumbnail_url: fields.string({
-      required: true,
-      errorAfterField: true,
+      widget: widgets.hidden(),
     }),
-  //   image_url:fields.string({
-  //     widget: widgets.hidden()
-  // })
   });
 };
 
-
-const createVariantForm = (color, size, tags) => {
+const createVariantForm = (spiciness, sizes) => {
   return forms.create({
-      color_id: fields.string({
-          label: 'Color',
-          required: true,
-          errorAfterField: true,
-          cssClasses: {
-              label: ['form-label', 'mt-3']
-          },
-          widget: widgets.select(),
-          choices: color
-      }),
-      size_id: fields.string({
-          label: 'Size',
-          required: true,
-          errorAfterField: true,
-          cssClasses: {
-              label: ['form-label', 'mt-3']
-          },
-          widget: widgets.select(),
-          choices: size
-      }),
-      tags: fields.string({
-          required: false,
-          errorAfterField: true,
-          cssClasses: {
-              label: ['form-label', 'mt-3']
-          },
-          widget: widgets.multipleSelect(),
-          choices: tags
-      }),
-      stock: fields.string({
-          required: true,
-          errorAfterField: true,
-          validators: [validators.integer(), validators.min(0), validators.max(65535)],
-          cssClasses: {
-              label: ['form-label', 'mt-3']
-          }
-      }),
-      product_image_url: fields.string({
-          widget: widgets.hidden()
-      }),
-      product_thumbnail_url: fields.string({
-          widget: widgets.hidden()
-      })
-  })
-}
+    stock: fields.number({
+      required: true,
+      errorAfterField: true,
+      validators: [validators.integer(), validators.min(0)],
+    }),
+    cost: fields.number({
+      required: true,
+      errorAfterField: true,
+      validators: [validators.integer(), validators.min(0)],
+    }),
+    image_url: fields.string({
+      widget: widgets.hidden(),
+    }),
+    thumbnail_url: fields.string({
+      widget: widgets.hidden(),
+    }),
+    // product_id: fields.string({
+    //     label: 'Product',
+    //     required: true,
+    //     errorAfterField: true,
+    //     cssClasses: {
+    //         label: ['form-label', 'mt-2']
+    //     },
+    //     widget: widgets.select(),
+    //     choices: products
+    // }),
+    spiciness_id: fields.string({
+      label: "Spiciness",
+      required: true,
+      errorAfterField: true,
+      cssClasses: {
+        label: ["form-label", "mt-3"],
+      },
+      widget: widgets.select(),
+      choices: spiciness,
+    }),
+    size_id: fields.string({
+      label: "Size",
+      required: false,
+      errorAfterField: true,
+      cssClasses: {
+        label: ["form-label", "mt-3"],
+      },
+      widget: widgets.select(),
+      choices: sizes,
+    }),
+  });
+};
 
-
-
-const createRegistrationForm =()=>{
+const createRegistrationForm = () => {
   return forms.create({
     username: fields.string({
       required: true,
       errorAfterField: true,
       cssClasses: {
-          label: ['form-label']
-      }
-  }),
-  email: fields.string({
-      required: true,
-      errorAfterField: true,
-      cssClasses: {
-          label: ['form-label']
-      }
-  }),
-  password: fields.password({
-      required: true,
-      errorAfterField: true,
-      cssClasses: {
-          label: ['form-label']
-      }
-  }),
-  confirm_password: fields.password({
-      required: true,
-      errorAfterField: true,
-      cssClasses: {
-          label: ['form-label']
+        label: ["form-label"],
       },
-      validators: [validators.matchField('password')]
-  })
-})
-}
+    }),
+    email: fields.string({
+      required: true,
+      errorAfterField: true,
+      cssClasses: {
+        label: ["form-label"],
+      },
+    }),
+    password: fields.password({
+      required: true,
+      errorAfterField: true,
+      cssClasses: {
+        label: ["form-label"],
+      },
+    }),
+    confirm_password: fields.password({
+      required: true,
+      errorAfterField: true,
+      cssClasses: {
+        label: ["form-label"],
+      },
+      validators: [validators.matchField("password")],
+    }),
+  });
+};
 
 const createLoginForm = () => {
   return forms.create({
-      email: fields.string({
-          required: true,
-          errorAfterField: true,
-          cssClasses: {
-              label: ['form-label']
-          }
-      }),
-      password: fields.password({
-          required: true,
-          errorAfterField: true,
-          cssClasses: {
-              label: ['form-label']
-          }
-      }),
-  })
-}
-
-
+    email: fields.string({
+      required: true,
+      errorAfterField: true,
+      cssClasses: {
+        label: ["form-label"],
+      },
+    }),
+    password: fields.password({
+      required: true,
+      errorAfterField: true,
+      cssClasses: {
+        label: ["form-label"],
+      },
+    }),
+  });
+};
 
 const createSearchForm = (types, countries, packagings, cuisine_styles) => {
   return forms.create({
-      name: fields.string({
-          required: false,
-          errorAfterField: true,
-          cssClasses: {
-              label: ['form-label']
-          }
-      }),
-      min_shelf_life: fields.number({
-        required: false,
-        errorAfterField: true,
-        cssClasses: {
-            label: ['form-label']
-        },
-        validators: [validators.integer()]
+    name: fields.string({
+      required: false,
+      errorAfterField: true,
+      cssClasses: {
+        label: ["form-label"],
+      },
     }),
-      max_shelf_life: fields.number({
-        required: false,
-        errorAfterField: true,
-        cssClasses: {
-            label: ['form-label']
-        },
-        validators: [validators.integer()]
+    min_shelf_life: fields.number({
+      required: false,
+      errorAfterField: true,
+      cssClasses: {
+        label: ["form-label"],
+      },
+      validators: [validators.integer()],
     }),
-        vegan: fields.string({
-          required: false,
-          errorAfterField: true,
-          cssClasses: {
-              label: ['form-label']
-          },
-      }),
-      halal: fields.string({
-        required: false,
-        errorAfterField: true,
-        cssClasses: {
-            label: ['form-label']
-        },
+    max_shelf_life: fields.number({
+      required: false,
+      errorAfterField: true,
+      cssClasses: {
+        label: ["form-label"],
+      },
+      validators: [validators.integer()],
     }),
-      type_id: fields.string({
-          label: 'Type',
-          required: false,
-          errorAfterField: true,
-          choices: types,
-          widget: widgets.select(),
-        
-      }),
-      packaging_id: fields.string({
-        label: 'Packaging',
-        required: false,
-        errorAfterField: true,
-        choices: packagings,
-        widget: widgets.select(),
-      
+    vegan: fields.string({
+      required: false,
+      errorAfterField: true,
+      cssClasses: {
+        label: ["form-label"],
+      },
     }),
-      country_id: fields.string({
-        label: "Country",
-        required: true,
-        errorAfterField: true,
-        choices: countries,
-        widget: widgets.select(),
-      }),
-      cuisine_style: fields.string({
-          required:false,
-          errorAfterField: true,
-          cssClasses: {
-              label: ['form-label']
-          },
-          widget: widgets.multipleSelect(),
-          choices: cuisine_styles
-      }),
-  })
-}
+    halal: fields.string({
+      required: false,
+      errorAfterField: true,
+      cssClasses: {
+        label: ["form-label"],
+      },
+    }),
+    type_id: fields.string({
+      label: "Type",
+      required: false,
+      errorAfterField: true,
+      choices: types,
+      widget: widgets.select(),
+    }),
+    packaging_id: fields.string({
+      label: "Packaging",
+      required: false,
+      errorAfterField: true,
+      choices: packagings,
+      widget: widgets.select(),
+    }),
+    country_id: fields.string({
+      label: "Country",
+      required: true,
+      errorAfterField: true,
+      choices: countries,
+      widget: widgets.select(),
+    }),
+    cuisine_style: fields.string({
+      required: false,
+      errorAfterField: true,
+      cssClasses: {
+        label: ["form-label"],
+      },
+      widget: widgets.multipleSelect(),
+      choices: cuisine_styles,
+    }),
+  });
+};
 
-
-
-
-
-module.exports = { createLoginForm, createProductForm, createRegistrationForm,createSearchForm, bootstrapField };
+module.exports = { createLoginForm, createProductForm, createVariantForm, createRegistrationForm, createSearchForm, bootstrapField };

@@ -1,0 +1,13 @@
+.my-check-label{
+    display:block;
+}
+
+.my-check-input{
+    padding: 4px;
+    margin-left: 5px;
+    margin-right: 3px;
+}
+.my-check-input.form-control{
+    display: inline-block;
+
+}

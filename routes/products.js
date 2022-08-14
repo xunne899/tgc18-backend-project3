@@ -468,7 +468,7 @@ router.post("/:product_id/variant/:variant_id/update", async (req, res) => {
 
 router.get("/:product_id/variant/:variant_id/delete", async (req, res) => {
   // fetch the product that we want to delete
-
+  const product = await dataLayer.getProductByID(req.params.product_id);
   const variant = await dataLayer.getVariantById(req.params.variant_id);
   // const product = await Product.where({
   //   id: req.params.product_id,
@@ -478,6 +478,7 @@ router.get("/:product_id/variant/:variant_id/delete", async (req, res) => {
 
   res.render("products/delete_variants", {
     variant: variant.toJSON(),
+    product: product.toJSON()
   });
 });
 

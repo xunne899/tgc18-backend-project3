@@ -1,17 +1,31 @@
 {{#extends 'base'}}
 
 {{#block 'content'}}
-<h1>Products</h1>
-<a href="/products/create" class="btn btn-primary">New</a>
 
-<h2>Search</h2>
-<form method="GET">
+{{!-- <h3 class="mt-2">Products</h3> --}}
+<div class=" mt-4"><a href="/products/create" class="btn btn-dark btn-sm ">Add Products</a></div>
+
+<h3 class="mt-3">Search</h3>
+<div class="accordion mt-3 mb-3" id="accordionExample">
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="headingOne">
+      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+   Search
+      </button>
+    </h2>
+    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+      <div class="accordion-body">
+           <form method="GET">
     {{{form}}}
-    <input type="submit" value="Search" class="btn btn-primary my-3"/>
-</form>
+    <input type="submit" value="Search" class="btn btn-dark my-3"/>
+     </form>
+      </div>
+    </div>
+  </div>
 <table class="table">
     <thead>
         <tr>
+            <th>Image</th>
             <th>ID</th>
             <th>Created Date</th>
              <th>Type</th>
@@ -24,7 +38,7 @@
             <th>Cuisine Style</th>
              <th>Vegan</th>
              <th>Halal</th>
-            <th>Image</th>
+            
             <th></th>
             <th></th>
             
@@ -34,6 +48,9 @@
     <tbody>
         {{#each products}}
             <tr >
+                   <td>
+                <img src="{{this.image_url}}" width="100px" class="img-fluid"/>
+                </td>
                 <td >
                     {{this.id}}
                 </td>
@@ -55,7 +72,7 @@
                
                   <td >
                     {{#each this.ingredients}}
-                     <span>{{this.ingredient}}</span>
+                     <div  class="badge bg-dark">{{this.ingredient}}</div>
                       {{/each}}
                 </td>
                   {{!-- <td >
@@ -83,15 +100,13 @@
                   <td >
                     {{this.halal}}
                 </td>
-                 <td>
-                <img src="{{this.image_url}}" class="img-fluid"/>
-                </td>
                   <td>
-                <a href="products/{{this.id}}/update" class="btn btn-primary btn-sm">Update</a>
-                <a href="products/{{this.id}}/delete" class="btn btn-danger btn-sm">Delete</a>
-                <a href="products/{{this.id}}/variant" class="btn btn-danger btn-sm">Variant</a>
+                <a href="products/{{this.id}}/update" class="btn btn-dark btn-sm mt-2">Update</a>
+                <a href="products/{{this.id}}/delete" class="btn btn-dark btn-sm mt-2">Delete</a>
+                <a href="products/{{this.id}}/variant" class="btn btn-dark btn-sm mt-2">Variant</a>
              
             </td>
+            <td ></td>
             </tr>
         {{/each}}
     </tbody>

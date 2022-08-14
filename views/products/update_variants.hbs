@@ -1,21 +1,22 @@
 {{#extends 'base'}}
 
 {{#block 'content'}}
-<h1>Update Variant</h1>
+<h1 class="mt-3">Update Variant</h1>
 <form method="POST">
      {{{variantForm}}}
            <!-- 1. shows the image if exists -->
     <div>     
         {{#if variant.image_url}}
-        <img src="{{variant.image_url}}" id="uploaded_image" />
+        <img class="mt-3" src="{{variant.image_url}}"style="width:50vw;" id="uploaded_image" />
         {{else}}
-        <img src="" style="display:none" id="uploaded_image" />
+        <img src="" style="display:none; width:300px;" id="uploaded_image" />
         {{/if}}
     </div>
       <div>
-           <a href="#" class="btn btn-primary" id="upload_widget">Upload</a>
+           <a href="#" class="btn btn-dark mt-3" id="upload_widget">Upload</a>
     </div>
-    <input type="submit" value="Update" class="btn btn-primary"/>
+    <input type="submit" value="Update" class="btn btn-dark mt-3"/>
+    <a href="javascript:history.back()" class="btn btn-dark mt-3">Cancel</a>
 </form>
 {{/block}}
 

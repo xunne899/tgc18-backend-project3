@@ -1,11 +1,12 @@
 {{#extends 'base'}}
 
 {{#block 'content'}}
-<h1>Products</h1>
+<h3 class="mt-4">Products</h3>
 
 <table class="table">
     <thead>
         <tr>
+            <th>Image</th>
             <th>ID</th>
             <th>Created Date</th>
              <th>Type</th>
@@ -18,7 +19,6 @@
             <th>Cuisine Style</th>
              <th>Vegan</th>
              <th>Halal</th>
-            <th>Image</th>
             <th></th>
             <th></th>
             
@@ -27,6 +27,9 @@
     </thead>
     <tbody>
             <tr >
+                 <td>
+                <img src="{{product.image_url}}" style=" width:100px" class="img-fluid"/>
+                </td>
                 <td >
                     {{product.id}}
                 </td>
@@ -77,15 +80,14 @@
                   <td >
                     {{product.halal}}
                 </td>
-                 <td>
-                <img src="{{product.image_url}}" style="height:200px, width:400px" class="img-fluid"/>
-                </td>
+                <td></td>
+                <td></td>
                  </tr>
                  </tbody>
 </table>
 
-
-<h1>Variants</h1>
+ <a  href="/products/{{product.id}}/variant/create" class="btn btn-dark btn-sm mt-3">Add Variant</a>
+<h3 class="mt-4">Variants</h3>
 
     <table class="table">
     <thead>
@@ -96,6 +98,8 @@
              <th>Cost</th>
             <th>Spiciness</th>
             <th>Size</th>
+               <th></th>
+            <th></th>
             
         </tr>
 
@@ -105,7 +109,7 @@
         {{#each variants}}
             <tr >
                   <td >
-                  <img src="{{this.image_url}}" width="200" height="500" class="img-fluid"/>
+                  <img src="{{this.image_url}}" width="100"  class="img-fluid"/>
                 </td>
                 <td >
                     {{this.id}}
@@ -123,11 +127,13 @@
                     {{this.size.size}}
                 </td>
                 <td>
-                 <a href="/products/{{product.id}}/variant/{{this.id}}/update" class="btn btn-primary btn-sm">Update</a>
-                       <a href="/products/{{product.id}}/variant/{{this.id}}/delete" class="btn btn-danger btn-sm">Delete</a>
+                 <a href="/products/{{product.id}}/variant/{{this.id}}/update" class="btn btn-dark btn-sm">Update</a>
+                       <a href="/products/{{product.id}}/variant/{{this.id}}/delete" class="btn btn-dark btn-sm">Delete</a>
                   </td>
+                   <td></td>
+               
                   {{/each}}
-                    <a  href="/products/{{product.id}}/variant/create" class="btn btn-primary">Add Variant</a>
+                   
                
                     {{!-- <a  href="/products/create-variants" class="btn btn-primary">Add Variant</a> --}}
                    </tbody>

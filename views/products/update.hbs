@@ -1,21 +1,22 @@
 {{#extends 'base'}}
 
 {{#block 'content'}}
-<h1>Update Product</h1>
+<h1 class="mt-4">Update Product</h1>
 <form method="POST">
     {{{form}}}
            <!-- 1. shows the image if exists -->
     <div>     
         {{#if product.image_url}}
-        <img src="{{product.image_url}}" id="uploaded_image" />
+        <img  class="mt-3" src="{{product.image_url}}" width= "50%" id="uploaded_image" />
         {{else}}
-        <img src="" style="display:none" id="uploaded_image" />
+        <img  class="mt-3" src="" style="display:none" id="uploaded_image" />
         {{/if}}
     </div>
-      <div>
-           <a href="#" class="btn btn-primary" id="upload_widget">Upload</a>
-    </div>
-    <input type="submit" value="Update" class="btn btn-primary"/>
+      <div class="mt-3">
+           <a href="#" class="btn btn-dark" id="upload_widget">Upload Image</a>
+    </div class="mt-3">
+    <input type="submit" value="Update" class="btn btn-dark mt-3"/>
+    <a href="javascript:history.back()" class="btn btn-dark mt-3">Cancel</a>
 </form>
 {{/block}}
 
@@ -46,7 +47,7 @@
         if (!error && result && result.event === "success") {
             console.log('Done! Here is the image info: ', result.info);
             // hide the upload widget 
-            document.querySelector('#upload_widget').style.display = "none";
+            //document.querySelector('#upload_widget').style.display = "none";
 
             // display the image
             document.querySelector('#id_image_url').value = result.info.url;

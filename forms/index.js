@@ -90,8 +90,12 @@ const createProductForm = (types, countries, ingredients, packagings, cuisine_st
     image_url: fields.string({
       widget: widgets.hidden(),
     }),
+    // thumbnail_url: fields.string({
+    //   widget: widgets.hidden(),
+    // }),
     thumbnail_url: fields.string({
-      widget: widgets.hidden(),
+      required: true,
+      errorAfterField: true,
     }),
   });
 };
@@ -111,8 +115,12 @@ const createVariantForm = (spiciness, sizes) => {
     image_url: fields.string({
       widget: widgets.hidden(),
     }),
+    // thumbnail_url: fields.string({
+    //   widget: widgets.hidden(),
+    // }),
     thumbnail_url: fields.string({
-      widget: widgets.hidden(),
+      required: true,
+      errorAfterField: true,
     }),
     // product_id: fields.string({
     //     label: 'Product',
@@ -134,9 +142,10 @@ const createVariantForm = (spiciness, sizes) => {
       widget: widgets.select(),
       choices: spiciness,
     }),
+
     size_id: fields.string({
       label: "Size",
-      required: false,
+      required: true,
       errorAfterField: true,
       cssClasses: {
         label: ["form-label", "mt-3"],

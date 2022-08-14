@@ -80,7 +80,7 @@ const getVariantsByProductId = async (productId) => {
 
 const getVariantById = async (variantId) => {
   return await Variant.where({
-      variant_id: parseInt(variantId)
+      'id': parseInt(variantId)
   }).fetch({
       require: true,
       withRelated: ['product','size', 'spiciness']

@@ -8,7 +8,10 @@
         <a href="#" class="btn btn-primary" id="upload_widget">Upload</a>
         <img src="" style="display:none" id="uploaded_image"/>
     </div>
-   <a href='/products/{{product.id}}/variants' class="btn btn-primary">Cancel</a>
+     {{!-- {{#each products}} --}}
+   {{!-- <a href='/products/{{this.id}}/variant' class="btn btn-primary">Cancel</a> --}}
+      {{!-- <a href='/products/' class="btn btn-primary">Cancel</a> --}}
+   {{!-- {{/each}} --}}
      <input type="submit" value="Add Product" class="btn btn-primary"/>
      <input type="hidden" value="{{csrfToken}}" name="_csrf"/>
 </form>

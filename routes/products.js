@@ -101,10 +101,11 @@ router.get("/", async (req, res) => {
 
 router.get("/create", checkIfAuthenticated, async function (req, res) {
   const types = await dataLayer.getAllTypes();
-
+  types.unshift([0, "---- Select One ----"]);
   const countries = await dataLayer.getAllCountries();
-
+  countries.unshift([0, "---- Select One ----"]);
   const packagings = await dataLayer.getAllPackagings();
+  packagings.unshift([0, "---- Select One ----"]);
 
   const cuisine_styles = await dataLayer.getAllCuisineStyles();
 
@@ -177,10 +178,11 @@ router.get("/:product_id/update", async (req, res) => {
   const product = await dataLayer.getProductByID(req.params.product_id);
   // fetch all values
   const types = await dataLayer.getAllTypes();
-
+  types.unshift([0, "---- Select One ----"]);
   const countries = await dataLayer.getAllCountries();
-
+  countries.unshift([0, "---- Select One ----"]);
   const packagings = await dataLayer.getAllPackagings();
+  packagings.unshift([0, "---- Select One ----"]);
 
   const cuisine_styles = await dataLayer.getAllCuisineStyles();
 
@@ -342,13 +344,15 @@ router.get("/:product_id/variant", async (req, res) => {
 
 router.get("/:product_id/variant/create", checkIfAuthenticated, async (req, res) => {
   const sizes = await dataLayer.getAllSizes();
+  sizes.unshift([0, "---- Select One ----"]);
 
   const spiciness = await dataLayer.getAllSpiciness();
+  spiciness.unshift([0, "---- Select One ----"]);
   // const variants = await dataLayer.getVariantsByProductId(req.params.product_id);
   // const products = await dataLayer.getAllProducts();
   // const product = await dataLayer.getProductByID(req.params.product_id);
 
-  const variantForm = createVariantForm(sizes, spiciness);
+  const variantForm = createVariantForm( spiciness,sizes);
 
   res.render("products/create_variants", {
     // variants: variants.toJSON(),
@@ -368,7 +372,7 @@ router.post("/:product_id/variant/create", checkIfAuthenticated, async function 
   const spiciness = await dataLayer.getAllSpiciness();
   const product = await dataLayer.getProductByID(req.params.product_id);
 
-  const variantForm = createVariantForm(sizes, spiciness);
+  const variantForm = createVariantForm(spiciness,sizes);
   variantForm.handle(req, {
     success: async (form) => {
       const variant = new Variant();
@@ -399,21 +403,25 @@ router.post("/:product_id/variant/create", checkIfAuthenticated, async function 
 
 router.get("/:product_id/variant/:variant_id/update", async (req, res) => {
   const sizes = await dataLayer.getAllSizes();
+  sizes.unshift([0, "---- Select One ----"]);
 
   const spiciness = await dataLayer.getAllSpiciness();
+  spiciness.unshift([0, "---- Select One ----"]);
+
   const variant = await dataLayer.getVariantById(req.params.variant_id);
   // const product = await dataLayer.getProductByID(req.params.product_id);
   // const products = await dataLayer.getAllProducts();
 
-  const variantForm = createVariantForm(sizes, spiciness);
+  const variantForm = createVariantForm(spiciness, sizes);
 
   // fill in the existing values
   variantForm.fields.stock.value = variant.get("stock");
   variantForm.fields.cost.value = variant.get("cost");
 
-  variantForm.fields.product_id.value = variant.get("product_id");
-  variantForm.fields.size_id.value = variant.get("size_id");
+  // variantForm.fields.product_id.value = variant.get("product_id");
+
   variantForm.fields.spiciness_id.value = variant.get("spiciness_id");
+  variantForm.fields.size_id.value = variant.get("size_id");
   // // 1 - set the image url in the product form
   variantForm.fields.image_url.value = variant.get("image_url");
   variantForm.fields.thumbnail_url.value = variant.get("thumbnail_url");
@@ -429,64 +437,58 @@ router.get("/:product_id/variant/:variant_id/update", async (req, res) => {
   });
 });
 
-// router.post("'/:product_id/variants/:variant_id/update'", async (req, res) => {
-//   // fetch all values
-//   const types = await dataLayer.getAllTypes();
+router.post("/:product_id/variant/:variant_id/update", async (req, res) => {
+  // fetch all values
+  const sizes = await dataLayer.getAllSizes();
+  const spiciness = await dataLayer.getAllSpiciness();
+  const variant = await dataLayer.getVariantById(req.params.variant_id);
 
-//   const countries = await dataLayer.getAllCountries();
+  const variantForm = createVariantForm(sizes, spiciness);
+  variantForm.handle(req, {
+    success: async (form) => {
+      let { ...Data } = form.data;
+      console.log(Data);
+      variant.set(Data);
+      variant.save();
 
-//   const packagings = await dataLayer.getAllPackagings();
+      req.flash("success_messages", `Product variant has been updated.`);
+      res.redirect(`/products/${req.params.product_id}/variant`);
+    },
+    error: async (form) => {
+      res.render("products/update_variants", {
+        variant: variant.toJSON(),
+        variantForm: form.toHTML(bootstrapField),
+        cloudinaryName: process.env.CLOUDINARY_NAME,
+        cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
+        cloudinaryPreset: process.env.CLOUDINARY_UPLOAD_PRESET,
+      });
+    },
+  });
+});
 
-//   const cuisine_styles = await dataLayer.getAllCuisineStyles();
+router.get("/:product_id/variant/:variant_id/delete", async (req, res) => {
+  // fetch the product that we want to delete
 
-//   const ingredients = await dataLayer.getAllIngredients();
+  const variant = await dataLayer.getVariantById(req.params.variant_id);
+  // const product = await Product.where({
+  //   id: req.params.product_id,
+  // }).fetch({
+  //   require: true,
+  // });
 
-//   // fetch the product that we want to update
+  res.render("products/delete_variants", {
+    variant: variant.toJSON(),
+  });
+});
 
-//   const product = await dataLayer.getProductByID(req.params.product_id);
-//   // const product = await Product.where({
-//   //   id: req.params.product_id,
-//   // }).fetch({
-//   //   require: true,
-//   //   withRelated: ["cuisine_styles", "ingredients"],
-//   // });
-
-//   // process the form
-//   const productForm = createProductForm(types, countries, ingredients, packagings, cuisine_styles);
-//   productForm.handle(req, {
-//     success: async (form) => {
-//       let { cuisine_style, ingredient, ...productData } = form.data;
-//       console.log(cuisine_styles);
-//       product.set(productData);
-//       // product.set(form.data);
-//       product.save();
-//       // update the tags
-
-//       let cuisine_styleIds = cuisine_style.split(",").map((id) => parseInt(id));
-//       let existingCuisine_styleIds = await product.related("cuisine_styles").pluck("id");
-
-//       let ingredientIds = ingredient.split(",").map((id) => parseInt(id));
-//       let existingIngredientIds = await product.related("ingredients").pluck("id");
-
-//       // remove followings that aren't selected anymore
-//       let toRemoveCuisine = existingCuisine_styleIds.filter((id) => cuisine_styleIds.includes(id) === false);
-//       await product.cuisine_styles().detach(toRemoveCuisine);
-//       await product.cuisine_styles().attach(cuisine_styleIds);
-
-//       // remove following that aren't selected anymore
-//       let toRemoveIngredient = existingIngredientIds.filter((id) => ingredientIds.includes(id) === false);
-//       await product.ingredients().detach(toRemoveIngredient);
-//       await product.ingredients().attach(ingredientIds);
-
-//       res.redirect("/products");
-//     },
-//     error: async (form) => {
-//       res.render("products/update", {
-//         form: form.toHTML(bootstrapField),
-//         product: product.toJSON(),
-//       });
-//     },
-//   });
-// });
-
+router.post("/:product_id/variant/:variant_id/delete", async (req, res) => {
+  // fetch the product that we want to delete
+  const variant = await Variant.where({
+    id: req.params.variant_id,
+  }).fetch({
+    require: true,
+  });
+  await variant.destroy();
+  res.redirect(`/products/${req.params.product_id}/variant`);
+});
 module.exports = router;

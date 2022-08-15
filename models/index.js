@@ -96,4 +96,19 @@ const Ingredient = bookshelf.model('Ingredient', {
   const User = bookshelf.model('User',{
     tableName:'users'
   })
-  module.exports = { Product, Type, Ingredient, Cuisine_style, Variant, Size, Spiciness, Packaging, Country, User };
+
+
+  const CartItem = bookshelf.model('CartItem', {
+    tableName: 'cart_items',
+    customer() {
+        return this.belongsTo('Customer')
+    },
+    variant() {
+      return this.belongsTo('Variant');
+    },
+    user() {
+      return this.belongsTo('User');
+  }
+  })
+
+  module.exports = { Product, Type, Ingredient, Cuisine_style, Variant, Size, Spiciness, Packaging, Country, User, CartItem };

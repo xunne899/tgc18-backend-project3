@@ -79,7 +79,11 @@ const landingRoutes = require("./routes/landing");
 const productRoutes = require("./routes/products");
 const userRoutes = require("./routes/users");
 const cloudinaryRoutes = require("./routes/cloudinary.js");
+const cartRoutes = require("./routes/api/carts.js");
+const { checkIfAuthenticated } = require("./middlewares");
+const { getCart } = require("./dal/carts");
 
+app.use("/cart", [checkIfAuthenticated], cartRoutes);
 app.use("/", landingRoutes);
 app.use("/products", productRoutes);
 app.use("/users", userRoutes);

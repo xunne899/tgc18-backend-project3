@@ -1,11 +1,11 @@
 {{#extends 'base'}}
 
 {{#block 'content'}}
-<h1 class="mt-3">Deleting {{variant.id}}</h1>
+<h1 class="mt-3">Deleting {{variant.product.name}} , Variant ID : {{variant.id}}</h1>
 
 <form method="POST">
     <div class="alert alert-danger">
-        <p>Are you sure you want to delete {{variant.id}}?</p>
+        <p>Are you sure you want to delete {{variant.product.name}}, Variant ID : {{variant.id}}?</p>
         <input type="submit" class="btn btn-danger" value="Yes"/>
         {{!-- <a href="javascript:history.back()" class="btn btn-success">No</a> --}}
         <a href="/products/{{product.id}}/variant" class="btn btn-success">No</a>

@@ -80,6 +80,7 @@ const productRoutes = require("./routes/products");
 const userRoutes = require("./routes/users");
 const cloudinaryRoutes = require("./routes/cloudinary.js");
 const cartRoutes = require("./routes/api/carts.js");
+const checkoutRoutes = require("./routes/api/checkout");
 const { checkIfAuthenticated } = require("./middlewares");
 const { getCart } = require("./dal/carts");
 
@@ -88,6 +89,8 @@ app.use("/", landingRoutes);
 app.use("/products", productRoutes);
 app.use("/users", userRoutes);
 app.use("/cloudinary", cloudinaryRoutes);
+
+app.use("/checkout", checkoutRoutes);
 
 app.listen(3001, function () {
   console.log("Server has started");

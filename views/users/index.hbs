@@ -1,14 +1,15 @@
 {{#extends 'base'}}
 
 {{#block 'content'}}
- <h1 class="mt-3">Employees/Staff</h1>
+ <h1 class="mt-4">Executive Staff</h1>
     
-    <table class="table">
+    <table class="table mt-3">
         <thead>
             <tr>
                 <th>ID</th>
                 <th>Username</th>
                 <th>Email</th>
+                <th></th>
                 <th></th>
 
             </tr>
@@ -16,16 +17,13 @@
         <tbody>
             {{#each users}}
             <tr>
-                <td style="color:black">{{this.id}}</td>
+                <td>{{this.id}}</td>
                 <td>{{this.username}}</td>
                 <td>{{this.email}}</td>
                 <td>{{this.user}}</td>
                 <td>
-                    <a href="users/{{this.id}}/update" class="btn btn-dark btn-sm">Update
-                       
-                    </a>
-                    <a href="users/{{this.id}}/delete" class="btn btn-dark p-1 btn-sm">Delete
-                    </a>
+                    <a href="users/{{this.id}}/update" ><i class="fa fa-edit" style="font-size:23px;color:black"></i></a>
+                    <a href="users/{{this.id}}/delete" class="ms-2"><i class="fa fa-trash " style="font-size:23px;color:black"></i></a>
 
                 </td>
             </tr>

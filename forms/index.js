@@ -119,12 +119,12 @@ const createVariantForm = (spiciness, sizes) => {
     stock: fields.number({
       required: true,
       errorAfterField: true,
-      validators: [validators.integer(), validators.min(0)],
+      validators: [validators.integer(), validators.min(0),validators.max(65535)],
     }),
     cost: fields.number({
       required: true,
       errorAfterField: true,
-      validators: [validators.integer(), validators.min(0)],
+      validators: [validators.integer(), validators.min(0), validators.max(4294967295)],
     }),
     image_url: fields.string({
       widget: widgets.hidden(),
@@ -182,6 +182,7 @@ const createRegistrationForm = () => {
     email: fields.string({
       required: true,
       errorAfterField: true,
+      validators: [validators.email(),validators.maxlength(320)],
       cssClasses: {
         label: ["form-label","mt-3"],
       },
@@ -192,15 +193,15 @@ const createRegistrationForm = () => {
       cssClasses: {
         label: ["form-label","mt-3"],
       },
-    }),
-    confirm_password: fields.password({
-      required: true,
-      errorAfterField: true,
-      cssClasses: {
-        label: ["form-label","mt-3"],
-      },
-      validators: [validators.matchField("password")],
-    }),
+    })
+    // confirm_password: fields.password({
+    //   required: true,
+    //   errorAfterField: true,
+    //   cssClasses: {
+    //     label: ["form-label","mt-3"],
+    //   },
+    //   validators: [validators.matchField("password")],
+    // }),
   });
 };
 
@@ -209,6 +210,7 @@ const createLoginForm = () => {
     email: fields.string({
       required: true,
       errorAfterField: true,
+      validators: [validators.email(),validators.maxlength(320)],
       cssClasses: {
         label: ["form-label"],
       },
@@ -228,6 +230,7 @@ const createSearchForm = (types, countries, packagings, cuisine_styles) => {
     name: fields.string({
       required: false,
       errorAfterField: true,
+      validators: [validators.maxlength(100)],
       cssClasses: {
         label: ["form-label"],
       },

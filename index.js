@@ -86,7 +86,7 @@ const { getCart } = require("./dal/carts");
 
 app.use("/cart", [checkIfAuthenticated], cartRoutes);
 app.use("/", landingRoutes);
-app.use("/products",[checkIfAuthenticated], productRoutes);
+app.use("/products", [checkIfAuthenticated], productRoutes);
 app.use("/users", userRoutes);
 app.use("/cloudinary", cloudinaryRoutes);
 

@@ -12,6 +12,21 @@ const getHashedPassword = (password) => {
 const { User } = require("../models");
 const { createRegistrationForm,createLoginForm, bootstrapField } = require("../forms");
 
+
+router.get('/', async (req, res) => {
+  const users = await userDataLayer.getAllUsers()
+  const employees = users.toJSON().filter(user => {
+      return user.userType.user_type !== 'Customer'
+  })
+  const customers = users.toJSON().filter(user => {
+      return user.userType.user_type === 'Customer'
+  })
+  res.render('users', {
+      employees,
+      customers
+  })
+})
+
 router.get("/register", (req, res) => {
   // display the registration form
   const registerForm = createRegistrationForm();

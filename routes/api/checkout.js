@@ -3,7 +3,7 @@ const { checkIfAuthenticated } = require("../../middlewares");
 const router = express.Router();
 const cartServices = require("../../services/carts");
 
-const Stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 router.get("/", checkIfAuthenticated, async function (req, res) {
   // step 1: create the line items
@@ -55,7 +55,7 @@ router.get("/", checkIfAuthenticated, async function (req, res) {
   };
 
   // step 3: register the payment session
-  let stripeSession = await Stripe.checkout.sessions.create(payment);
+  let stripeSession = await stripe.checkout.sessions.create(payment);
 
   // step 4: use stripe to pay
   res.render("checkout/checkout", {
@@ -84,7 +84,7 @@ router.post("/process_payment", express.raw({ type: "application/json" }), async
   let event = null;
   // try to extract out the information and ensures that its' legit (it acutally comes from Stripe)
   try {
-    event = Stripe.webhooks.constructEvent(payload, sigHeader, endpointSecret);
+    event = stripe.webhooks.constructEvent(payload, sigHeader, endpointSecret);
     if (event.type == "checkout.session.completed") {
       console.log(event.data.object);
       const metadata = JSON.parse(event.data.object.metadata.orders);

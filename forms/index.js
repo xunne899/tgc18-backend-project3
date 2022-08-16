@@ -78,24 +78,24 @@ const createProductForm = (types, countries, ingredients, packagings, cuisine_st
     vegan: fields.string({
       required: true,
       errorAfterField: true,
-      cssClasses: {
-        label: ["form-check-label", "my-check-label"],
-      },
-      choices: { yes: "Yes", no: "No" },
-      widget: widgets.multipleRadio({
-        classes: ["form-check-input", "my-check-input"],
-      }),
+      // cssClasses: {
+      //   label: ["form-check-label", "my-check-label"],
+      // },
+      // choices: { yes: "Yes", no: "No" },
+      // widget: widgets.multipleRadio({
+      //   classes: ["form-check-input", "my-check-input"],
+      // }),
     }),
     halal: fields.string({
       required: true,
       errorAfterField: true,
-      cssClasses: {
-        label: ["form-check-label", "my-check-label"],
-      },
-      choices: { yes: "Yes", no: "No" },
-      widget: widgets.multipleRadio({
-        classes: ["form-check-input", "my-check-input"],
-      }),
+      // cssClasses: {
+      //   label: ["form-check-label", "my-check-label"],
+      // },
+      // choices: { yes: "Yes", no: "No" },
+      // widget: widgets.multipleRadio({
+      //   classes: ["form-check-input", "my-check-input"],
+      // }),
     }),
     // image_url: fields.string({
     //   required: true,

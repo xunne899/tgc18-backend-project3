@@ -161,6 +161,9 @@ router.post("/create", checkIfAuthenticated, async function (req, res) {
     error: async function (form) {
       res.render("products/create", {
         form: form.toHTML(bootstrapField),
+        cloudinaryName: process.env.CLOUDINARY_NAME,
+        cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
+        cloudinaryPreset: process.env.CLOUDINARY_UPLOAD_PRESET,
       });
     },
   });

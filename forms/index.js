@@ -176,28 +176,28 @@ const createRegistrationForm = () => {
       required: true,
       errorAfterField: true,
       cssClasses: {
-        label: ["form-label"],
+        label: ["form-label","mt-3"],
       },
     }),
     email: fields.string({
       required: true,
       errorAfterField: true,
       cssClasses: {
-        label: ["form-label"],
+        label: ["form-label","mt-3"],
       },
     }),
     password: fields.password({
       required: true,
       errorAfterField: true,
       cssClasses: {
-        label: ["form-label"],
+        label: ["form-label","mt-3"],
       },
     }),
     confirm_password: fields.password({
       required: true,
       errorAfterField: true,
       cssClasses: {
-        label: ["form-label"],
+        label: ["form-label","mt-3"],
       },
       validators: [validators.matchField("password")],
     }),
@@ -295,4 +295,19 @@ const createSearchForm = (types, countries, packagings, cuisine_styles) => {
   });
 };
 
-module.exports = { createLoginForm, createProductForm, createVariantForm, createRegistrationForm, createSearchForm, bootstrapField };
+
+
+const createStatusForm = (statuses) => {
+  return forms.create({
+      status_id: fields.string({
+          required: true,
+          errorAfterField: true,
+          cssClasses: {
+              label: ['d-none']
+          },
+          widget: widgets.select(),
+          choices: statuses
+      })
+  })
+}
+module.exports = { createLoginForm, createProductForm, createVariantForm, createRegistrationForm, createSearchForm, createStatusForm, bootstrapField };

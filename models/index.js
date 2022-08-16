@@ -98,6 +98,13 @@ const Ingredient = bookshelf.model('Ingredient', {
   })
 
 
+  const Customer = bookshelf.model({
+    tableName: 'customers',
+    cartItems: function () {
+        return this.hasMany('cartItem');
+      },
+})
+
   const CartItem = bookshelf.model('CartItem', {
     tableName: 'cart_items',
     customer() {
@@ -111,4 +118,7 @@ const Ingredient = bookshelf.model('Ingredient', {
   }
   })
 
-  module.exports = { Product, Type, Ingredient, Cuisine_style, Variant, Size, Spiciness, Packaging, Country, User, CartItem };
+
+
+
+  module.exports = { Product, Type, Ingredient, Cuisine_style, Variant, Size, Spiciness, Packaging, Country, User, Customer, CartItem };

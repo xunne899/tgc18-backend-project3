@@ -46,19 +46,29 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
-        <a class="nav-link ms-3" aria-current="page" href="/products">Products</a>
-        <a class="nav-link ms-2" href="#">Orders</a>
-        <a class="nav-link ms-2" href="#">Users</a>
+        <li class="nav-item">
+        <a class="nav-link ms-lg-3" aria-current="page" href="/products">Products</a>
+        </li>
+        <li class="nav-item">
+        <a class="nav-link ms-lg-2" href="#">Orders</a>
+        </li>
+        <li class="nav-item">
+        <a class="nav-link ms-lg-2 " href="#">Users</a>
+         </li>
+         </div>
         {{!-- <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>  --}}
-      </div>
+       
   
  
-    <a class="nav-link ms-auto me-1"  style=" color:white">
-
+    {{!-- <a class="nav-link ms-auto me-1 lgBut"  href="/users/logout" style="color:white; text-decoration: none;">Logout --}}
+                    
+                    {{!-- <div class="nav-item d-flex justify-content-center align-items-center text-center ms-auto"> --}}
+                     <div class="nav-item d-flex justify-content-center align-items-center text-center ms-auto mt-sm-2 mt-lg-0">
+                
                     {{#if user}}
-                    Hi, {{user.username}}
-
-                    <a href="/users/logout" style="text-decoration: none; color:white" class="lgBut">Logout</a>
+                   <div class="d-none d-lg-inline"> Hi, {{user.username}}</div>
+                     <a class="nav-link lgBut mt-sm-3 mt-lg-0"  href="/users/logout" style="color:white; text-decoration: none;">Logout</a>
+                    {{!-- <a href="/users/logout" style="text-decoration: none; color:white" class="lgBut">Logout</a> --}}
 
                     {{else}}
                     
@@ -69,11 +79,12 @@
                    
                     {{/if}}
 
+                    </div>
 
-    </a>
-  </div>
-  </div>
+    {{!-- </a> --}}
 
+  
+</div>
      </nav>
 <div class="container mt-3">
         {{#if success_messages }}        

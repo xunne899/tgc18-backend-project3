@@ -120,21 +120,46 @@ router.post("/login", async function (req, res) {
 
       // check if the user does not exist
       if (!user) {
-        req.flash("error_messages", "Invalid credentials");
+        req.flash("error_messages", "Invalid credentials. Please try again.");
         res.redirect("/users/login");
         // form: loginForm.toHTML(bootstrapField)
       } else {
-        req.session.user = {
-          id: user.get("id"),
-          email: user.get("email"),
-          username: user.get("username"),
-        };
-        req.flash("success_messages", "Welcome back, " + user.get("username"));
-        res.redirect("/products");
+        //check if the password matches
+        if (user.get("password") === getHashedPassword(form.data.password)) {
+          req.session.user = {
+            id: user.get("id"),
+            username: user.get("username"),
+            email: user.get("email"),
+          };
+          req.flash("success_messages", "Welcome back, " + user.get("username"));
+          res.redirect("/products");
+        } else {
+          req.flash("error_messages", "Invalid username or password. Please try again.");
+          res.redirect("/users/login");
+        }
       }
+    },
+    error: (form) => {
+      req.flash("error_messages", "Error logging in. Please enter again");
+      res.render("users/login", {
+        form: form.toHTML(bootstrapField),
+      });
     },
   });
 });
+
+//       else {
+//         req.session.user = {
+//           id: user.get("id"),
+//           email: user.get("email"),
+//           username: user.get("username"),
+//         };
+//         req.flash("success_messages", "Welcome back, " + user.get("username"));
+//         res.redirect("/products");
+//       }
+//     },
+//   });
+// });
 
 router.get("/profile", async function (req, res) {
   const user = req.session.user;

@@ -47,10 +47,13 @@ router.get("/", async (req, res) => {
         query.where("shelf_life", "<=", form.data.max_shelf_life);
       }
 
-      if (form.data.vegan) {
-        query.where("vegan", "like", "%" + form.data.vegan + "%");
+      if (form.data.vegan == 1) {
+        query.where("vegan", "=", "Yes");
       }
-
+      
+      if (form.data.vegan == 2) {
+        query.where("vegan", "=", "No" );
+      }
       if (form.data.halal) {
         query.where("halal", "like", "%" + form.data.halal + "%");
       }
@@ -80,11 +83,11 @@ router.get("/", async (req, res) => {
       const products = await query.fetch({
         withRelated: ["type", "country", "packaging", "cuisine_styles", "ingredients"],
       });
-      // const numberFound = products.toJSON().length
+      const numberFound = products.toJSON().length
       req.flash( "Items have been found");
       res.render("products/index", {
         products: products.toJSON(),
-        // numberFound,
+        numberFound,
         form: form.toHTML(bootstrapField),
       });
     },

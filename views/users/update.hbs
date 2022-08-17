@@ -1,7 +1,9 @@
 {{#extends 'base'}}
 
 {{#block 'content'}}
-<h1 class="mt-4">Updating User :{{user.email}}</h1>
+  <div class="row m-3">
+ <div class="overflow-auto mt-3 p-3 shadow-lg rounded-3 col-12 col-md-12 col-sm-12"> 
+<h1 class="mt-2">Updating User :{{user.email}}</h1>
 <form method="POST">
     {{{userUpdateForm}}}
            <!-- 1. shows the image if exists -->
@@ -9,6 +11,9 @@
      <input class="btn btn-sm btn-dark mt-3" type="submit" value="Update" >
     <a href="javascript:history.back()" class="btn btn-dark btn-sm mt-3">Cancel</a>
 </form>
+
+</div>
+</div>
 {{/block}}
 
 {{/extends}}

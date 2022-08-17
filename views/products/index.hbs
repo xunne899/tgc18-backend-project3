@@ -4,19 +4,31 @@
 
 {{!-- <h3 class="mt-2">Products</h3> --}}
 
+        {{#if numberFound}}
+            <div class="alert alert-success mt-3">
+                <span>{{numberFound}} product(s) was found</span>
+            </div>
+            {{/if}}
+            {{!-- {{#unless numberFound}}
+            <div class="alert alert-danger mt-3">
+                <span>No product found in list</span>
+            </div>
+            {{/unless}} --}}
+ 
   <div class="d-flex justify-content-between mt-5">
-    <h3 >Search</h3>
-    <a href="/products/create" class="btn btn-dark btn-sm d-flex align-items-center">Add Product</a>
+    <h2>Search</h2>
+    <a href="/products/create" class="btn btn-dark btn-sm d-flex align-items-center justy-content-center mt-2" style="height:30px;width:98px">Add Product</a>
 </div>
 
-<div class="accordion mt-3 mb-3" id="accordionExample">
-  <div class="accordion-item">
+
+<div class="accordion mt-3 mb-3" id="accordion">
+  <div class="accordion-item shadow-lg">
     <h2 class="accordion-header" id="headingOne">
       <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-   Search
+   Search Filter
       </button>
     </h2>
-    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordion">
       <div class="accordion-body">
            <form method="GET">
     {{{form}}}
@@ -29,8 +41,11 @@
     <h3>All Products</h3>
 <a href="/products/create" class="btn btn-dark btn-sm">Add Products</a>
 </div> --}}
-<table class="table mt-4">
-    <thead>
+
+  <div class="row mt-3" id="productTable">
+ <div class="overflow-auto mt-3 p-3 shadow-lg rounded-3 col-12 col-md-12 col-sm-12"> 
+<table class="table mt-3">
+    <thead >
         <tr>
             <th>Image</th>
             <th>ID</th>
@@ -45,9 +60,9 @@
             <th>Cuisine Style</th>
              <th>Vegan</th>
              <th>Halal</th>
-            
+          
             <th></th>
-            <th></th>
+            {{!-- <th></th>  --}}
             
         </tr>
 
@@ -116,11 +131,13 @@
                
             </td>
             {{!-- <td ></td> --}}
-            
+             </tr>
         {{/each}}
-                    </tbody>
-                    </tr>
+       </tbody>
+                   
 </table>
+  </div>
+  </div>
 {{/block}}
 
 {{/extends}}

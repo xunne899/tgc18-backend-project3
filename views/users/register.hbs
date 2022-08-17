@@ -1,13 +1,15 @@
 {{#extends 'base'}}
 
 {{#block 'content'}}
-<h1>Register</h1>
+  <div class="row m-3">
+   <div class="p-3 mt-3 shadow-lg rounded-5 col-12 col-md-12 col-sm-12">
+<h1>Staff Registration</h1>
 <form method="POST">
- 
     {{{form}}}
        <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
     <input type="submit" value="Register" class="btn btn-dark mt-3"/>
     {{/block}}
 </form>
-
+</div>
+</div>
 {{/extends}}

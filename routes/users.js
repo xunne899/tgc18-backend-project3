@@ -11,7 +11,7 @@ const getHashedPassword = (password) => {
 
 const { User } = require("../models");
 const dataLayer = require("../dal/users");
-const { createRegistrationForm, createLoginForm, bootstrapField } = require("../forms");
+const { createRegistrationForm, createLoginForm, createUserForm, bootstrapField } = require("../forms");
 
 
 
@@ -34,14 +34,12 @@ router.get("/register", (req, res) => {
 router.get('/:user_id/update', async (req,res) => {
   const user = await dataLayer.getUserById(req.params.user_id)
 
-  const userUpdateForm = createRegistrationForm()
+  const userUpdateForm = createUserForm()
 
   userUpdateForm.fields.username.value = user.get('username')
   userUpdateForm.fields.email.value = user.get('email')
-  userUpdateForm.fields.password.value = user.get('password')
-  // userUpdateForm.fields.confirm_password.value = user.get('confirm_password')
 
- 
+
 
   res.render('users/update', {
       userUpdateForm: userUpdateForm.toHTML(bootstrapField),
@@ -52,7 +50,7 @@ router.get('/:user_id/update', async (req,res) => {
 
 router.post("/:user_id/update", async (req, res) => {
   const user = await dataLayer.getUserById(req.params.user_id)
-  const userUpdateForm = createRegistrationForm()
+  const userUpdateForm = createUserForm()
   userUpdateForm.handle(req, {
     success: async (form) => {
       let { ...Data } = form.data;

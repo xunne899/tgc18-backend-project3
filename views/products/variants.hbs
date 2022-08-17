@@ -2,7 +2,10 @@
 
 {{#block 'content'}}
 {{!-- <h3 class="mt-4">Products</h3> --}}
-     <h2 class="mt-4"> {{product.name}}  </h2>
+
+  <div class="row">
+ <div class="overflow-auto mt-3 p-3 shadow-lg rounded-3 col-12 col-md-12 col-sm-12"> 
+     <h2 > {{product.name}}  </h2>
                 <img src="{{product.image_url}}" style=" width:300px" class="img-fluid"/>
                 
 {{!-- <table class="table">
@@ -14,10 +17,12 @@
              <th>Type</th>
             <th>Name</th>
             <th>Country</th> --}}
-           <div class="mt-4"> 
-            <h5 class="mt-2">Description</h5>
+           <div class="mt-3 mb-3"> 
+            <h5 >Description</h5>
             <div >
             {{product.description}}
+            </div>
+            </div>
             </div>
             </div>
             {{!-- <th>Ingredients</th>
@@ -90,10 +95,11 @@
                  {{!-- </tr>
                  </tbody> --}}
 </table>
-
-   <div class="d-flex justify-content-between mt-5">
+  <div class="row mt-3">
+ <div class="overflow-auto mt-3 p-3 shadow-lg rounded-3 col-12 col-md-12 col-sm-12"> 
+   <div class="d-flex justify-content-between mt-2">
     <h3 >Variants</h3>
-    <a href="/products/{{product.id}}/variant/create" class="btn btn-dark btn-sm d-flex align-items-center">Add Variant</a>
+    <a href="/products/{{product.id}}/variant/create" class="btn btn-dark btn-sm d-flex align-items-center mt-2" style="width:93px;height:30px">Add Variant</a>
 </div>
 {{!-- <h3 class="mt-5">Variants</h3> --}}
 
@@ -136,22 +142,23 @@
                 </td>
            
                 <td>
-                       <br>
+                       {{!-- <br> --}}
                     {{!-- <a href="/products/{{product.id}}/variant/create" class="ms-1" ><i class="fa fa-plus " style="font-size:23px;color:black"></i></a> --}}
                        <a href="/products/{{product.id}}/variant/{{this.id}}/update"><i class="fa fa-edit" style="font-size:23px;color:black"></i></a>
                        <a href="/products/{{product.id}}/variant/{{this.id}}/delete"><i class="fa fa-trash " style="font-size:23px;color:black"></i></a>
-                       <br>
-                       <a href="/cart/{{this.id}}/add" class="btn btn-success btn-sm mt-2">Add to cart</a>
+                       <a href="/cart/{{this.id}}/add" class="btn btn-secondary btn-sm ms-2 ">Add to cart</a>
                   </td>
                    <td></td>
-               
+                </tr>
                   {{/each}}
                    
                
                     {{!-- <a  href="/products/create-variants" class="btn btn-primary">Add Variant</a> --}}
                    </tbody>
-                    </tr>
+                   
 </table>
+</div>
+</div>
 {{/block}}
 
 {{/extends}}

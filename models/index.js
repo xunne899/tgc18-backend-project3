@@ -88,7 +88,16 @@ const Ingredient = bookshelf.model('Ingredient', {
       },
     size () {
         return this.belongsTo('Size');
-      }
+      },
+    cartItems() {
+        return this.hasMany('CartItem')
+    },
+    orders() {
+        return this.belongsToMany('Order')
+    },
+    orderItems() {
+        return this.hasMany('OrderItem')
+    }
    
   });
 
@@ -100,9 +109,12 @@ const Ingredient = bookshelf.model('Ingredient', {
 
   const Customer = bookshelf.model({
     tableName: 'customers',
-    cartItems: function () {
+    cartItems() {
         return this.hasMany('cartItem');
       },
+      orders() {
+        return this.hasMany('Order')
+    }
 })
 
   const CartItem = bookshelf.model('CartItem', {
@@ -120,5 +132,39 @@ const Ingredient = bookshelf.model('Ingredient', {
 
 
 
+  const OrderItem = bookshelf.model('OrderItem', {
+    tableName: 'order_items',
+    order() {
+        return this.belongsTo('Order')
+    },
+    variant() {
+        return this.belongsTo('Variant')
+    }
+})
 
-  module.exports = { Product, Type, Ingredient, Cuisine_style, Variant, Size, Spiciness, Packaging, Country, User, Customer, CartItem };
+const Order = bookshelf.model('Order', {
+    tableName: 'orders',
+    variants() {
+        return this.belongsToMany('Variant')
+    },
+    customer() {
+        return this.belongsTo('Customer')
+    },
+    status() {
+        return this.belongsTo('Status')
+    },
+    orderItems() {
+        return this.hasMany('OrderItem')
+    }
+})
+
+const Status = bookshelf.model('Status', {
+    tableName: 'statuses',
+    orders() {
+        return this.hasMany('Order')
+    }
+})
+
+
+
+  module.exports = { Product, Type, Ingredient, Cuisine_style, Variant, Size, Spiciness, Packaging, Country, User, Customer, CartItem, OrderItem, Order, Status};

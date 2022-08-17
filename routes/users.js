@@ -13,14 +13,12 @@ const { User } = require("../models");
 const dataLayer = require("../dal/users");
 const { createRegistrationForm, createLoginForm, createUserForm, bootstrapField } = require("../forms");
 
-
-
-router.get('/', async (req, res) => {
-    const users = await User.collection().fetch()
-    res.render('users/index', {
-        'users': users.toJSON()
-    })
-})
+router.get("/", async (req, res) => {
+  const users = await User.collection().fetch();
+  res.render("users/index", {
+    users: users.toJSON(),
+  });
+});
 
 router.get("/register", (req, res) => {
   // display the registration form
@@ -30,27 +28,23 @@ router.get("/register", (req, res) => {
   });
 });
 
+router.get("/:user_id/update", async (req, res) => {
+  const user = await dataLayer.getUserById(req.params.user_id);
 
-router.get('/:user_id/update', async (req,res) => {
-  const user = await dataLayer.getUserById(req.params.user_id)
+  const userUpdateForm = createUserForm();
 
-  const userUpdateForm = createUserForm()
+  userUpdateForm.fields.username.value = user.get("username");
+  userUpdateForm.fields.email.value = user.get("email");
 
-  userUpdateForm.fields.username.value = user.get('username')
-  userUpdateForm.fields.email.value = user.get('email')
-
-
-
-  res.render('users/update', {
-      userUpdateForm: userUpdateForm.toHTML(bootstrapField),
-      user: user.toJSON(),
-  })
-})
-
+  res.render("users/update", {
+    userUpdateForm: userUpdateForm.toHTML(bootstrapField),
+    user: user.toJSON(),
+  });
+});
 
 router.post("/:user_id/update", async (req, res) => {
-  const user = await dataLayer.getUserById(req.params.user_id)
-  const userUpdateForm = createUserForm()
+  const user = await dataLayer.getUserById(req.params.user_id);
+  const userUpdateForm = createUserForm();
   userUpdateForm.handle(req, {
     success: async (form) => {
       let { ...Data } = form.data;
@@ -65,17 +59,14 @@ router.post("/:user_id/update", async (req, res) => {
     //   res.render("users/update", {
     //     user: user.toJSON(),
     //     userUpdateForm: form.toHTML(bootstrapField),
-       
+
     //   });
     // },
   });
 });
 
-
-
 router.get("/:user_id/delete", async (req, res) => {
-
-  const user = await dataLayer.getUserById(req.params.user_id)
+  const user = await dataLayer.getUserById(req.params.user_id);
 
   res.render("users/delete", {
     user: user.toJSON(),
@@ -83,16 +74,10 @@ router.get("/:user_id/delete", async (req, res) => {
 });
 
 router.post("/:user_id/delete", async (req, res) => {
-
-  const user = await dataLayer.getUserById(req.params.user_id)
+  const user = await dataLayer.getUserById(req.params.user_id);
   await user.destroy();
   res.redirect("/users");
 });
-
-
-
-
-
 
 router.post("/register", (req, res) => {
   const registerForm = createRegistrationForm();
@@ -137,6 +122,7 @@ router.post("/login", async function (req, res) {
       if (!user) {
         req.flash("error_messages", "Invalid credentials");
         res.redirect("/users/login");
+        // form: loginForm.toHTML(bootstrapField)
       } else {
         req.session.user = {
           id: user.get("id"),

@@ -54,8 +54,12 @@ router.get("/", async (req, res) => {
       if (form.data.vegan == 2) {
         query.where("vegan", "=", "No" );
       }
-      if (form.data.halal) {
-        query.where("halal", "like", "%" + form.data.halal + "%");
+      if (form.data.halal == 1) {
+        query.where("halal", "=", "Yes");
+      }
+
+      if (form.data.halal == 2) {
+        query.where("halal", "=", "No");
       }
 
       if (form.data.type_id && form.data.type_id != "0") {

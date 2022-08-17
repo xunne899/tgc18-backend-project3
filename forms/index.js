@@ -67,6 +67,7 @@ const createProductForm = (types, countries, ingredients, packagings, cuisine_st
       cssClasses: {
         label: ["form-label", "mt-3"],
       },
+      widget: widgets.textarea(),
     }),
     ingredient: fields.string({
       required: true,
@@ -110,6 +111,8 @@ const createProductForm = (types, countries, ingredients, packagings, cuisine_st
       cssClasses: {
         label: ["form-label", "mt-3"],
       },
+      choices: [[0,"---Select One---"],[1,"Yes"],[2,"No"]],
+      widget: widgets.select()
       // cssClasses: {
       //   label: ["form-check-label", "my-check-label"],
       // },
@@ -124,6 +127,8 @@ const createProductForm = (types, countries, ingredients, packagings, cuisine_st
       cssClasses: {
         label: ["form-label", "mt-3"],
       },
+      choices: [[0,"---Select One---"],[1,"Yes"],[2,"No"]],
+      widget: widgets.select()
       // cssClasses: {
       //   label: ["form-check-label", "my-check-label"],
       // },
@@ -304,10 +309,6 @@ const createSearchForm = (types, countries, packagings, cuisine_styles) => {
       cssClasses: {
         label: ["form-label", "mt-3"],
       },
-      // widget: widgets.multipleRadio(),
-      // cssClasses: {
-      //   label: [ 'form-check-input',"mt-3"]
-      // },
       choices: [[0,"---Select One---"],[1,"Yes"],[2,"No"]],
       widget: widgets.select()
    
@@ -318,6 +319,8 @@ const createSearchForm = (types, countries, packagings, cuisine_styles) => {
       cssClasses: {
         label: ["form-label", "mt-3"],
       },
+      choices: [[0,"---Select One---"],[1,"Yes"],[2,"No"]],
+      widget: widgets.select()
     }),
     type_id: fields.string({
       label: "Type",

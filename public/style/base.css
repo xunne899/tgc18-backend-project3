@@ -97,3 +97,16 @@ margin-right: 1.5px;
     
 }
 
+
+.msg{
+    position: relative
+}
+
+
+.loginBox{
+position:absolute;
+top: 5%;
+right: 5%;
+left:5%
+
+}

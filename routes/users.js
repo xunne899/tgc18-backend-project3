@@ -29,6 +29,28 @@ router.get("/register", checkIfAuthenticated,(req, res) => {
   });
 });
 
+
+router.post("/register", (req, res) => {
+  const registerForm = createRegistrationForm();
+  registerForm.handle(req, {
+    success: async (form) => {
+      const user = new User({
+        username: form.data.username,
+        password: getHashedPassword(form.data.password),
+        email: form.data.email,
+      });
+      await user.save();
+      req.flash("success_messages", "User signed up successfully!");
+      res.redirect("/login");
+    },
+    error: (form) => {
+      res.render("users/register", {
+        form: form.toHTML(bootstrapField),
+      });
+    },
+  });
+});
+
 router.get("/:user_id/update",checkIfAuthenticated, async (req, res) => {
   const user = await dataLayer.getUserById(req.params.user_id);
 
@@ -80,74 +102,6 @@ router.post("/:user_id/delete", async (req, res) => {
   res.redirect("/users");
 });
 
-router.post("/register", (req, res) => {
-  const registerForm = createRegistrationForm();
-  registerForm.handle(req, {
-    success: async (form) => {
-      const user = new User({
-        username: form.data.username,
-        password: getHashedPassword(form.data.password),
-        email: form.data.email,
-      });
-      await user.save();
-      req.flash("success_messages", "User signed up successfully!");
-      res.redirect("/users/login");
-    },
-    error: (form) => {
-      res.render("users/register", {
-        form: form.toHTML(bootstrapField),
-      });
-    },
-  });
-});
-
-router.get("/login", (req, res) => {
-  const loginForm = createLoginForm();
-  res.render("users/login", {
-    form: loginForm.toHTML(bootstrapField),
-  });
-});
-
-router.post("/login", async function (req, res) {
-  const loginForm = createLoginForm();
-  loginForm.handle(req, {
-    success: async function (form) {
-      const user = await User.where({
-        email: form.data.email,
-        password: getHashedPassword(form.data.password),
-      }).fetch({
-        require: false,
-      });
-
-      // check if the user does not exist
-      if (!user) {
-        req.flash("error_messages", "Invalid credentials. Please try again.");
-        res.redirect("/users/login");
-        // form: loginForm.toHTML(bootstrapField)
-      } else {
-        //check if the password matches
-        if (user.get("password") === getHashedPassword(form.data.password)) {
-          req.session.user = {
-            id: user.get("id"),
-            username: user.get("username"),
-            email: user.get("email"),
-          };
-          req.flash("success_messages", "Welcome back, " + user.get("username"));
-          res.redirect("/products");
-        } else {
-          req.flash("error_messages", "Invalid username or password. Please try again.");
-          res.redirect("/users/login");
-        }
-      }
-    },
-    error: (form) => {
-      req.flash("error_messages", "Error logging in. Please enter again");
-      res.render("users/login", {
-        form: form.toHTML(bootstrapField),
-      });
-    },
-  });
-});
 
 //       else {
 //         req.session.user = {
@@ -166,7 +120,7 @@ router.get("/profile",checkIfAuthenticated, async function (req, res) {
   const user = req.session.user;
   if (!user) {
     req.flash("error_messages", "Only logged in users may view this page");
-    res.redirect("/users/login");
+    res.redirect("/login");
   } else {
     res.render("users/profile", {
       user: req.session.user,
@@ -177,6 +131,6 @@ router.get("/profile",checkIfAuthenticated, async function (req, res) {
 router.get("/logout", (req, res) => {
   req.session.user = null;
   req.flash("success_messages", "Logout Successfully");
-  res.redirect("/users/login");
+  res.redirect("/login");
 });
 module.exports = router;

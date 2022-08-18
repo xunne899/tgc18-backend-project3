@@ -18,6 +18,17 @@ const app = express();
 // enable env files
 require("dotenv").config();
 
+
+// const csrfInstance = csrf();
+// app.use(function (req, res, next) {
+//   // console.log("Checking for csrf exclusion");
+//   if (req.url === "/checkout/process_payment" || req.url.slice(0, 5) == "/api/") {
+//     next();
+//   } else {
+//     csrfInstance(req, res, next);
+//   }
+// });
+
 app.use(csrf());
 // Share CSRF with hbs files
 // Share CSRF with hbs files
@@ -79,18 +90,22 @@ const landingRoutes = require("./routes/landing");
 const productRoutes = require("./routes/products");
 const userRoutes = require("./routes/users");
 const cloudinaryRoutes = require("./routes/cloudinary.js");
+const loginRoutes = require("./routes/login.js")
 const cartRoutes = require("./routes/api/carts.js");
 const checkoutRoutes = require("./routes/api/checkout");
+// const orderRoutes = require("./routes/order.js");
 const { checkIfAuthenticated } = require("./middlewares");
 const { getCart } = require("./dal/carts");
 
 app.use("/cart", [checkIfAuthenticated], cartRoutes);
 app.use("/", landingRoutes);
+
 app.use("/products", [checkIfAuthenticated], productRoutes);
 app.use("/users", userRoutes);
+app.use("/login", loginRoutes);
 app.use("/cloudinary", cloudinaryRoutes);
-
 app.use("/checkout", checkoutRoutes);
+// app.use("/order", orderRoutes);
 
 app.listen(3001, function () {
   console.log("Server has started");

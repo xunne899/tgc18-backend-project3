@@ -7,7 +7,7 @@ router.get('/',function(req,res){
         if (req.session.user) {
             res.redirect('/products')
         } else {
-            res.redirect('/users/login')
+            res.redirect('/login')
         }
     })
 

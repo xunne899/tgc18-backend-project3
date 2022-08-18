@@ -10,8 +10,13 @@ const cartServices = require("../../services/carts");
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY, {
   apiVersion: "2020-08-27",
 });
+const paymentIntent = stripe.paymentIntents.create({
+  amount: 1099,
+  currency: "sgd",
+  payment_method_types: ["card"],
+});
 
-router.get("/", async function (req, res) {
+router.get("/", checkIfAuthenticated, async function (req, res) {
   // step 1: create the line items
   // one line in the invoice is one line item4
   // each item in the shopping cart will become line item
@@ -59,23 +64,53 @@ router.get("/", async function (req, res) {
     //   amount: 995,
     // },
     shipping_address_collection: {
-      allowed_countries: ["SG", "AU", "GB", "US"],
+      allowed_countries: ["SG", "AU", "GB", "US", "TH", "BN", "TR", "SA", "MY", "ID"],
     },
-    // billing_address_collection: "auto",
-
-    // shipping_options:[
-
-    // ]
-    //   billing_address_collection: {
-    //     allowed_countries: ['SG', 'AU', 'GB', 'US'],
-    // },
-    // shipping_options:{
-    // shipping_rate:{
-    //   display_name: 'Ground shipping',
-    //   type: 'fixed_amount',
-    //   fixed_amount: {amount: 500, currency: 'usd'},
-
-    // },
+    shipping_options: [
+      {
+        shipping_rate_data: {
+          type: "fixed_amount",
+          fixed_amount: {
+            amount: 0,
+            currency: "SGD",
+          },
+          display_name: "Free shipping",
+          // Delivers between 5-7 business days
+          delivery_estimate: {
+            minimum: {
+              unit: "business_day",
+              value: 9,
+            },
+            maximum: {
+              unit: "business_day",
+              value: 22,
+            },
+          },
+        },
+      },
+      {
+        shipping_rate_data: {
+          type: "fixed_amount",
+          fixed_amount: {
+            amount: 40000,
+            currency: "SGD",
+          },
+          display_name: "Next Day Delivery",
+          // Delivers in exactly 1 business day
+          delivery_estimate: {
+            minimum: {
+              unit: "business_day",
+              value: 1,
+            },
+            maximum: {
+              unit: "business_day",
+              value: 1,
+            },
+          },
+        },
+      },
+    ],
+    billing_address_collection: "required",
     // in the metadata, the keys are up to us
     // but the value MUST BE A STRING
     metadata: {
@@ -84,6 +119,7 @@ router.get("/", async function (req, res) {
     },
   };
 
+  console.log("Hello");
   // step 3: register the payment session
   let stripeSession = await stripe.checkout.sessions.create(payment);
 
@@ -106,8 +142,10 @@ router.get("/cancelled", function (req, res) {
 // has to be POST -- 1) we are changing our database on based on payment info
 //                   2) Stripe decides that way
 router.post("/process_payment", express.raw({ type: "application/json" }), async function (req, res) {
+  console.log("Hello2");
   let payload = req.body; // payment information is inside req.body
   let endpointSecret = process.env.STRIPE_ENDPOINT_SECRET; // each webhook will have one endpoint secret
+  console.log("enpoint Secret==>", endpointSecret);
   // ensures that Stripe is the one sending the information
   let sigHeader = req.headers["stripe-signature"]; // when strip sends us the information, there will be a signature in the header
   // the key will be `stripe-signature`
@@ -115,14 +153,18 @@ router.post("/process_payment", express.raw({ type: "application/json" }), async
   // try to extract out the information and ensures that its' legit (it acutally comes from Stripe)
   try {
     event = stripe.webhooks.constructEvent(payload, sigHeader, endpointSecret);
+    console.log("Event==>", event);
     if (event.type == "checkout.session.completed") {
       console.log(event.data.object);
       const metadata = JSON.parse(event.data.object.metadata.orders);
-      console.log(metadata);
+      console.log("Meta data==>", metadata);
+      let transactionData = {};
+      //transactionData["amount"] = metadata.amount;
       res.send({
         success: true,
       });
     } // checkout.session.completed ==> the payment is done
+    // res.status(200);
   } catch (e) {
     console.log(e);
     res.sendStatus(500);

@@ -12,15 +12,16 @@ const getHashedPassword = (password) => {
 const { User } = require("../models");
 const dataLayer = require("../dal/users");
 const { createRegistrationForm, createLoginForm, createUserForm, bootstrapField } = require("../forms");
+const { checkIfAuthenticated } = require("../middlewares");
 
-router.get("/", async (req, res) => {
+router.get("/", checkIfAuthenticated, async (req, res) => {
   const users = await User.collection().fetch();
   res.render("users/index", {
     users: users.toJSON(),
   });
 });
 
-router.get("/register", (req, res) => {
+router.get("/register", checkIfAuthenticated,(req, res) => {
   // display the registration form
   const registerForm = createRegistrationForm();
   res.render("users/register", {
@@ -28,7 +29,7 @@ router.get("/register", (req, res) => {
   });
 });
 
-router.get("/:user_id/update", async (req, res) => {
+router.get("/:user_id/update",checkIfAuthenticated, async (req, res) => {
   const user = await dataLayer.getUserById(req.params.user_id);
 
   const userUpdateForm = createUserForm();
@@ -65,7 +66,7 @@ router.post("/:user_id/update", async (req, res) => {
   });
 });
 
-router.get("/:user_id/delete", async (req, res) => {
+router.get("/:user_id/delete",checkIfAuthenticated, async (req, res) => {
   const user = await dataLayer.getUserById(req.params.user_id);
 
   res.render("users/delete", {
@@ -161,7 +162,7 @@ router.post("/login", async function (req, res) {
 //   });
 // });
 
-router.get("/profile", async function (req, res) {
+router.get("/profile",checkIfAuthenticated, async function (req, res) {
   const user = req.session.user;
   if (!user) {
     req.flash("error_messages", "Only logged in users may view this page");

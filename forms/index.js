@@ -11,11 +11,11 @@ const bootstrapField = function (name, object) {
   }
 
   if(object.widget.type == 'multipleCheckbox'|| object.widget.type == 'multipleRadio'){
-   object.widget.classes.push('form-check-input')
+   object.widget.classes.push('form-check-input',"mb-3")
   }
   else{
     if (object.widget.classes.indexOf("form-control") === -1) {
-      object.widget.classes.push("form-control");
+      object.widget.classes.push("form-control","mb-3");
     }
   }
 
@@ -38,43 +38,43 @@ const createProductForm = (types, countries, ingredients, packagings, cuisine_st
       label: "Type",
       required: true,
       errorAfterField: true,
-      cssClasses: {
-        label: ["form-label", "mt-3"],
-      },
+      // cssClasses: {
+      //   label: ["form-label", "mt-3"],
+      // },
       choices: types,
       widget: widgets.select(),
     }),
     name: fields.string({
       required: true,
       errorAfterField: true,
-      cssClasses: {
-        label: ["form-label", "mt-3"],
-      },
+    //   cssClasses: {
+    //     label: ["form-label", "mt-3"],
+    //   },
     }),
     country_id: fields.string({
       label: "Country",
       required: true,
       errorAfterField: true,
-      cssClasses: {
-        label: ["form-label", "mt-3"],
-      },
+      // cssClasses: {
+      //   label: ["form-label", "mt-3"],
+      // },
       choices: countries,
       widget: widgets.select(),
     }),
     description: fields.string({
       required: true,
       errorAfterField: true,
-      cssClasses: {
-        label: ["form-label", "mt-3"],
-      },
+      // cssClasses: {
+      //   label: ["form-label", "mt-3"],
+      // },
       widget: widgets.textarea(),
     }),
     ingredient: fields.string({
       required: true,
       errorAfterField: true,
-      cssClasses: {
-        label: ["form-label", "mt-3"],
-      },
+      // cssClasses: {
+      //   label: ["form-label", "mt-3"],
+      // },
       widget: widgets.multipleSelect(),
       choices: ingredients,
     }),
@@ -82,52 +82,52 @@ const createProductForm = (types, countries, ingredients, packagings, cuisine_st
       label: "Packaging",
       required: true,
       errorAfterField: true,
-      cssClasses: {
-        label: ["form-label", "mt-3"],
-      },
+      // cssClasses: {
+      //   label: ["form-label", "mt-3"],
+      // },
       choices: packagings,
       widget: widgets.select(),
     }),
     shelf_life: fields.number({
       required: true,
       errorAfterField: true,
-      cssClasses: {
-        label: ["form-label", "mt-3"],
-      },
+      // cssClasses: {
+      //   label: ["form-label", "mt-3"],
+      // },
       validators: [validators.integer(), validators.min(0)],
     }),
     cuisine_style: fields.string({
       required: true,
       errorAfterField: true,
-      cssClasses: {
-        label: ["form-label", "mt-3"],
-      },
+      // cssClasses: {
+      //   label: ["form-label", "mt-3"],
+      // },
       widget: widgets.multipleSelect(),
       choices: cuisine_styles,
     }),
     vegan: fields.string({
       required: true,
       errorAfterField: true,
-      cssClasses: {
-        label: ["form-label", "mt-3"],
-      },
-      choices: [[0,"---Select One---"],[1,"Yes"],[2,"No"]],
+      // cssClasses: {
+      //   label: ["form-label", "mt-3"],
+      // },
+      choices: [[0,"---Select One---"],["Yes","Yes"],["No","No"]],
       widget: widgets.select()
       // cssClasses: {
       //   label: ["form-check-label", "my-check-label"],
       // },
-      // choices: { yes: "Yes", no: "No" },
+      // choices: { 1: "Yes", 2: "No" },
       // widget: widgets.multipleRadio({
-      //   classes: ["form-check-input", "my-check-input"],
+      //   classes: ["form-check-input"],
       // }),
     }),
     halal: fields.string({
       required: true,
       errorAfterField: true,
-      cssClasses: {
-        label: ["form-label", "mt-3"],
-      },
-      choices: [[0,"---Select One---"],[1,"Yes"],[2,"No"]],
+      // cssClasses: {
+      //   label: ["form-label", "mt-3"],
+      // },
+      choices: [[0,"---Select One---"],["Yes","Yes"],["No","No"]],
       widget: widgets.select()
       // cssClasses: {
       //   label: ["form-check-label", "my-check-label"],
@@ -150,9 +150,9 @@ const createProductForm = (types, countries, ingredients, packagings, cuisine_st
     thumbnail_url: fields.string({
       required: true,
       errorAfterField: true,
-      cssClasses: {
-        label: ["form-label", "mt-3"],
-      },
+      // cssClasses: {
+      //   label: ["form-label", "mt-3"],
+      // },
     }),
   });
 };
@@ -162,17 +162,17 @@ const createVariantForm = (spiciness, sizes) => {
     stock: fields.number({
       required: true,
       errorAfterField: true,
-      cssClasses: {
-        label: ["form-label", "mt-3"],
-      },
+      // cssClasses: {
+      //   label: ["form-label", "mt-3"],
+      // },
       validators: [validators.integer(), validators.min(0), validators.max(65535)],
     }),
     cost: fields.number({
       required: true,
       errorAfterField: true,
-      cssClasses: {
-        label: ["form-label", "mt-3"],
-      },
+      // cssClasses: {
+      //   label: ["form-label", "mt-3"],
+      // },
       validators: [validators.integer(), validators.min(0), validators.max(4294967295)],
     }),
     image_url: fields.string({
@@ -184,9 +184,9 @@ const createVariantForm = (spiciness, sizes) => {
     thumbnail_url: fields.string({
       required: true,
       errorAfterField: true,
-      cssClasses: {
-        label: ["form-label", "mt-3"],
-      },
+      // cssClasses: {
+      //   label: ["form-label", "mt-3"],
+      // },
     }),
     // product_id: fields.string({
     //     label: 'Product',
@@ -202,9 +202,9 @@ const createVariantForm = (spiciness, sizes) => {
       label: "Spiciness",
       required: true,
       errorAfterField: true,
-      cssClasses: {
-        label: ["form-label", "mt-3"],
-      },
+      // cssClasses: {
+      //   label: ["form-label", "mt-3"],
+      // },
       widget: widgets.select(),
       choices: spiciness,
     }),
@@ -213,9 +213,9 @@ const createVariantForm = (spiciness, sizes) => {
       label: "Size",
       required: true,
       errorAfterField: true,
-      cssClasses: {
-        label: ["form-label", "mt-3"],
-      },
+      // cssClasses: {
+      //   label: ["form-label", "mt-3"],
+      // },
       widget: widgets.select(),
       choices: sizes,
     }),
@@ -227,31 +227,31 @@ const createRegistrationForm = () => {
     username: fields.string({
       required: true,
       errorAfterField: true,
-      cssClasses: {
-        label: ["form-label", "mt-3"],
-      },
+      // cssClasses: {
+      //   label: ["form-label", "mt-3"],
+      // },
     }),
     email: fields.string({
       required: true,
       errorAfterField: true,
       validators: [validators.email(), validators.maxlength(320)],
-      cssClasses: {
-        label: ["form-label", "mt-3"],
-      },
+      // cssClasses: {
+      //   label: ["form-label", "mt-3"],
+      // },
     }),
     password: fields.password({
       required: true,
       errorAfterField: true,
-      cssClasses: {
-        label: ["form-label", "mt-3"],
-      },
+      // cssClasses: {
+      //   label: ["form-label", "mt-3"],
+      // },
     }),
     confirm_password: fields.password({
       required: true,
       errorAfterField: true,
-      cssClasses: {
-        label: ["form-label", "mt-3"],
-      },
+      // cssClasses: {
+      //   label: ["form-label", "mt-3"],
+      // },
       validators: [validators.matchField("password")],
     }),
   });
@@ -263,16 +263,16 @@ const createLoginForm = () => {
       required: true,
       errorAfterField: true,
       validators: [validators.email(), validators.maxlength(320)],
-      cssClasses: {
-        label: ["form-label"],
-      },
+      // cssClasses: {
+      //   label: ["form-label"],
+      // },
     }),
     password: fields.password({
       required: true,
       errorAfterField: true,
-      cssClasses: {
-        label: ["form-label"],
-      },
+      // cssClasses: {
+      //   label: ["form-label"],
+      // },
     }),
   });
 };
@@ -283,52 +283,34 @@ const createSearchForm = (types, countries, packagings, cuisine_styles) => {
       required: false,
       errorAfterField: true,
       validators: [validators.maxlength(100)],
-      cssClasses: {
-        label: ["form-label", "mt-3"],
-      },
+      // cssClasses: {
+      //   label: ["form-label", "mt-3"],
+      // },
     }),
     min_shelf_life: fields.number({
       required: false,
       errorAfterField: true,
-      cssClasses: {
-        label: ["form-label", "mt-3"],
-      },
+      // cssClasses: {
+      //   label: ["form-label", "mt-3"],
+      // },
       validators: [validators.integer()],
     }),
     max_shelf_life: fields.number({
       required: false,
       errorAfterField: true,
-      cssClasses: {
-        label: ["form-label", "mt-3"],
-      },
+      // cssClasses: {
+      //   label: ["form-label", "mt-3"],
+      // },
       validators: [validators.integer()],
     }),
-    vegan: fields.string({
-      required: false,
-      errorAfterField: true,
-      cssClasses: {
-        label: ["form-label", "mt-3"],
-      },
-      choices: [[0,"---Select One---"],[1,"Yes"],[2,"No"]],
-      widget: widgets.select()
    
-    }),
-    halal: fields.string({
-      required: false,
-      errorAfterField: true,
-      cssClasses: {
-        label: ["form-label", "mt-3"],
-      },
-      choices: [[0,"---Select One---"],[1,"Yes"],[2,"No"]],
-      widget: widgets.select()
-    }),
     type_id: fields.string({
       label: "Type",
       required: false,
       errorAfterField: true,
-      cssClasses: {
-        label: ["form-label", "mt-3"],
-      },
+      // cssClasses: {
+      //   label: ["form-label", "mt-3"],
+      // },
       choices: types,
       widget: widgets.select(),
     }),
@@ -336,9 +318,9 @@ const createSearchForm = (types, countries, packagings, cuisine_styles) => {
       label: "Packaging",
       required: false,
       errorAfterField: true,
-      cssClasses: {
-        label: ["form-label", "mt-3"],
-      },
+      // cssClasses: {
+      //   label: ["form-label", "mt-3"],
+      // },
       choices: packagings,
       widget: widgets.select(),
     }),
@@ -346,20 +328,47 @@ const createSearchForm = (types, countries, packagings, cuisine_styles) => {
       label: "Country",
       required: true,
       errorAfterField: true,
-      cssClasses: {
-        label: ["form-label", "mt-3"],
-      },
+      // cssClasses: {
+      //   label: ["form-label", "mt-3"],
+      // },
       choices: countries,
       widget: widgets.select(),
     }),
     cuisine_style: fields.string({
       required: false,
       errorAfterField: true,
-      cssClasses: {
-        label: ["form-label", "mt-3"],
-      },
+      // cssClasses: {
+      //   label: ["form-label", "mt-3"],
+      // },
       widget: widgets.multipleSelect(),
       choices: cuisine_styles,
+    }),
+    vegan: fields.string({
+      required: false,
+      errorAfterField: true,
+      cssClasses: {
+        label: ["form-label"],
+      },
+      // choices: [[0,"---Select One---"],[1,"Yes"],[2,"No"]],
+      // widget: widgets.select()
+      choices: { "Yes":"Yes", "No": "No" },
+      widget: widgets.multipleRadio({
+        classes: ["form-input" ,"ms-2"],
+      }),
+   
+    }),
+    halal: fields.string({
+      required: false,
+      errorAfterField: true,
+      cssClasses: {
+        label: ["form-label"],
+      },
+      // choices: [[0,"---Select One---"],[1,"Yes"],[2,"No"]],
+      // widget: widgets.select()
+      choices: { "Yes": "Yes", "No": "No" },
+      widget: widgets.multipleRadio({
+        classes: ["form-input" ,"ms-2"],
+      }),
     }),
   });
 };
@@ -369,17 +378,17 @@ const createUserForm = () => {
     username: fields.string({
       required: true,
       errorAfterField: true,
-      cssClasses: {
-        label: ["form-label", "mt-3"],
-      },
+      // cssClasses: {
+      //   label: ["form-label", "mt-3"],
+      // },
     }),
     email: fields.string({
       required: true,
       errorAfterField: true,
       validators: [validators.email(), validators.maxlength(320)],
-      cssClasses: {
-        label: ["form-label", "mt-3"],
-      },
+      // cssClasses: {
+      //   label: ["form-label", "mt-3"],
+      // },
     }),
   });
 };

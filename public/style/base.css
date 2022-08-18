@@ -1,4 +1,9 @@
-.my-check-label{
+
+*{
+    font-family: 'ZCOOL XiaoWei', serif;
+}
+
+/* .my-check-label{
     display:block;
 }
 
@@ -10,7 +15,7 @@
 .my-check-input.form-control{
     display: inline-block;
 
-}
+} */
 
 .nav-link{
     text-align: center;
@@ -77,11 +82,18 @@ margin-right: 1.5px;
 
 .login-box{
     /* margin-left: 600px; */
-    text-shadow: 0 0  black; 
+    text-shadow: 0 0  black;
+    background: rgba( 255, 255, 255, 0.2 );
+    box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+    backdrop-filter: blur( 2.5px );
+    -webkit-backdrop-filter: blur( 2.5px );
+    border-radius: 10px;
+    border: 1px solid rgba( 255, 255, 255, 0.18 );
     /* padding-top: 80%;  */
-    width:480px;
+    width:520px;
     /* display: block;
   margin-left: auto;
   margin-right: auto; */
     
 }
+

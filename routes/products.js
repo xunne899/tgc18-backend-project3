@@ -47,21 +47,6 @@ router.get("/", async (req, res) => {
         query.where("shelf_life", "<=", form.data.max_shelf_life);
       }
 
-      if (form.data.vegan == 1) {
-        query.where("vegan", "=", "Yes");
-      }
-      
-      if (form.data.vegan == 2) {
-        query.where("vegan", "=", "No" );
-      }
-      if (form.data.halal == 1) {
-        query.where("halal", "=", "Yes");
-      }
-
-      if (form.data.halal == 2) {
-        query.where("halal", "=", "No");
-      }
-
       if (form.data.type_id && form.data.type_id != "0") {
         query.where("type_id", "=", form.data.type_id);
       }
@@ -82,13 +67,27 @@ router.get("/", async (req, res) => {
         // this method looks for OR
         query.query("join", "cuisine_styles_products", "products.id", "product_id").where("cuisine_style_id", "in", form.data.cuisine_style.split(","));
       }
+      if (form.data.vegan == "Yes") {
+        query.where("vegan", "=", "Yes");
+      }
+
+      if (form.data.vegan == "No") {
+        query.where("vegan", "=", "No");
+      }
+      if (form.data.halal == "Yes") {
+        query.where("halal", "=", "Yes");
+      }
+
+      if (form.data.halal == "No") {
+        query.where("halal", "=", "No");
+      }
 
       // #2 - fetch all the products (ie, SELECT * from products)
       const products = await query.fetch({
         withRelated: ["type", "country", "packaging", "cuisine_styles", "ingredients"],
       });
-      const numberFound = products.toJSON().length
-      req.flash( "Items have been found");
+      const numberFound = products.toJSON().length;
+      req.flash("Items have been found");
       res.render("products/index", {
         products: products.toJSON(),
         numberFound,
@@ -157,6 +156,7 @@ router.post("/create", checkIfAuthenticated, async function (req, res) {
       product.set("packaging_id", form.data.packaging_id);
       product.set("image_url", form.data.image_url);
       product.set("thumbnail_url", form.data.thumbnail_url);
+
       // console.log(form.data);
       await product.save();
       if (form.data.ingredient) {
@@ -365,7 +365,7 @@ router.get("/:product_id/variant/create", checkIfAuthenticated, async (req, res)
   // const products = await dataLayer.getAllProducts();
   // const product = await dataLayer.getProductByID(req.params.product_id);
 
-  const variantForm = createVariantForm( spiciness,sizes);
+  const variantForm = createVariantForm(spiciness, sizes);
 
   res.render("products/create_variants", {
     // variants: variants.toJSON(),
@@ -385,7 +385,7 @@ router.post("/:product_id/variant/create", checkIfAuthenticated, async function 
   const spiciness = await dataLayer.getAllSpiciness();
   const product = await dataLayer.getProductByID(req.params.product_id);
 
-  const variantForm = createVariantForm(spiciness,sizes);
+  const variantForm = createVariantForm(spiciness, sizes);
   variantForm.handle(req, {
     success: async (form) => {
       const variant = new Variant();
@@ -491,7 +491,7 @@ router.get("/:product_id/variant/:variant_id/delete", async (req, res) => {
 
   res.render("products/delete_variants", {
     variant: variant.toJSON(),
-    product: product.toJSON()
+    product: product.toJSON(),
   });
 });
 

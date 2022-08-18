@@ -3,9 +3,15 @@ const { checkIfAuthenticated } = require("../../middlewares");
 const router = express.Router();
 const cartServices = require("../../services/carts");
 
-const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+// const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY) {
+//   apiVersion: '2017-06-05',
+// };
 
-router.get("/", checkIfAuthenticated, async function (req, res) {
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY, {
+  apiVersion: "2020-08-27",
+});
+
+router.get("/", async function (req, res) {
   // step 1: create the line items
   // one line in the invoice is one line item4
   // each item in the shopping cart will become line item
@@ -17,8 +23,8 @@ router.get("/", checkIfAuthenticated, async function (req, res) {
   for (let selected of selecteditem) {
     // each keys in the line item is prefixed by Stripe
     const eachLineItem = {
-      name: selected.related('variant').related('product').get('name'),
-      amount: selected.related('variant').get("cost"),
+      name: selected.related("variant").related("product").get("name"),
+      amount: selected.related("variant").get("cost"),
       quantity: selected.get("quantity"),
       currency: "SGD",
     };
@@ -31,9 +37,9 @@ router.get("/", checkIfAuthenticated, async function (req, res) {
 
     lineItems.push(eachLineItem);
     meta.push({
-        cart_item_id: selected.get('cart_item_id'),
-        variant_id: selected.get('variant_id'),
-        quantity: selected.get('quantity')
+      cart_item_id: selected.get("cart_item_id"),
+      variant_id: selected.get("variant_id"),
+      quantity: selected.get("quantity"),
     });
   }
 
@@ -42,10 +48,34 @@ router.get("/", checkIfAuthenticated, async function (req, res) {
   let metaData = JSON.stringify(meta);
   // the key/value pairs in the payment are defined by Stripes
   const payment = {
-    payment_method_types: ["card"],
+    payment_method_types: ["card", "grabpay"],
     line_items: lineItems,
     success_url: process.env.STRIPE_SUCCESS_URL + "?sessionId={CHECKOUT_SESSION_ID}",
     cancel_url: process.env.STRIPE_CANCEL_URL,
+    // shipping_option:{
+    //   id: 'basic',
+    //   label: 'Ground shipping',
+    //   detail: 'Ground shipping via UPS or FedEx',
+    //   amount: 995,
+    // },
+    shipping_address_collection: {
+      allowed_countries: ["SG", "AU", "GB", "US"],
+    },
+    billing_address_collection: "auto",
+
+    // shipping_options:[
+
+    // ]
+    //   billing_address_collection: {
+    //     allowed_countries: ['SG', 'AU', 'GB', 'US'],
+    // },
+    // shipping_options:{
+    // shipping_rate:{
+    //   display_name: 'Ground shipping',
+    //   type: 'fixed_amount',
+    //   fixed_amount: {amount: 500, currency: 'usd'},
+
+    // },
     // in the metadata, the keys are up to us
     // but the value MUST BE A STRING
     metadata: {

@@ -61,7 +61,7 @@ router.get("/", async function (req, res) {
     shipping_address_collection: {
       allowed_countries: ["SG", "AU", "GB", "US"],
     },
-    billing_address_collection: "auto",
+    // billing_address_collection: "auto",
 
     // shipping_options:[
 

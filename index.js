@@ -5,8 +5,8 @@ var helpers = require("handlebars-helpers")({
   handlebars: hbs.handlebars,
 });
 
-// const cors = require('cors');
-// const jwt = require('jsonwebtoken');
+const cors = require("cors");
+const jwt = require("jsonwebtoken");
 
 const session = require("express-session");
 const flash = require("connect-flash");
@@ -18,18 +18,17 @@ const app = express();
 // enable env files
 require("dotenv").config();
 
+const csrfInstance = csrf();
+app.use(function (req, res, next) {
+  // console.log("Checking for csrf exclusion");
+  if (req.url === "/checkout/process_payment" || req.url.slice(0, 5) == "/api/") {
+    next();
+  } else {
+    csrfInstance(req, res, next);
+  }
+});
 
-// const csrfInstance = csrf();
-// app.use(function (req, res, next) {
-//   // console.log("Checking for csrf exclusion");
-//   if (req.url === "/checkout/process_payment" || req.url.slice(0, 5) == "/api/") {
-//     next();
-//   } else {
-//     csrfInstance(req, res, next);
-//   }
-// });
-
-app.use(csrf());
+// app.use(csrf());
 // Share CSRF with hbs files
 // Share CSRF with hbs files
 app.use(function (req, res, next) {
@@ -44,7 +43,7 @@ app.use(function (err, req, res, next) {
     next();
   }
 });
-// app.use(cors());
+app.use(cors());
 // // set up sessions
 // // setup sessions
 app.use(
@@ -90,10 +89,17 @@ const landingRoutes = require("./routes/landing");
 const productRoutes = require("./routes/products");
 const userRoutes = require("./routes/users");
 const cloudinaryRoutes = require("./routes/cloudinary.js");
-const loginRoutes = require("./routes/login.js")
-const cartRoutes = require("./routes/api/carts.js");
+const loginRoutes = require("./routes/login");
+
+const cartRoutes = require("./routes/api/carts");
 const checkoutRoutes = require("./routes/api/checkout");
-// const orderRoutes = require("./routes/order.js");
+// const orderRoutes = require("./routes/orders");
+
+const api = {
+  customers: require("./routes/api/customers"),
+};
+// const customerRoutes =  require("./routes/api/customers");
+
 const { checkIfAuthenticated } = require("./middlewares");
 const { getCart } = require("./dal/carts");
 
@@ -105,7 +111,15 @@ app.use("/users", userRoutes);
 app.use("/login", loginRoutes);
 app.use("/cloudinary", cloudinaryRoutes);
 app.use("/checkout", checkoutRoutes);
+
+app.use("/api/customers", express.json(), api.customers);
 // app.use("/order", orderRoutes);
+
+// Share the user data with hbs files
+app.use(function (req, res, next) {
+  res.locals.user = req.session.user;
+  next();
+});
 
 app.listen(3001, function () {
   console.log("Server has started");

@@ -97,10 +97,11 @@ const checkoutRoutes = require("./routes/api/checkout");
 
 const api = {
   customers: require("./routes/api/customers"),
+  // carts: require("./routes/api/carts"),
 };
 // const customerRoutes =  require("./routes/api/customers");
 
-const { checkIfAuthenticated } = require("./middlewares");
+const { checkIfAuthenticated, checkIfAuthenticatedJWT } = require("./middlewares");
 const { getCart } = require("./dal/carts");
 
 app.use("/cart", [checkIfAuthenticated], cartRoutes);
@@ -113,6 +114,7 @@ app.use("/cloudinary", cloudinaryRoutes);
 app.use("/checkout", checkoutRoutes);
 
 app.use("/api/customers", express.json(), api.customers);
+// app.use("/api/carts", express.json(), api.carts);
 // app.use("/order", orderRoutes);
 
 // Share the user data with hbs files

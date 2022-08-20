@@ -3,6 +3,7 @@ const router = express.Router();
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 const { checkIfAuthenticatedJWT } = require("../../middlewares");
+const dataLayer = require("../../dal/customers");
 // const { BlacklistedToken } = require('../../models');
 
 const { Customer, BlacklistedToken } = require("../../models");
@@ -54,6 +55,77 @@ router.post("/login", async function (req, res) {
       error: "Invalid email or password",
     });
   }
+});
+
+router.post("/register", async function (req, res) {
+  let fielderror = {};
+  let haveError = false;
+  let regex = /^[\w#][\w\.\’+#](.[\w\\’#]+)\@[a-zA-Z0-9]+(.[a-zA-Z0-9]+)*(.[a-zA-Z]{2,20})$/;
+
+  const name = req.body.name;
+
+  if (name.length == 0) {
+    fielderror.name ? "Name must not be empty" : "";
+  }
+
+  const username = req.body.username;
+  if (username.length == 0) {
+    fielderror.username ? "Username must not be empty" : "";
+  }
+
+  const email = req.body.email;
+  const email_length_err = email.length == 0 || email.length > 320;
+  let emailHasErr = !email.match(regex) || email_length_err;
+  emailHasErr ? (fielderror.email = "Please enter a valid email") : "";
+
+  const password = req.body.password;
+  if (password.length == 0) {
+    fielderror.password ? "Password must not be empty" : "";
+  }
+
+  const contact_number = req.body.contact_number;
+  console.log(contact_number);
+  if (contact_number.length == 0) {
+    fielderror.contact_number ? "Contact number must not be empty" : "";
+  }
+
+  console.log("This is field error ======>  ", fielderror);
+
+  for (const [key, value] of Object.entries(fielderror)) {
+    if (value.length > 0) {
+      haveError = true;
+      break;
+    }
+  }
+
+  console.log("haveError ========> ", haveError);
+  // try {
+  // const customer = await dataLayer.createCustomer({
+  //   name,
+  //   username,
+  //   email,
+  //   password,
+  //   contact_number,
+  // });
+  const customer = new Customer({
+    name, username, email, password, contact_number, created_date: new Date()
+  })
+  await customer.save();
+  console.log(customer);
+  // res.json({
+  //   status: status,
+  //   data: data
+  // });
+  res.status(201);
+  res.json(customer);
+  // } catch (haveError) {
+  //   console.log(fielderror);
+  // res.status(500);
+  // res.json({
+  //   check: "checks",
+  //   status: "Server error",
+  // });
+  // }
 });
 
 router.get("/profile", checkIfAuthenticatedJWT, function (req, res) {
@@ -125,7 +197,7 @@ router.post("/logout", async function (req, res) {
   } else {
     res.status(400);
     res.json({
-      error: "No refresh token found!",
+      error: "Refresh Token not found!",
     });
   }
 });

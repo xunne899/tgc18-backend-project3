@@ -159,7 +159,8 @@ router.post("/process_payment", express.raw({ type: "application/json" }), async
       const metadata = JSON.parse(event.data.object.metadata.orders);
       console.log("Meta data==>", metadata);
       let transactionData = {};
-      //transactionData["amount"] = metadata.amount;
+      transactionData["payment_intent"] = metadata.payment_intent;
+      transactionData["amount"] = metadata.amount;
       res.send({
         success: true,
       });

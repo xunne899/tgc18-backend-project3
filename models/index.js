@@ -157,6 +157,8 @@ const BlacklistedToken = bookshelf.model("BlacklistedToken", {
   tableName: "blacklisted_tokens",
 });
 
+
+
 module.exports = {
   Product,
   Type,

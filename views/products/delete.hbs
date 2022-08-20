@@ -5,6 +5,7 @@
 
 <form method="POST">
     <div class="alert alert-danger">
+         <img class="mt-2 mb-2"src="{{product.image_url}}" width="200px"  class="img-fluid"/>
         <p>Are you sure you want to delete {{product.name}}?</p>
         <input type="submit" class="btn btn-danger" value="Yes"/>
         <a href="/products" class="btn btn-success">No</a>

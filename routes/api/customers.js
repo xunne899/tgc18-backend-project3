@@ -3,6 +3,9 @@ const router = express.Router();
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 const { checkIfAuthenticatedJWT } = require("../../middlewares");
+// const { BlacklistedToken } = require('../../models');
+
+const { Customer, BlacklistedToken } = require("../../models");
 
 const generateAccessToken = function (username, id, email, tokenSecret, expiry) {
   // 1st arg -- payload
@@ -26,20 +29,18 @@ const getHashedPassword = (password) => {
   return hash;
 };
 
-const { Customer, BlacklistedToken } = require("../../models");
-
 router.post("/login", async function (req, res) {
   const customer = await Customer.where({
     email: req.body.email,
     password: req.body.password,
   }).fetch({
-    require: false 
+    require: false,
   });
   // if the user with the provided email and password is found
   if (customer) {
-    const accessToken = generateAccessToken(customer.get("username"), customer.get("id"), customer.get("email"), process.env.TOKEN_SECRET, "1h");
+    const accessToken = generateAccessToken(customer.get("username"), customer.get("id"), customer.get("email"), process.env.TOKEN_SECRET, "20min");
 
-    const refreshToken = generateAccessToken(customer.get("username"), customer.get("id"), customer.get("email"), process.env.REFRESH_TOKEN_SECRET, "7d");
+    const refreshToken = generateAccessToken(customer.get("username"), customer.get("id"), customer.get("email"), process.env.REFRESH_TOKEN_SECRET, "3d");
     // Access token should be in react state
 
     res.json({

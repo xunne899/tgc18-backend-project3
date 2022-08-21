@@ -292,33 +292,7 @@ router.post("/:product_id/update", async (req, res) => {
   });
 });
 
-// router.post('/:product_id/update', async (req, res) => {
 
-//     // fetch the product that we want to update
-//     const product = await Product.where({
-//         'id': req.params.product_id
-//     }).fetch({
-//         require: true,
-//         withRelated: ["cuisine_styles","ingredients"]
-//     });
-
-//     // process the form
-//     const productForm = createProductForm();
-//     productForm.handle(req, {
-//         'success': async (form) => {
-//             product.set(form.data);
-//             product.save();
-//             res.redirect('/products');
-//         },
-//         'error': async (form) => {
-//             res.render('products/update', {
-//                 'form': form.toHTML(bootstrapField),
-//                 'product': product.toJSON()
-//             })
-//         }
-//     })
-
-// })
 
 router.get("/:product_id/delete", async (req, res) => {
   // fetch the product that we want to delete

@@ -147,7 +147,7 @@ const Order = bookshelf.model("Order", {
 });
 
 const Status = bookshelf.model("Status", {
-  tableName: "statuses",
+  tableName: "order_statuses",
   orders() {
     return this.hasMany("Order");
   },

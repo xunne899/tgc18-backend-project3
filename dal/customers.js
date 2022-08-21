@@ -15,29 +15,29 @@ const getCustomerById = async (customerId) => {
   });
 };
 
-const createCustomer = async (name, username, email, password, contact_number) => {
-  //   const customer = await getCustomerByEmail(email);
-  //   if (!customer) {
+// const createCustomer = async (name, username, email, password, contact_number) => {
+//   //   const customer = await getCustomerByEmail(email);
+//   //   if (!customer) {
  
-  const newCustomer= new Customer()
-  const newCustomerData = {
-    name,
-    username,
-    email,
-    password,
-    contact_number,
-    created_date: new Date()
-  }
-  newCustomer.set(newCustomerData)
-  await newCustomer.save();
-//   console.log("customer => ", newCustomer);
-  return newCustomer;
-  //   } else {
-  //     return false;
-  //   }
-};
+//   const newCustomer= new Customer()
+//   const newCustomerData = {
+//     name,
+//     username,
+//     email,
+//     password,
+//     contact_number,
+//     created_date: new Date()
+//   }
+//   newCustomer.set(newCustomerData)
+//   await newCustomer.save();
+// //   console.log("customer => ", newCustomer);
+//   return newCustomer;
+//   //   } else {
+//   //     return false;
+//   //   }
+// };
 
-const getCustomerByEmail = async (email) => {
+const getCustomerEmail = async (email) => {
   return await Customer.where({
     email: email,
   }).fetch({
@@ -48,6 +48,6 @@ const getCustomerByEmail = async (email) => {
 module.exports = {
   getAllCustomers,
   getCustomerById,
-  createCustomer,
-  getCustomerByEmail,
+  // createCustomer,
+  getCustomerEmail,
 };

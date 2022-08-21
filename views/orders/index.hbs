@@ -16,20 +16,23 @@
                 <th>Email</th>
                 <th>Shipping Address</th>
                 <th>Total Cost</th>
-                <th>Payment Ref</th>
+                <th>Payment Intent</th>
                  <th>Order Date</th>
                 <th>Status</th>
 
 
             </tr>
         </thead>
-        {{!-- <tbody>
-            {{#each users}}
+        <tbody>
+            {{#each successful}}
             <tr>
-                <td>{{this.id}}</td>
-                <td>{{this.username}}</td>
-                <td>{{this.email}}</td>
-                <td>{{this.user}}</td>
+                <td>{{this.order_id}}</td>
+                <td>{{this.customer.email}}</td>
+                <td>{{this.shipping_address}}</td>
+                <td>{{this.total_cost}}</td>
+                 <td>{{this.payment_intent}}</td>
+                  <td>{{this.orderdate}}</td>
+                   <td>{{this.order_status}}</td>
                 <td>
                     <a href="users/{{this.id}}/update" ><i class="fa fa-edit" style="font-size:23px;color:black"></i></a>
                     <a href="users/{{this.id}}/delete" class="ms-2"><i class="fa fa-trash " style="font-size:23px;color:black"></i></a>
@@ -37,7 +40,7 @@
                 </td>
             </tr>
             {{/each}}
-        </tbody> --}}
+        </tbody>
     </table>
 
 </div>

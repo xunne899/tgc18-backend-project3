@@ -85,15 +85,15 @@ app.use(express.static("public"));
 wax.on(hbs.handlebars);
 wax.setLayoutPath("./views/layouts");
 
-const landingRoutes = require("./routes/landing");
-const productRoutes = require("./routes/products");
-const userRoutes = require("./routes/users");
-const cloudinaryRoutes = require("./routes/cloudinary.js");
-const loginRoutes = require("./routes/login");
+const mainpagePathRoutes = require("./routes/landing");
+const productPathRoutes = require("./routes/products");
+const userPathRoutes = require("./routes/users");
+const cloudinaryPathRoutes = require("./routes/cloudinary.js");
+const loginPathRoutes = require("./routes/login");
 
-const cartRoutes = require("./routes/api/carts");
-const checkoutRoutes = require("./routes/api/checkout");
-// const orderRoutes = require("./routes/orders");
+const cartPathRoutes = require("./routes/api/carts");
+const checkoutPathRoutes = require("./routes/api/checkout");
+const orderPathRoutes = require("./routes/orders");
 
 const api = {
   customers: require("./routes/api/customers"),
@@ -104,18 +104,18 @@ const api = {
 const { checkIfAuthenticated, checkIfAuthenticatedJWT } = require("./middlewares");
 const { getCart } = require("./dal/carts");
 
-app.use("/cart", [checkIfAuthenticated], cartRoutes);
-app.use("/", landingRoutes);
+app.use("/cart", [checkIfAuthenticated], cartPathRoutes);
+app.use("/",mainpagePathRoutes);
 
-app.use("/products", [checkIfAuthenticated], productRoutes);
-app.use("/users", userRoutes);
-app.use("/login", loginRoutes);
-app.use("/cloudinary", cloudinaryRoutes);
-app.use("/checkout", checkoutRoutes);
+app.use("/products", [checkIfAuthenticated], productPathRoutes);
+app.use("/users", userPathRoutes);
+app.use("/login", loginPathRoutes);
+app.use("/cloudinary", cloudinaryPathRoutes);
+app.use("/checkout", checkoutPathRoutes);
 
 app.use("/api/customers", express.json(), api.customers);
 // app.use("/api/carts", express.json(), api.carts);
-// app.use("/order", orderRoutes);
+app.use("/orders", orderPathRoutes);
 
 // Share the user data with hbs files
 app.use(function (req, res, next) {

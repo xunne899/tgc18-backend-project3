@@ -19,7 +19,7 @@ const getCartByCustomerVariant = async (customerId, variantId) => {
     })
 }
 
-const createCart = async (customerId, variantId, quantity) => {
+const createCartItem = async (customerId, variantId, quantity) => {
     let cartItem = new CartItem({
         'customer_id': customerId,
         'variant_id': variantId,
@@ -29,7 +29,7 @@ const createCart = async (customerId, variantId, quantity) => {
     return cartItem;
 }
 
-const removeCart = async (customerId, variantId) => {
+const removeCartItem = async (customerId, variantId) => {
     //always have a try catch
     let cartItem = await getCartByCustomerVariant(customerId, variantId);
     // await cartItem.destroy()
@@ -53,7 +53,7 @@ async function updateQuantity(customerId, variantId, newQuantity) {
 
 }
 
-module.exports = { getCart, getCartByCustomerVariant, createCart, removeCart, updateQuantity }
+module.exports = { getCart, getCartByCustomerVariant, createCartItem, removeCartItem, updateQuantity }
 
 
 

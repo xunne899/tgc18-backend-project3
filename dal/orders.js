@@ -1,11 +1,11 @@
-const { OrderItem, Order, OrderStatus,Customer } = require("../models");
+const { OrderItem, Order, OrderStatus, Customer } = require("../models");
 
 const getOrderByOrderId = async (orderId) => {
   return await Order.where({
     order_id: orderId,
   }).fetch({
     require: false,
-    withRelated: ["customer", "orderStatus", "orderItems", "variants"],
+    withRelated: ["customer", "orderStatus", "orderItems"],
   });
 };
 
@@ -30,11 +30,10 @@ const getOrderByCustomerId = async (customerId) => {
 
 async function getAllCustomers() {
   const customers = await Customer.fetchAll().map((customer) => {
-    return [customer.get("id"),customer.get("customer")];
+    return [customer.get("id"), customer.get("customer")];
   });
-  return customers
+  return customers;
 }
-
 
 const createOrder = async (transactionData) => {
   const order = new Order(transactionData);
@@ -48,9 +47,11 @@ const deleteOrder = async (orderId) => {
 };
 
 const getAllStatuses = async () => {
-  return await OrderStatus.fetchAll().map((status) => {
+  const statuses = await OrderStatus.fetchAll().map((status) => {
     return [status.get("id"), status.get("order_status")];
   });
+  statuses.unshift(['', "--- Any Status ---"]);
+  return statuses;
 };
 
 const updateStatus = async (orderId, newStatusId) => {
@@ -87,10 +88,10 @@ const createOrderItem = async (orderId, variantId, quantity) => {
   return orderItem;
 };
 
-async function getallOrders (){
+async function getallOrders() {
   return await Order.fetchAll({
-    withRelated:["customer", "orderStatus", "orderItems", "variants"]
-});
+    withRelated: ["customer", "orderStatus", "orderItems"],
+  });
 }
 
 // async function getAllProducts() {
@@ -109,5 +110,5 @@ module.exports = {
   getOrderItemByOrderId,
   getOrderItemByVariantId,
   createOrderItem,
-  getAllCustomers
+  getAllCustomers,
 };

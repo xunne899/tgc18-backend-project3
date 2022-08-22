@@ -2,10 +2,10 @@
 const express = require("express");
 const router = express.Router();
 
-const dataLayer = require("../dal/products");
+const dataLayer = require("../../dal/products");
 
 // #1 import in the Product model
-const { Product } = require("../models");
+const { Product } = require("../../models");
 
 
 

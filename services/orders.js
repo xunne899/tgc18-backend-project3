@@ -46,7 +46,6 @@ async function updateStatus(newStatusId) {
 
 async function getAllStatuses() {
   const allStatuses = await dataLayer.getAllStatuses()
- 
   return allStatuses
 }
 module.exports = { addNewOrder,getOrderByOrderId,getOrderItemByOrderId ,getAllStatuses, deleteOrder,updateStatus,getAllCustomers};

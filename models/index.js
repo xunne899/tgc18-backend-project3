@@ -85,9 +85,9 @@ const Variant = bookshelf.model("Variant", {
   cartItems() {
     return this.hasMany("CartItem");
   },
-  orders() {
-    return this.belongsToMany("Order");
-  },
+  // orders() {
+  //   return this.belongsToMany("Order");
+  // },
   orderItems() {
     return this.hasMany("OrderItem");
   },
@@ -97,7 +97,7 @@ const User = bookshelf.model("User", {
   tableName: "users",
 });
 
-const Customer = bookshelf.model("Customer",{
+const Customer = bookshelf.model("Customer", {
   tableName: "customers",
   cartItems() {
     return this.hasMany("cartItem");
@@ -111,6 +111,9 @@ const CartItem = bookshelf.model("CartItem", {
   tableName: "cart_items",
   customer() {
     return this.belongsTo("Customer");
+  },
+  order() {
+    return this.belongsTo("Order");
   },
   variant() {
     return this.belongsTo("Variant");
@@ -132,9 +135,9 @@ const OrderItem = bookshelf.model("OrderItem", {
 
 const Order = bookshelf.model("Order", {
   tableName: "orders",
-  variants() {
-    return this.belongsToMany("Variant");
-  },
+  // variants() {
+  //   return this.belongsToMany("Variant");
+  // },
   customer() {
     return this.belongsTo("Customer");
   },
@@ -156,8 +159,6 @@ const OrderStatus = bookshelf.model("OrderStatus", {
 const BlacklistedToken = bookshelf.model("BlacklistedToken", {
   tableName: "blacklisted_tokens",
 });
-
-
 
 module.exports = {
   Product,

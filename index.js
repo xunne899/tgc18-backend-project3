@@ -88,34 +88,43 @@ wax.setLayoutPath("./views/layouts");
 const mainpagePathRoutes = require("./routes/landing");
 const productPathRoutes = require("./routes/products");
 const userPathRoutes = require("./routes/users");
-const cloudinaryPathRoutes = require("./routes/cloudinary.js");
+const cloudinaryPathRoutes = require("./routes/cloudinary");
 const loginPathRoutes = require("./routes/login");
-
-const cartPathRoutes = require("./routes/api/carts");
-const checkoutPathRoutes = require("./routes/api/checkout");
 const orderPathRoutes = require("./routes/orders");
+
+const cartAPIPathRoutes = require("./routes/api/carts");
+const checkoutAPIPathRoutes = require("./routes/api/checkout");
+// const productAPIPathRoutes = require("./routes/api/products");
+// const orderAPIPathRoutes = require("./routes/api/orders");
 
 const api = {
   customers: require("./routes/api/customers"),
-  // carts: require("./routes/api/carts"),
+  carts: require("./routes/api/carts"),
+  products: require("./routes/api/products"),
+  orders: require("./routes/api/orders"),
 };
 // const customerRoutes =  require("./routes/api/customers");
 
 const { checkIfAuthenticated, checkIfAuthenticatedJWT } = require("./middlewares");
 const { getCart } = require("./dal/carts");
 
-app.use("/cart", [checkIfAuthenticated], cartPathRoutes);
 app.use("/", mainpagePathRoutes);
 
 app.use("/products", [checkIfAuthenticated], productPathRoutes);
 app.use("/users", userPathRoutes);
 app.use("/login", loginPathRoutes);
 app.use("/cloudinary", cloudinaryPathRoutes);
-app.use("/checkout", checkoutPathRoutes);
+app.use("/orders", [checkIfAuthenticated], orderPathRoutes);
 
+app.use("/checkout", checkoutAPIPathRoutes);
+app.use("/cart", [checkIfAuthenticated], cartAPIPathRoutes);
+
+app.use("/api/carts", express.json(), api.carts);
 app.use("/api/customers", express.json(), api.customers);
+app.use("/api/products", express.json(), api.products);
+app.use("/api/orders", express.json(), api.orders);
+
 // app.use("/api/carts", express.json(), api.carts);
-app.use("/orders", orderPathRoutes);
 
 // Share the user data with hbs files
 app.use(function (req, res, next) {

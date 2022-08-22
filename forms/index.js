@@ -401,17 +401,16 @@ const createUserForm = () => {
 
 const createOrderSearchForm = (order_statuses) => {
   return forms.create({
-    order_id: fields.string({
+    id: fields.string({
       label: "ID",
       required: false,
       errorAfterField: true,
     }),
-    email: fields.email({
-      required: false,
-      errorAfterField: true,
-
-      widget: widgets.email(),
-    }),
+    // email: fields.email({
+    //   required: false,
+    //   errorAfterField: true,
+    //   widget: widgets.email(),
+    // }),
     order_date: fields.date({
       required: false,
       errorAfterField: true,
@@ -421,7 +420,6 @@ const createOrderSearchForm = (order_statuses) => {
       label: "Order Status",
       required: false,
       errorAfterField: true,
-
       widget: widgets.select(),
       choices: order_statuses,
     }),

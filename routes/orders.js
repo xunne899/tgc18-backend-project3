@@ -6,40 +6,54 @@ const { getCustomerEmail } = require("../dal/customers");
 const { Order } = require("../models");
 
 router.get("/", async (req, res) => {
+ 
+
+
   const SearchOrderForm = createOrderSearchForm(await orderItem.getAllStatuses());
+  // console.log(SearchOrderForm, "Searchorder");
   const query = Order.collection();
+
   SearchOrderForm.handle(req, {
     success: async (form) => {
-      if (form.data.email) {
-        const customer = await getCustomerEmail(form.data.email);
-        if (customer) {
-          query.where("customer_id", "=", customer.get("customer_id"));
-        } else {
-          query.where("customer_id", "=", "0");
-        }
+      // console.log(form.data, "data");
+      // console.log(form.data.email, "data");
+      if (form.data.id) {
+        query.where("id", "=", form.data.id);
       }
-      if (form.data.order_id) {
-        query.where("order_id", "=", form.data.order_id);
-      }
+      // const customer = await getCustomerEmail(form.data.email);
+      // if (form.data.email) {
+      //   // query.where("customer_id", "=", customer.get(form.data.email));
+      //   const customer = await getCustomerEmail(form.data.email);
+      //   console.log(customer);
+      //   if (customer) {
+      //     query.where("id", "=", customer.get("id"));
+      //   } else {
+      //     query.where("id", "=", "0");
+      //   }
+      // }
+      // console.log(form.data.email, "data");
+
       if (form.data.order_date) {
         query.where("order_date", "=", form.data.order_date);
       }
 
       if (form.data.order_status_id) {
-        query.where("status_id", "=", form.data.order_status_id);
+        query.where("order_status_id", "=", form.data.order_status_id);
       }
       const orderlist = await query.fetch({
-        withRelated: ["customer", "orderStatus", "orderItems", "variants"],
+        withRelated: ["customer", "orderStatus", "orderItems"],
       });
 
       const resultsNum = orderlist.toJSON().length;
 
       const pending = orderlist.toJSON().filter((order) => {
-        return order.order_status.order_status !== "successful";
+        // console.log(order.order_statuses);
+        return order.orderStatus.order_status !== "Paid";
       });
       const successful = orderlist.toJSON().filter((order) => {
-        return order.order_status.order_status === "successful";
+        return order.orderStatus.order_status === "Paid";
       });
+
       res.render("orders/index", {
         form: form.toHTML(bootstrapField),
         resultsNum,
@@ -49,25 +63,25 @@ router.get("/", async (req, res) => {
     },
     empty: async (form) => {
       const orderlist = await query.fetch({
-        withRelated: ["customer", "orderStatus", "orderItems", "variants"],
+        withRelated: ["customer", "orderStatus", "orderItems"],
       });
 
       const resultsNum = orderlist.toJSON().length;
 
       const pending = orderlist.toJSON().filter((order) => {
-        return order.order_status.order_status !== "successful";
+        // console.log(order.orderStatus.order_status);
+        return order.orderStatus.order_status !== "Paid";
       });
       const successful = orderlist.toJSON().filter((order) => {
-        return order.order_status.order_status === "successful";
+        return order.orderStatus.order_status === "Paid";
       });
-
-      res.render("orders/index"),
-        {
-          form: form.toHTML(bootstrapField),
-          resultsNum,
-          pending,
-          successful,
-        };
+      console.log("show success", successful);
+      res.render("orders/index", {
+        form: form.toHTML(bootstrapField),
+        resultsNum,
+        pending,
+        successful,
+      });
     },
   });
 });
@@ -162,7 +176,7 @@ router.post("/:order_id/status/update", async (req, res) => {
 router.get("/:order_id/delete", async (req, res) => {
   const services = new orderItem(req.params.order_id);
   const order = await services.getOrderByOrderId();
-  if (order.toJSON().order_status.order_status === "successful") {
+  if (order.toJSON().order_status.order_status === "Paid") {
     req.flash("error_messages", "Completed orders cannot be deleted.");
     res.redirect("/orders");
   } else {

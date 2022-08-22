@@ -7,7 +7,22 @@
     <h1 >Order Detail</h1> 
    {{!-- <a href="/users/register" class="btn btn-dark btn-sm mt-3" style="width:80px;height:30px">Register</a> --}}
 </div>
- 
+ <div class="accordion mt-3 mb-3" id="accordion">
+  <div class="accordion-item shadow-lg">
+    <h2 class="accordion-header" id="headingOne">
+      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+   Search Filter
+      </button>
+    </h2>
+    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordion">
+      <div class="accordion-body">
+           <form method="GET">
+    {{{form}}}
+    <input type="submit" value="Search" class="btn btn-dark my-3"/>
+     </form>
+      </div>
+    </div>
+  </div>
     
     <table class="table mt-3">
         <thead>

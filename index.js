@@ -105,7 +105,7 @@ const { checkIfAuthenticated, checkIfAuthenticatedJWT } = require("./middlewares
 const { getCart } = require("./dal/carts");
 
 app.use("/cart", [checkIfAuthenticated], cartPathRoutes);
-app.use("/",mainpagePathRoutes);
+app.use("/", mainpagePathRoutes);
 
 app.use("/products", [checkIfAuthenticated], productPathRoutes);
 app.use("/users", userPathRoutes);

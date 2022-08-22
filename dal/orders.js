@@ -1,11 +1,11 @@
-const { OrderItem, Order, Status } = require("../models");
+const { OrderItem, Order, OrderStatus,Customer } = require("../models");
 
 const getOrderByOrderId = async (orderId) => {
   return await Order.where({
     order_id: orderId,
   }).fetch({
     require: false,
-    withRelated: ["customer", "status", "orderItems", "variants"],
+    withRelated: ["customer", "orderStatus", "orderItems", "variants"],
   });
 };
 
@@ -16,9 +16,25 @@ const getOrderByCustomerId = async (customerId) => {
     })
     .fetch({
       require: false,
-      withRelated: ["variants", "customer", "status", "orderItems", "orderItems.variant.product", "orderItems.variant.size", "orderItems.variant.spiciness"],
+      withRelated: [
+        // "variants",
+        "customer",
+        "orderStatus",
+        "orderItems",
+        "orderItems.variant.product",
+        "orderItems.variant.size",
+        "orderItems.variant.spiciness",
+      ],
     });
 };
+
+async function getAllCustomers() {
+  const customers = await Customer.fetchAll().map((customer) => {
+    return [customer.get("id"),customer.get("customer")];
+  });
+  return customers
+}
+
 
 const createOrder = async (transactionData) => {
   const order = new Order(transactionData);
@@ -32,14 +48,14 @@ const deleteOrder = async (orderId) => {
 };
 
 const getAllStatuses = async () => {
-  return await Status.fetchAll().map((status) => {
-    return [status.get("order_status_id"), status.get("order_status")];
+  return await OrderStatus.fetchAll().map((status) => {
+    return [status.get("id"), status.get("order_status")];
   });
 };
 
 const updateStatus = async (orderId, newStatusId) => {
   const order = await getOrderByOrderId(orderId);
-  order.set("order_status_id", newStatusId);
+  order.set("id", newStatusId);
   await order.save();
   return order;
 };
@@ -71,6 +87,18 @@ const createOrderItem = async (orderId, variantId, quantity) => {
   return orderItem;
 };
 
+async function getallOrders (){
+  return await Order.fetchAll({
+    withRelated:["customer", "orderStatus", "orderItems", "variants"]
+});
+}
+
+// async function getAllProducts() {
+//   return await Product.fetchAll({
+//       withRelated:["type", "country", "packaging", "cuisine_styles", "ingredients","variants"]
+//   });
+// }
+
 module.exports = {
   getOrderByCustomerId,
   getOrderByOrderId,
@@ -81,4 +109,5 @@ module.exports = {
   getOrderItemByOrderId,
   getOrderItemByVariantId,
   createOrderItem,
+  getAllCustomers
 };

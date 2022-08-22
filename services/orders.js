@@ -10,17 +10,17 @@ async function addNewOrder(transactionData, orderList) {
   }
 }
 
-async function getOrderByOrderId() {
-  return await dataLayer.getOrderByOrderId(this.order_id)
+async function getOrderByOrderId(order_id) {
+  return await dataLayer.getOrderByOrderId(order_id)
 }
 // get all order items of an order by order id
-async function getOrderItemByOrderId() {
-  return await dataLayer.getOrderItemByOrderId(this.order_id)
+async function getOrderItemByOrderId(order_id) {
+  return await dataLayer.getOrderItemByOrderId(order_id)
 }
 
 async function deleteOrder() {
 
-  const orderItems = await dataLayer.getOrderItemByOrderId(this.order_id)
+  const orderItems = await dataLayer.getOrderItemByOrderId(order_id)
   // if (orderItems.toJSON().length !== 0) {
       for (let item of orderItems.toJSON()) {
           const variant = await getVariantById(item.variant_id)
@@ -28,13 +28,18 @@ async function deleteOrder() {
           await variant.save()
       }
   // }
-  await dataLayer.deleteOrder(this.order_id)
+  await dataLayer.deleteOrder(order_id)
 }
 
 
+async function getAllCustomers() {
+  const allCustomers = await dataLayer.getAllCustomers()
+ 
+  return allCustomers
+}
 
 async function updateStatus(newStatusId) {
-  return await dataLayer.updateStatus(this.order_id, newStatusId)
+  return await dataLayer.updateStatus(order_id, newStatusId)
 }
 
 
@@ -44,4 +49,4 @@ async function getAllStatuses() {
  
   return allStatuses
 }
-module.exports = { addNewOrder,getOrderByOrderId,getOrderItemByOrderId ,getAllStatuses, deleteOrder,updateStatus};
+module.exports = { addNewOrder,getOrderByOrderId,getOrderItemByOrderId ,getAllStatuses, deleteOrder,updateStatus,getAllCustomers};

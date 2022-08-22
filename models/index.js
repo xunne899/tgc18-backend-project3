@@ -138,15 +138,15 @@ const Order = bookshelf.model("Order", {
   customer() {
     return this.belongsTo("Customer");
   },
-  status() {
-    return this.belongsTo("Status");
+  orderStatus() {
+    return this.belongsTo("OrderStatus");
   },
   orderItems() {
     return this.hasMany("OrderItem");
   },
 });
 
-const Status = bookshelf.model("Status", {
+const OrderStatus = bookshelf.model("OrderStatus", {
   tableName: "order_statuses",
   orders() {
     return this.hasMany("Order");
@@ -174,6 +174,6 @@ module.exports = {
   CartItem,
   OrderItem,
   Order,
-  Status,
+  OrderStatus,
   BlacklistedToken,
 };

@@ -10,12 +10,11 @@ const bootstrapField = function (name, object) {
     object.widget.classes = [];
   }
 
-  if(object.widget.type == 'multipleCheckbox'|| object.widget.type == 'multipleRadio'){
-   object.widget.classes.push('form-check-input',"mb-3")
-  }
-  else{
+  if (object.widget.type == "multipleCheckbox" || object.widget.type == "multipleRadio") {
+    object.widget.classes.push("form-check-input", "mb-3");
+  } else {
     if (object.widget.classes.indexOf("form-control") === -1) {
-      object.widget.classes.push("form-control","mb-3");
+      object.widget.classes.push("form-control", "mb-3");
     }
   }
 
@@ -47,9 +46,9 @@ const createProductForm = (types, countries, ingredients, packagings, cuisine_st
     name: fields.string({
       required: true,
       errorAfterField: true,
-    //   cssClasses: {
-    //     label: ["form-label", "mt-3"],
-    //   },
+      //   cssClasses: {
+      //     label: ["form-label", "mt-3"],
+      //   },
     }),
     country_id: fields.string({
       label: "Country",
@@ -111,8 +110,12 @@ const createProductForm = (types, countries, ingredients, packagings, cuisine_st
       // cssClasses: {
       //   label: ["form-label", "mt-3"],
       // },
-      choices: [[0,"---Select One---"],["Yes","Yes"],["No","No"]],
-      widget: widgets.select()
+      choices: [
+        [0, "---Select One---"],
+        ["Yes", "Yes"],
+        ["No", "No"],
+      ],
+      widget: widgets.select(),
       // cssClasses: {
       //   label: ["form-check-label", "my-check-label"],
       // },
@@ -127,8 +130,12 @@ const createProductForm = (types, countries, ingredients, packagings, cuisine_st
       // cssClasses: {
       //   label: ["form-label", "mt-3"],
       // },
-      choices: [[0,"---Select One---"],["Yes","Yes"],["No","No"]],
-      widget: widgets.select()
+      choices: [
+        [0, "---Select One---"],
+        ["Yes", "Yes"],
+        ["No", "No"],
+      ],
+      widget: widgets.select(),
       // cssClasses: {
       //   label: ["form-check-label", "my-check-label"],
       // },
@@ -303,7 +310,7 @@ const createSearchForm = (types, countries, packagings, cuisine_styles) => {
       // },
       validators: [validators.integer()],
     }),
-   
+
     type_id: fields.string({
       label: "Type",
       required: false,
@@ -351,11 +358,10 @@ const createSearchForm = (types, countries, packagings, cuisine_styles) => {
       },
       // choices: [[0,"---Select One---"],[1,"Yes"],[2,"No"]],
       // widget: widgets.select()
-      choices: { "Yes":"Yes", "No": "No" },
+      choices: { Yes: "Yes", No: "No" },
       widget: widgets.multipleRadio({
-        classes: ["form-input" ,"ms-2"],
+        classes: ["form-input", "ms-2"],
       }),
-   
     }),
     halal: fields.string({
       required: false,
@@ -365,9 +371,9 @@ const createSearchForm = (types, countries, packagings, cuisine_styles) => {
       },
       // choices: [[0,"---Select One---"],[1,"Yes"],[2,"No"]],
       // widget: widgets.select()
-      choices: { "Yes": "Yes", "No": "No" },
+      choices: { Yes: "Yes", No: "No" },
       widget: widgets.multipleRadio({
-        classes: ["form-input" ,"ms-2"],
+        classes: ["form-input", "ms-2"],
       }),
     }),
   });
@@ -393,16 +399,43 @@ const createUserForm = () => {
   });
 };
 
-const createStatusForm = (statuses) => {
+const createOrderSearchForm = (order_statuses) => {
   return forms.create({
-    status_id: fields.string({
+    order_id: fields.string({
+      label: "ID",
+      required: false,
+      errorAfterField: true,
+    }),
+    email: fields.email({
+      required: false,
+      errorAfterField: true,
+
+      widget: widgets.email(),
+    }),
+    order_date: fields.date({
+      required: false,
+      errorAfterField: true,
+      widget: widgets.date(),
+    }),
+    order_status_id: fields.string({
+      label: "Order Status",
+      required: false,
+      errorAfterField: true,
+
+      widget: widgets.select(),
+      choices: order_statuses,
+    }),
+  });
+};
+
+const createStatusForm = (order_statuses) => {
+  return forms.create({
+    order_status_id: fields.string({
       required: true,
       errorAfterField: true,
-      cssClasses: {
-        label: ["d-none"],
-      },
+
       widget: widgets.select(),
-      choices: statuses,
+      choices: order_statuses,
     }),
   });
 };
@@ -412,6 +445,7 @@ module.exports = {
   createVariantForm,
   createRegistrationForm,
   createSearchForm,
+  createOrderSearchForm,
   createStatusForm,
   createUserForm,
   bootstrapField,

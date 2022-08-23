@@ -124,7 +124,7 @@ app.use("/api/carts", express.json(), api.carts);
 app.use("/api/customers", express.json(), api.customers);
 app.use("/api/products", express.json(), api.products);
 app.use("/api/orders", express.json(), api.orders);
-app.use("/api/checkout", express.json(), api.orders);
+app.use("/api/checkout", express.json(), api.checkout);
 
 // app.use("/api/carts", express.json(), api.carts);
 

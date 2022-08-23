@@ -292,8 +292,6 @@ router.post("/:product_id/update", async (req, res) => {
   });
 });
 
-
-
 router.get("/:product_id/delete", async (req, res) => {
   // fetch the product that we want to delete
 

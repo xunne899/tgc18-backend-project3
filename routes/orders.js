@@ -1,12 +1,12 @@
 const express = require("express");
 const router = express.Router();
-const orderItem = require("../services/orders");
+const serviceLayer = require("../services/orders");
 const { bootstrapField, createStatusForm, createOrderSearchForm } = require("../forms");
 const { getCustomerEmail } = require("../dal/customers");
 const { Order } = require("../models");
 
 router.get("/", async (req, res) => {
-  const SearchOrderForm = createOrderSearchForm(await orderItem.getAllStatuses());
+  const SearchOrderForm = createOrderSearchForm(await serviceLayer.getAllStatuses());
   // console.log(SearchOrderForm, "Searchorder");
   const query = Order.collection();
 
@@ -150,8 +150,8 @@ router.get("/", async (req, res) => {
 
 router.get("/:order_id/item", async (req, res) => {
   // const services = new orderItem(req.params.order_id);
-  const order = await orderItem.getOrderByOrderId(req.params.order_id);
-  const orderItems = await orderItem.getOrderItemByOrderId(req.params.order_id);
+  const order = await serviceLayer.getOrderByOrderId(req.params.order_id);
+  const orderItems = await serviceLayer.getOrderItemByOrderId(req.params.order_id);
   // const statusForm = createStatusForm(await orderItem.getAllStatuses());
 
   // statusForm.fields.status_id.value = order.get("order_status_id");

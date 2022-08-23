@@ -1,7 +1,8 @@
 {{#extends 'base'}}
 {{#block 'content'}}
-     <div class="row " id="productTable">
+     <div class="row" id="productTable">
  <div class="overflow-auto mt-2 p-3 shadow-lg rounded-3 col-12 col-md-12 col-sm-12"> 
+     <h1 class="mt-2">Update Order Status</h1>
     <table class="table mt-3">
         <thead>
             <tr>
@@ -30,12 +31,23 @@
                 <td>{{order.total_cost}}</td>
                  <td>{{order.payment_intent}}</td>
                   <td>{{moment order.order_date format="DD/MM/YYYY"}}</td>
-                   <td>{{order.orderStatus.order_status}}</td>
-                <td>
-                    <a href="users/{{this.id}}/update" ><i class="fa fa-edit" style="font-size:23px;color:black"></i></a>
-                    <a href="users/{{this.id}}/delete" class="ms-2"><i class="fa fa-trash " style="font-size:23px;color:black"></i></a>
+                    <td scope="row">
+                                <form method="POST" action="/orders/{{order.id}}/update">
+                                    {{!-- {{> csrfToken}} --}}
+                                    {{{form}}}
+                                    <div class="custom-btn-group">
+                                    {{!-- <input type="submit" value="Update" class="btn btn-dark mt-3"> --}}
+                                     <td>
+                                     <input type="submit" value="Update" class="btn btn-dark my-auto"/>
 
-                </td>
+                                     </td>
+                                    </div>
+                                </form>
+                            </td>
+                {{!-- <td>
+                    <input type="submit" value="Update" class="btn btn-dark my-auto"/>
+
+                </td> --}}
             </tr>
   
         </tbody>

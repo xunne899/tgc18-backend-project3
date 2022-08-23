@@ -12,26 +12,32 @@ router.get("/", async (req, res) => {
 
   SearchOrderForm.handle(req, {
     success: async (form) => {
-      // console.log(form.data, "data");
-      // console.log(form.data.email, "data");
+      console.log("search data =>", form.data);
+      //console.log(form.data.email, "data");
       if (form.data.id) {
         query.where("id", "=", form.data.id);
       }
-      // const customer = await getCustomerEmail(form.data.email);
-      // if (form.data.email) {
-      //   // query.where("customer_id", "=", customer.get(form.data.email));
-      //   const customer = await getCustomerEmail(form.data.email);
-      //   console.log(customer);
-      //   if (customer) {
-      //     query.where("id", "=", customer.get("id"));
-      //   } else {
-      //     query.where("id", "=", "0");
-      //   }
-      // }
-      // console.log(form.data.email, "data");
+
+      if (form.data.email) {
+        const customer = await getCustomerEmail(form.data.email);
+        console.log(customer);
+        if (customer) {
+          query.where("customer_id", "=", customer.get("id"));
+        }
+      }
 
       if (form.data.order_date) {
-        query.where("order_date", "=", form.data.order_date);
+        let orderDate = new Date(form.data.order_date);
+        let nextDay = new Date(form.data.order_date);
+
+        orderDate.setHours(0);
+        orderDate.setMinutes(0);
+        orderDate.setSeconds(0);
+        nextDay.setDate(orderDate.getDate() + 1);
+        console.log("Created date=>", orderDate);
+        console.log("Next date=>", nextDay);
+        query.where("order_date", ">=", orderDate); // must be more than equal 23/08/2022 0:00
+        query.where("order_date", "<", nextDay); // must be less than 24/08/2022 0:00
       }
 
       if (form.data.order_status_id) {
@@ -84,91 +90,92 @@ router.get("/", async (req, res) => {
 });
 // })
 
-// router.get("/", async (req, res) => {
-
-//   // const customers = await getAllCustomers();
-//   const statuses = await orderItem.getAllStatuses();
-
-//   const searchOrderForm = createOrderSearchForm("customer", "orderStatus", "orderItems", "variants");
-//  // create a query builder
-//  let query = Order.collection();
-
-//  // our search logic begins here
-//  searchOrderForm.handle(req, {
-//    success: async function (form) {
-//      // if the user did provide the name
-//     //  if (form.data.email) {
-//     //    query.where("name", "like", "%" + form.data.name + "%");
-//     //  }
-
-//           // if (form.data.email) {
-//           //   const customer = await getCustomerEmail(form.data.email);
-//           //    if (customer) {
-//           //     query.where("customer_id", "=", customer.get("customer_id"));
-//           //     } else {
-//           //     query.where("customer_id", "=", "0");
-//           //      }
-//           //     }
-
-//                 if (form.data.order_id) {
-//                   query.where("order_id", "=", form.data.order_id);
-//                 }
-
-//                 if (form.data.order_date) {
-//                   query.where("order_date", "=", form.data.order_date);
-//                 }
-
-//                 if (form.data.order_status_id) {
-//                   query.where("status_id", "=", form.data.order_status_id);
-//                 }
-
-//      // #2 - fetch all the products (ie, SELECT * from products)
-//      const orders = await query.fetch({
-//        withRelated: ["customer", "orderStatus", "orderItems", "variants"],
-//      });
-//      const numberFound = products.toJSON().length;
-//      req.flash("Order has been found");
-//      res.render("orders/index", {
-//        orders: orders.toJSON(),
-//        numberFound,
-//        form: form.toHTML(bootstrapField),
-//      });
-//    },
-//    empty: async function () {
-//      const orders = await query.fetch({
-//        withRelated: ["customer", "orderStatus", "orderItems", "variants"],
-//      });
-
-//      res.render("products/index", {
-//        orders: orders.toJSON(),
-//        form: searchOrderForm.toHTML(bootstrapField),
-//      });
-//    },
-//    error: async function () {},
-//  });
-// });
-
 router.get("/:order_id/item", async (req, res) => {
-  // const services = new orderItem(req.params.order_id);
+  // const services = new serviceLayer(req.params.order_id);
   const order = await serviceLayer.getOrderByOrderId(req.params.order_id);
-  const orderItems = await serviceLayer.getOrderItemByOrderId(req.params.order_id);
-  // const statusForm = createStatusForm(await orderItem.getAllStatuses());
+  // const orderItems = await serviceLayer.getOrderItemByOrderId(req.params.order_id);
+  const statusUpdateForm = createStatusForm(await serviceLayer.getAllStatuses());
 
-  // statusForm.fields.status_id.value = order.get("order_status_id");
+  statusUpdateForm.fields.order_status_id.value = order.get("order_status_id");
 
   res.render("orders/items_order", {
     order: order.toJSON(),
-    orderItems: orderItems.toJSON(),
-    // form: statusForm.toHTML(bootstrapField),
+    // orderItems: orderItems.toJSON(),
+    form: statusUpdateForm.toHTML(bootstrapField),
   });
 });
 
-router.post("/:order_id/status/update", async (req, res) => {
-  const services = new orderItem(req.params.order_id);
-  await services.updateStatus(req.body.status_id);
-  req.flash("success_messages", "Order status changed.");
-  res.redirect(`/orders/${req.params.order_id}/item`);
+router.post("/:order_id/update", async (req, res) => {
+  const orderId = req.params.order_id;
+  //const order = await serviceLayer.getOrderByOrderId(orderId);
+  const orderStatus = await serviceLayer.getAllStatuses();
+  // const services = new serviceLayer(req.params.order_id);
+  // await services.updateStatus(req.body.id);
+
+  // Process update order form
+  const orderForm = createStatusForm({
+    orderStatus,
+  });
+  orderForm.handle(req, {
+    // success: async function (form) {
+    //   const { order_date, orderData } = form.data;
+
+    //   try {
+    //     await dataLayer.updateOrder(orderId, orderData);
+
+    //     req.flash('success_messages', 'Order successfully updated');
+    //     res.redirect('/orders');
+    //   } catch (error) {
+    //     console.log(error);
+    //     req.flash('error_messages', 'An error occurred while updating order. Please try again');
+    //     res.redirect(`/orders/${orderId}/update`);
+    //   }
+    // },
+    // error: async function (form) {
+    //   res.render('orders/update', {
+    //     form: form.toHTML(bootstrapField)
+    //   });
+    // },
+    success: async (form) => {
+      try {
+        await serviceLayer.updateStatus(orderId, form.data.order_status_id);
+        req.flash("success_messages", "Order successfully updated");
+        res.redirect("/orders");
+      } catch (e) {
+        console.error(e);
+        req.flash("error_messages", "An error occurred while updating order. Please try again");
+        res.redirect(`/orders/${orderId}/item`);
+      }
+    },
+    error: async function (form) {
+      req.flash("error_messages", "An error occurred while updating order. Please try again");
+      res.redirect(`/orders/${orderId}/item`);
+    },
+  });
 });
+
+// router.post('/:order_id/update', async function (req, res) {
+//   // Get order to be updated
+//   const orderId = req.params.order_id;
+//   const order = await dataLayer.getOrderById(orderId);
+
+//   // Fetch all choices for update order form
+//   const orderStatuses = await dataLayer.getAllOrderStatuses();
+
+//   // Process update order form
+//   const orderForm = createUpdateOrderForm({
+//     orderStatuses
+//   });
+//   orderForm.handle(req, {
+//     success: async function (form) {
+//       const { order_date, orderData } = form.data;
+
+//       try {
+//         await dataLayer.updateOrder(orderId, orderData);
+
+//         req.flash('success_messages', 'Order successfully updated');
+//         res.redirect('/orders');
+//       }
 
 // router.get("/:order_id/delete", async (req, res) => {
 //   const services = new orderItem(req.params.order_id);

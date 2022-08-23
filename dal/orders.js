@@ -56,7 +56,7 @@ const getAllStatuses = async () => {
 
 const updateStatus = async (orderId, newStatusId) => {
   const order = await getOrderByOrderId(orderId);
-  order.set("id", newStatusId);
+  order.set("order_status_id", newStatusId);
   await order.save();
   return order;
 };
@@ -111,5 +111,5 @@ module.exports = {
   getOrderItemByVariantId,
   createOrderItem,
   getAllCustomers,
-  getallOrders
+  getallOrders,
 };

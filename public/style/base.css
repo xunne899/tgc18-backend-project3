@@ -46,6 +46,10 @@
     border-color: rgba(0,0,0,.125);
 }
 
+.hideElement{
+    display:none;
+}
+
 .accordion-button:not(.collapsed) {
     background-color: black;
     color:white;

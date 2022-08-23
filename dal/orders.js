@@ -2,7 +2,7 @@ const { OrderItem, Order, OrderStatus, Customer } = require("../models");
 
 const getOrderByOrderId = async (orderId) => {
   return await Order.where({
-    order_id: orderId,
+    id: orderId,
   }).fetch({
     require: false,
     withRelated: ["customer", "orderStatus", "orderItems"],
@@ -50,7 +50,7 @@ const getAllStatuses = async () => {
   const statuses = await OrderStatus.fetchAll().map((status) => {
     return [status.get("id"), status.get("order_status")];
   });
-  statuses.unshift(['', "--- Any Status ---"]);
+  statuses.unshift(["", "--- Any Status ---"]);
   return statuses;
 };
 
@@ -63,7 +63,7 @@ const updateStatus = async (orderId, newStatusId) => {
 
 const getOrderItemByOrderId = async (orderId) => {
   return await OrderItem.where({
-    order_id: orderId,
+    id: orderId,
   }).fetchAll({
     require: false,
     withRelated: ["variant", "variant.product.name", "variant.size", "variant.spiciness"],

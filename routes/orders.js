@@ -6,9 +6,6 @@ const { getCustomerEmail } = require("../dal/customers");
 const { Order } = require("../models");
 
 router.get("/", async (req, res) => {
- 
-
-
   const SearchOrderForm = createOrderSearchForm(await orderItem.getAllStatuses());
   // console.log(SearchOrderForm, "Searchorder");
   const query = Order.collection();
@@ -152,17 +149,17 @@ router.get("/", async (req, res) => {
 // });
 
 router.get("/:order_id/item", async (req, res) => {
-  const services = new orderItem(req.params.order_id);
-  const order = await services.getOrderByOrderId();
-  const orderItems = await services.getOrderItemByOrderId();
-  const statusForm = createStatusForm(await services.getAllStatuses());
+  // const services = new orderItem(req.params.order_id);
+  const order = await orderItem.getOrderByOrderId(req.params.order_id);
+  const orderItems = await orderItem.getOrderItemByOrderId(req.params.order_id);
+  // const statusForm = createStatusForm(await orderItem.getAllStatuses());
 
-  statusForm.fields.status_id.value = order.get("order_status_id");
+  // statusForm.fields.status_id.value = order.get("order_status_id");
 
   res.render("orders/items_order", {
     order: order.toJSON(),
     orderItems: orderItems.toJSON(),
-    form: statusForm.toHTML(bootstrapField),
+    // form: statusForm.toHTML(bootstrapField),
   });
 });
 
@@ -173,24 +170,24 @@ router.post("/:order_id/status/update", async (req, res) => {
   res.redirect(`/orders/${req.params.order_id}/item`);
 });
 
-router.get("/:order_id/delete", async (req, res) => {
-  const services = new orderItem(req.params.order_id);
-  const order = await services.getOrderByOrderId();
-  if (order.toJSON().order_status.order_status === "Paid") {
-    req.flash("error_messages", "Completed orders cannot be deleted.");
-    res.redirect("/orders");
-  } else {
-    res.render("orders/delete", {
-      order: order.toJSON(),
-    });
-  }
-});
+// router.get("/:order_id/delete", async (req, res) => {
+//   const services = new orderItem(req.params.order_id);
+//   const order = await services.getOrderByOrderId();
+//   if (order.toJSON().order_status.order_status === "Paid") {
+//     req.flash("error_messages", "Completed orders cannot be deleted.");
+//     res.redirect("/orders");
+//   } else {
+//     res.render("orders/delete", {
+//       order: order.toJSON(),
+//     });
+//   }
+// });
 
-router.post("/:order_id/delete", async (req, res) => {
-  const services = new orderItem(req.params.order_id);
-  await services.deleteOrder();
-  req.flash("success_messages", "Order has been deleted.");
-  res.redirect("/orders");
-});
+// router.post("/:order_id/delete", async (req, res) => {
+//   const services = new orderItem(req.params.order_id);
+//   await services.deleteOrder();
+//   req.flash("success_messages", "Order has been deleted.");
+//   res.redirect("/orders");
+// });
 
 module.exports = router;

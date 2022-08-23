@@ -57,8 +57,8 @@
                   <td>{{moment this.order_date format="DD/MM/YYYY"}}</td>
                    <td>{{this.orderStatus.order_status}}</td>
                 <td>
-                    <a href="users/{{this.id}}/update" ><i class="fa fa-edit" style="font-size:23px;color:black"></i></a>
-                    <a href="users/{{this.id}}/delete" class="ms-2"><i class="fa fa-trash " style="font-size:23px;color:black"></i></a>
+                    <a href="/orders/{{this.id}}/item" ><i class="fa fa-edit" style="font-size:23px;color:black"></i></a>
+                    {{!-- <a href="users/{{this.id}}/delete" class="ms-2"><i class="fa fa-trash " style="font-size:23px;color:black"></i></a> --}}
 
                 </td>
             </tr>
@@ -102,8 +102,8 @@
                   <td>{{moment this.order_date format="DD/MM/YYYY"}}</td>
                    <td>{{this.orderStatus.order_status}}</td>
                 <td>
-                    <a href="users/{{this.id}}/update" ><i class="fa fa-edit" style="font-size:23px;color:black"></i></a>
-                    <a href="#" class="ms-2"  data-oneid="{{this.id}}" data-email="{{this.customer.email}}" ><i class="fa fa-trash delete-order" style="font-size:23px;color:black" data-oneid="{{this.id}}" data-email="{{this.customer.email}}"></i></a>
+                    <a href="/orders/{{this.id}}/item" ><i class="fa fa-edit" style="font-size:23px;color:black"></i></a>
+                    {{!-- <a href="#" class="ms-2"  data-oneid="{{this.id}}" data-email="{{this.customer.email}}" ><i class="fa fa-trash delete-order" style="font-size:23px;color:black" data-oneid="{{this.id}}" data-email="{{this.customer.email}}"></i></a> --}}
 
                 </td>
             </tr>

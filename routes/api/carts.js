@@ -34,7 +34,7 @@ router.post("/:variant_id/update", async function (req, res) {
 });
 
 router.get("/:variant_id/delete", async function (req, res) {
-  await cartServices.remove(req.session.user.id, req.params.variant_id);
+  await cartServices.removeSingleCartItem(req.session.user.id, req.params.variant_id);
   req.flash("success_messages", "Item has been removed from cart");
   res.redirect("/cart/");
 });

@@ -21,10 +21,18 @@ router.get("/", async (req, res) => {
       if (form.data.email) {
         const customer = await getCustomerEmail(form.data.email);
         console.log(customer);
-        if (customer) {
-          query.where("customer_id", "=", customer.get("id"));
-        }
-      }
+
+        customer ?  query.where("customer_id", "=", customer.get("id")) :  query.where('customer_id', '=', '')
+        // if (customer) {
+        //   query.where("customer_id", "=", customer.get("id"));
+        // }else {
+        //     query.where('customer_id', '=', '')
+        // }
+    }
+    //   if (form.data.customer_email) {
+    //     searchQuery.query('join', 'customers', 'customers.id', 'customer_id')
+    //         .where('email', 'like', `%${form.data.customer_email}%`)
+    // }
 
       if (form.data.order_date) {
         let orderDate = new Date(form.data.order_date);
@@ -56,9 +64,10 @@ router.get("/", async (req, res) => {
       const successful = orderlist.toJSON().filter((order) => {
         return order.orderStatus.order_status === "Paid";
       });
-
+      const numberFound = orderlist.toJSON().length;
       res.render("orders/index", {
         form: form.toHTML(bootstrapField),
+        numberFound,
         resultsNum,
         pending,
         successful,

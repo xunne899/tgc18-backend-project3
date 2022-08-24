@@ -19,7 +19,7 @@ async function updateQuantity(customerId, productId, newQuantity) {
 }
 
 // used to remove single cart item, funcion declaration
-async function removeItem(customerId, productId) {
+async function removeSingleCartItem(customerId, productId) {
   return cartDataLayer.removeCartItem(customerId, productId);
 }
 
@@ -27,9 +27,9 @@ async function removeItem(customerId, productId) {
 async function removeAllCartItems(customerId, orderList) {
   // Upon successful payment, clear away customer cart to make it empty.
   for (let item of orderList) {
-    await cartDataLayer.removeCartItem(customerId, item["variant_id"]);
+    await cartDataLayer.removeAllCartItem(customerId, item["variant_id"]);
   }
 }
 
 // export function out for other files to use
-module.exports = { addToCart, getCart, updateQuantity, removeItem, removeAllCartItems };
+module.exports = { addToCart, getCart, updateQuantity, removeSingleCartItem, removeAllCartItems };

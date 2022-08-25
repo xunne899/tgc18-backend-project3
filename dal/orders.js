@@ -63,10 +63,10 @@ const updateStatus = async (orderId, newStatusId) => {
 
 const getOrderItemByOrderId = async (orderId) => {
   return await OrderItem.where({
-    id: orderId,
+    order_id: orderId,
   }).fetchAll({
     require: false,
-    withRelated: ["variant", "variant.product.name", "variant.size", "variant.spiciness"],
+    withRelated: ["variant", "variant.product", "variant.spiciness", "variant.size"  ],
   });
 };
 

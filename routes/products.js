@@ -98,9 +98,10 @@ router.get("/", async (req, res) => {
       const products = await query.fetch({
         withRelated: ["type", "country", "packaging", "cuisine_styles", "ingredients"],
       });
-
+      const numberFound = products.toJSON().length;
       res.render("products/index", {
         products: products.toJSON(),
+        numberFound,
         form: searchForm.toHTML(bootstrapField),
       });
     },

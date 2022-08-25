@@ -6,12 +6,11 @@
             <div class="alert alert-success mt-4">
                 <span>{{numberFound}} order item(s) was found</span>
             </div>
-            {{/if}}
-            {{#unless numberFound}}
+            {{else}}
               <div class="alert alert-danger mt-4">
                 <span>No order items was found</span>
             </div>
-            {{/unless}}
+         {{/if}}
   <div class="d-flex justify-content-between mt-4">
     <h2>Order Details</h2> 
    {{!-- <a href="/users/register" class="btn btn-dark btn-sm mt-3" style="width:80px;height:30px">Register</a> --}}

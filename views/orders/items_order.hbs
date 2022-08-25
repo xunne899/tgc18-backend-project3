@@ -1,7 +1,7 @@
 {{#extends 'base'}}
 {{#block 'content'}}
      <div class="row" id="productTable">
- <div class="overflow-auto mt-2 p-3 shadow-lg rounded-3 col-12 col-md-12 col-sm-12"> 
+ <div class="overflow-auto mt-4 p-3 shadow-lg rounded-3 col-12 col-md-12 col-sm-12"> 
      <h1 class="mt-2">Update Order Status</h1>
     <table class="table mt-3">
         <thead>
@@ -52,8 +52,59 @@
   
         </tbody>
     </table>
+</div>
+
+
+
+
+<div class="overflow-auto mt-5 mb-3 p-3 shadow-lg rounded-3 col-12 col-md-12 col-sm-12"> 
+     <h1 class="mt-2">Order Items</h1>
+    <table class="table mt-3">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Name</th>
+                <th>Spiciness</th>
+                <th>Size</th>
+                 <th>Quantity</th>
+                <th>Cost</th>
+               
+                
+
+
+            </tr>
+        </thead>
+
+        <tbody>
+           {{#each orderItems}}
+        
+           
+            <tr>
+                <td><img src="{{this.variant.image_url}}" width="100"  class="img-fluid"/></td>
+                <td>{{this.variant.product.name}}</td>
+                <td>{{this.variant.spiciness.spiciness}}</td>
+                <td>{{this.variant.size.size}}</td>
+                  <td>{{this.quantity}}</td>
+                   <td>{{divide this.variant.cost 100}}</td>
+               
+                                    {{!-- </div>
+                                </form>
+                            </td> --}}
+                {{!-- <td>
+                    <input type="submit" value="Update" class="btn btn-dark my-auto"/>
+
+                </td> --}}
+            </tr>
+   {{/each}}
+        </tbody>
+    </table>
 
 </div>
+
+
+
+
+
    </div>
 
 

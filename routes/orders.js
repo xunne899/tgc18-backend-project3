@@ -22,17 +22,17 @@ router.get("/", async (req, res) => {
         const customer = await getCustomerEmail(form.data.email);
         console.log(customer);
 
-        customer ?  query.where("customer_id", "=", customer.get("id")) :  query.where('customer_id', '=', '')
+        customer ? query.where("customer_id", "=", customer.get("id")) : query.where("customer_id", "=", "");
         // if (customer) {
         //   query.where("customer_id", "=", customer.get("id"));
         // }else {
         //     query.where('customer_id', '=', '')
         // }
-    }
-    //   if (form.data.customer_email) {
-    //     searchQuery.query('join', 'customers', 'customers.id', 'customer_id')
-    //         .where('email', 'like', `%${form.data.customer_email}%`)
-    // }
+      }
+      //   if (form.data.customer_email) {
+      //     searchQuery.query('join', 'customers', 'customers.id', 'customer_id')
+      //         .where('email', 'like', `%${form.data.customer_email}%`)
+      // }
 
       if (form.data.order_date) {
         let orderDate = new Date(form.data.order_date);
@@ -65,6 +65,7 @@ router.get("/", async (req, res) => {
         return order.orderStatus.order_status === "Paid";
       });
       const numberFound = orderlist.toJSON().length;
+      console.log("order num=>", numberFound);
       res.render("orders/index", {
         form: form.toHTML(bootstrapField),
         numberFound,
@@ -87,9 +88,12 @@ router.get("/", async (req, res) => {
       const successful = orderlist.toJSON().filter((order) => {
         return order.orderStatus.order_status === "Paid";
       });
+      const numberFound = orderlist.toJSON().length;
+      console.log("order num=>", numberFound);
       console.log("show success", successful);
       res.render("orders/index", {
         form: form.toHTML(bootstrapField),
+        numberFound,
         resultsNum,
         pending,
         successful,
@@ -102,14 +106,14 @@ router.get("/", async (req, res) => {
 router.get("/:order_id/item", async (req, res) => {
   // const services = new serviceLayer(req.params.order_id);
   const order = await serviceLayer.getOrderByOrderId(req.params.order_id);
-  // const orderItems = await serviceLayer.getOrderItemByOrderId(req.params.order_id);
+  const orderItems = await serviceLayer.getOrderItemByOrderId(req.params.order_id);
   const statusUpdateForm = createStatusForm(await serviceLayer.getAllStatuses());
 
   statusUpdateForm.fields.order_status_id.value = order.get("order_status_id");
 
   res.render("orders/items_order", {
     order: order.toJSON(),
-    // orderItems: orderItems.toJSON(),
+    orderItems: orderItems.toJSON(),
     form: statusUpdateForm.toHTML(bootstrapField),
   });
 });

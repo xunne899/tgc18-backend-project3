@@ -43,13 +43,14 @@ router.post("/login", async function (req, res) {
 
     const refreshToken = generateAccessToken(customer.get("username"), customer.get("id"), customer.get("email"), process.env.REFRESH_TOKEN_SECRET, "3d");
     // Access token should be in react state
-
+    res.status(200);
     res.json({
       accessToken: accessToken,
       refreshToken: refreshToken,
     });
   } else {
     // error
+
     res.status(401);
     res.json({
       error: "Invalid email or password",
@@ -108,8 +109,13 @@ router.post("/register", async function (req, res) {
   //   contact_number,
   // });
   const customer = new Customer({
-    name, username, email, password, contact_number, created_date: new Date()
-  })
+    name,
+    username,
+    email,
+    password,
+    contact_number,
+    created_date: new Date(),
+  });
   await customer.save();
   console.log(customer);
   // res.json({
@@ -128,9 +134,17 @@ router.post("/register", async function (req, res) {
   // }
 });
 
-router.get("/profile", checkIfAuthenticatedJWT, function (req, res) {
-  const customer = req.customer;
-  res.json(customer);
+router.get("/profile", checkIfAuthenticatedJWT, async function (req, res) {
+  const jwtInfo = req.customer; // comes from jwt processing
+  console.log("Profile JWT=>", jwtInfo);
+  if (jwtInfo == undefined) {
+    return;
+    // res.status(401);
+    //res.json({ error: "User is not logged in!" });
+  }
+  const customerInfo = await dataLayer.getCustomerById(jwtInfo.id);
+  console.log(customerInfo.toJSON());
+  res.json({ profile: customerInfo.toJSON() });
 });
 
 // this route to get a new access token

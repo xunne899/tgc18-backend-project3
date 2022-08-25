@@ -45,7 +45,7 @@ const { createLoginForm,  bootstrapField } = require("../forms");
               username: user.get("username"),
               email: user.get("email"),
             };
-            req.flash("success_messages", "Welcome back, " + user.get("username"));
+            // req.flash("success_messages", "Welcome back, " + user.get("username"));
             res.redirect("/products");
           } else {
             req.flash("error_messages", "Invalid username or password. Please try again.");

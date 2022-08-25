@@ -5,6 +5,7 @@
  <div class="overflow-auto mt-3 p-3 shadow-lg rounded-3 col-12 col-md-12 col-sm-12"> 
 <h1 class="mt-2">Update Variant</h1>
 <form method="POST">
+   
      {{{variantForm}}}
            <!-- 1. shows the image if exists -->
     <div>     
@@ -15,10 +16,11 @@
         {{/if}}
     </div>
       <div>
-           <a href="#" class="btn btn-dark mt-3" id="upload_widget">Upload</a>
+           <a href="#" class="btn btn-dark mt-3" id="upload_widget"><i class='fa-solid fa-upload'></i> Upload Image</a>
     </div>
     <input type="submit" value="Update" class="btn btn-dark mt-3"/>
     <a href="javascript:history.back()" class="btn btn-dark mt-3">Cancel</a>
+        <input type="hidden" value="{{csrfToken}}" name="_csrf"/>
 </form>
 </div>
 </div>

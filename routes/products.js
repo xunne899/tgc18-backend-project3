@@ -281,7 +281,7 @@ router.post("/:product_id/update", async (req, res) => {
       let toRemoveIngredient = existingIngredientIds.filter((id) => ingredientIds.includes(id) === false);
       await product.ingredients().detach(toRemoveIngredient);
       await product.ingredients().attach(ingredientIds);
-
+      req.flash("success_messages", `Product has been updated`);
       res.redirect("/products");
     },
     error: async (form) => {
@@ -373,7 +373,7 @@ router.post("/:product_id/variant/create", checkIfAuthenticated, async function 
 
       // console.log(form.data);
       await variant.save();
-      req.flash("success_messages", `New Variant  has been created`);
+      req.flash("success_messages", `New Variant has been created`);
       res.redirect(`/products/${req.params.product_id}/variant`);
 
       // variantForm: variantForm.toHTML(bootstrapField),

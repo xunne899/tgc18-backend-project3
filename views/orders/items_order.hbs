@@ -2,7 +2,7 @@
 {{#block 'content'}}
      <div class="row" id="productTable">
  <div class="overflow-auto mt-4 p-3 shadow-lg rounded-3 col-12 col-md-12 col-sm-12"> 
-     <h1 class="mt-2">Update Order Status</h1>
+     <h2 class="mt-2">Update Order Status</h2>
     <table class="table mt-3">
         <thead>
             <tr>
@@ -39,7 +39,7 @@
                                     {{!-- <input type="submit" value="Update" class="btn btn-dark mt-3"> --}}
                                      <td>
                                      <input type="submit" value="Update" class="btn btn-dark my-auto"/>
-
+                                       <input type="hidden" value="{{csrfToken}}" name="_csrf"/>
                                      </td>
                                     </div>
                                 </form>
@@ -58,7 +58,10 @@
 
 
 <div class="overflow-auto mt-5 mb-3 p-3 shadow-lg rounded-3 col-12 col-md-12 col-sm-12"> 
-     <h1 class="mt-2">Order Items</h1>
+  <div class="d-flex justify-content-between mt-2">
+    <h2>Order Items</h2>
+    <a href="{{order.receipt_url}}" class="btn btn-dark btn-sm d-flex align-items-center justy-content-center mt-2" style="height:30px;width:90px" target="_blank">Get Receipt</a>
+</div>
     <table class="table mt-3">
         <thead>
             <tr>

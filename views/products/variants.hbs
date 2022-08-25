@@ -3,7 +3,7 @@
 {{#block 'content'}}
 {{!-- <h3 class="mt-4">Products</h3> --}}
 
-  <div class="row">
+  <div class="row " id="productTable">
  <div class="overflow-auto mt-3 p-3 shadow-lg rounded-3 col-12 col-md-12 col-sm-12"> 
      <h2 > {{product.name}}  </h2>
                 <img src="{{product.image_url}}" style=" width:300px" class="img-fluid"/>
@@ -29,7 +29,7 @@
                
 {{!--      
 </table> --}}
-  <div class="row mt-3 mb-3">
+  <div class="row mt-3 mb-3 " id="productTable">
  <div class="overflow-auto mt-3 p-3 shadow-lg rounded-3 col-12 col-md-12 col-sm-12"> 
    <div class="d-flex justify-content-between mt-2">
     <h3 >Variants</h3>
@@ -79,7 +79,7 @@
                        {{!-- <br> --}}
                     {{!-- <a href="/products/{{product.id}}/variant/create" class="ms-1" ><i class="fa fa-plus " style="font-size:23px;color:black"></i></a> --}}
                        <a href="/products/{{product.id}}/variant/{{this.id}}/update"><i class="fa fa-edit" style="font-size:23px;color:black"></i></a>
-                       <a href="/products/{{product.id}}/variant/{{this.id}}/delete"><i class="fa fa-trash " style="font-size:23px;color:black"></i></a>
+                       <a href="/products/{{product.id}}/variant/{{this.id}}/delete" data-product-id="{{this.product_id}}" data-id="{{this.id}}" data-name="{{this.id}}"><i class="fa fa-trash delete-ntc" style="font-size:23px;color:black"  data-product-id="{{this.product_id}}" data-id="{{this.id}}" data-name="{{this.id}}"></i></a>
                        <a href="/cart/{{this.id}}/add" class="btn btn-secondary btn-sm ms-2 ">Add to cart</a>
                   </td>
                    <td></td>
@@ -135,6 +135,37 @@
     document.getElementById("upload_widget").addEventListener("click", function () {
         myWidget.open();
     }, false);
+</script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+  let deleteNtc = document.querySelectorAll('.delete-ntc');
+  for (let d of deleteNtc) {
+    d.addEventListener('click', async function(evt){
+        evt.preventDefault();  
+        console.log(evt.target.dataset);
+        
+        const result = await Swal.fire({
+            'title':`Confirm delete Variant ID : ${evt.target.dataset.id}?`,
+            'icon': 'warning',
+            'confirmButtonText': 'Yes',
+            'cancelButtonText':'Cancel',
+            'showCloseButton': true,
+            'showCancelButton': true
+        })  
+        if (result.isConfirmed) {
+            // process the delete
+            const form = document.createElement('form');
+            form.method = "POST"; // <form method="POST">...</form>
+            // form.action = `/products/${event.target.dataset.id}/delete`
+           form.action = "/products/" + evt.target.dataset.productId +  "/variant/" + evt.target.dataset.id + "/delete";
+             form.innerHTML ='<input type = "hidden" value="{{csrfToken}}" name="_csrf"/>'
+            document.querySelector('body').appendChild(form);
+            form.submit(); // submit the form with a function call
+            
+        }
+   
+    })
+  }
 </script>
 
 {{/block}}

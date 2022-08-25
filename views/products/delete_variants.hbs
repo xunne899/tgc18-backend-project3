@@ -9,7 +9,7 @@
         <input type="submit" class="btn btn-danger" value="Yes"/>
         {{!-- <a href="javascript:history.back()" class="btn btn-success">No</a> --}}
         <a href="/products/{{product.id}}/variant" class="btn btn-success">No</a>
-    
+        <input type="hidden" value="{{csrfToken}}" name="_csrf"/>
         {{!-- <a href=`/products/${req.params.product_id}/variant` class="btn btn-success">No</a> --}}
        
     </div>

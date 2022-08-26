@@ -57,14 +57,7 @@ router.get("/", async (req, res) => {
         query.where("packaging_id", "=", form.data.packaging_id);
       }
       if (form.data.cuisine_style) {
-        // first arg: sql clause
-        // second arg: which table?
-        // third arg: one of the keys
-        // fourth arg: the key to join with
-        // eqv. SELECT * from products join products_tags ON
-        //              products.id = product_id
-        //              where tag_id IN (<selected tags ID>)
-        // this method looks for OR
+       
         query.query("join", "cuisine_styles_products", "products.id", "product_id").where("cuisine_style_id", "in", form.data.cuisine_style.split(","));
       }
       if (form.data.vegan == "Yes") {
@@ -105,7 +98,18 @@ router.get("/", async (req, res) => {
         form: searchForm.toHTML(bootstrapField),
       });
     },
-    error: async function () {},
+    error: async function () {
+      const products = await query.fetch({
+        withRelated: ["type", "country", "packaging", "cuisine_styles", "ingredients"],
+      });
+      const numberFound = products.toJSON().length;
+      res.render("products/index", {
+        products: products.toJSON(),
+        numberFound,
+        form: searchForm.toHTML(bootstrapField),
+      });
+
+    },
   });
 });
 
@@ -177,18 +181,20 @@ router.post("/create", checkIfAuthenticated, async function (req, res) {
         cloudinaryPreset: process.env.CLOUDINARY_UPLOAD_PRESET,
       });
     },
+    empty: async function (form) {
+      res.render("products/create", {
+        form: form.toHTML(bootstrapField),
+        cloudinaryName: process.env.CLOUDINARY_NAME,
+        cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
+        cloudinaryPreset: process.env.CLOUDINARY_UPLOAD_PRESET,
+      });
+    }
   });
 });
 
 router.get("/:product_id/update", async (req, res) => {
   // retrieve the product
-  // const productId = req.params.product_id;
-  // const product = await Product.where({
-  //   id: parseInt(productId),
-  // }).fetch({
-  //   require: true,
-  //   withRelated: ["cuisine_styles", "ingredients"],
-  // });
+
   const product = await dataLayer.getProductByID(req.params.product_id);
   // fetch all values
   const types = await dataLayer.getAllTypes();
@@ -248,12 +254,6 @@ router.post("/:product_id/update", async (req, res) => {
   // fetch the product that we want to update
 
   const product = await dataLayer.getProductByID(req.params.product_id);
-  // const product = await Product.where({
-  //   id: req.params.product_id,
-  // }).fetch({
-  //   require: true,
-  //   withRelated: ["cuisine_styles", "ingredients"],
-  // });
 
   // process the form
   const productForm = createProductForm(types, countries, ingredients, packagings, cuisine_styles);
@@ -288,6 +288,18 @@ router.post("/:product_id/update", async (req, res) => {
       res.render("products/update", {
         form: form.toHTML(bootstrapField),
         product: product.toJSON(),
+        cloudinaryName: process.env.CLOUDINARY_NAME,
+        cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
+        cloudinaryPreset: process.env.CLOUDINARY_UPLOAD_PRESET,
+      });
+    },
+    empty: async (form) => {
+      res.render("products/update", {
+        form: form.toHTML(bootstrapField),
+        product: product.toJSON(),
+        cloudinaryName: process.env.CLOUDINARY_NAME,
+        cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
+        cloudinaryPreset: process.env.CLOUDINARY_UPLOAD_PRESET,
       });
     },
   });
@@ -297,11 +309,7 @@ router.get("/:product_id/delete", async (req, res) => {
   // fetch the product that we want to delete
 
   const product = await dataLayer.getProductByID(req.params.product_id);
-  // const product = await Product.where({
-  //   id: req.params.product_id,
-  // }).fetch({
-  //   require: true,
-  // });
+
 
   res.render("products/delete", {
     product: product.toJSON(),
@@ -334,18 +342,11 @@ router.get("/:product_id/variant/create", checkIfAuthenticated, async (req, res)
 
   const spiciness = await dataLayer.getAllSpiciness();
   spiciness.unshift([0, "---- Select One ----"]);
-  // const variants = await dataLayer.getVariantsByProductId(req.params.product_id);
-  // const products = await dataLayer.getAllProducts();
-  // const product = await dataLayer.getProductByID(req.params.product_id);
 
   const variantForm = createVariantForm(spiciness, sizes);
 
   res.render("products/create_variants", {
-    // variants: variants.toJSON(),
-    // product: product.toJSON(),
     variantForm: variantForm.toHTML(bootstrapField),
-    // const product = await dataLayer.getProductByID(req.params.product_id);
-    //variantForm: variantForm.toHTML(bootstrapField),
     cloudinaryName: process.env.CLOUDINARY_NAME,
     cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
     cloudinaryPreset: process.env.CLOUDINARY_UPLOAD_PRESET,
@@ -364,7 +365,6 @@ router.post("/:product_id/variant/create", checkIfAuthenticated, async function 
       const variant = new Variant();
       variant.set("stock", form.data.stock);
       variant.set("cost", form.data.cost);
-      // variant.set("product_id", req.params.product_id);
       variant.set("product_id", req.params.product_id);
       variant.set("image_url", form.data.image_url);
       variant.set("thumbnail_url", form.data.thumbnail_url);
@@ -382,6 +382,18 @@ router.post("/:product_id/variant/create", checkIfAuthenticated, async function 
       res.render("products/create_variants", {
         product: product.toJSON(),
         variantForm: form.toHTML(bootstrapField),
+        cloudinaryName: process.env.CLOUDINARY_NAME,
+        cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
+        cloudinaryPreset: process.env.CLOUDINARY_UPLOAD_PRESET,
+      });
+    },
+    empty: async function (form) {
+      res.render("products/create_variants", {
+        product: product.toJSON(),
+        variantForm: form.toHTML(bootstrapField),
+        cloudinaryName: process.env.CLOUDINARY_NAME,
+        cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
+        cloudinaryPreset: process.env.CLOUDINARY_UPLOAD_PRESET,
       });
     },
   });
@@ -415,8 +427,6 @@ router.get("/:product_id/variant/:variant_id/update", async (req, res) => {
   res.render("products/update_variants", {
     variantForm: variantForm.toHTML(bootstrapField),
     variant: variant.toJSON(),
-    // product: product.toJSON(),
-    // 2 - send to the HBS file the cloudinary information
     cloudinaryName: process.env.CLOUDINARY_NAME,
     cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
     cloudinaryPreset: process.env.CLOUDINARY_UPLOAD_PRESET,
@@ -449,6 +459,15 @@ router.post("/:product_id/variant/:variant_id/update", async (req, res) => {
         cloudinaryPreset: process.env.CLOUDINARY_UPLOAD_PRESET,
       });
     },
+    empty: async (form) => {
+      res.render("products/update_variants", {
+        variant: variant.toJSON(),
+        variantForm: form.toHTML(bootstrapField),
+        cloudinaryName: process.env.CLOUDINARY_NAME,
+        cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
+        cloudinaryPreset: process.env.CLOUDINARY_UPLOAD_PRESET,
+      });
+    },
   });
 });
 
@@ -456,11 +475,6 @@ router.get("/:product_id/variant/:variant_id/delete", async (req, res) => {
   // fetch the product that we want to delete
   const product = await dataLayer.getProductByID(req.params.product_id);
   const variant = await dataLayer.getVariantById(req.params.variant_id);
-  // const product = await Product.where({
-  //   id: req.params.product_id,
-  // }).fetch({
-  //   require: true,
-  // });
 
   res.render("products/delete_variants", {
     variant: variant.toJSON(),

@@ -116,13 +116,7 @@ const createProductForm = (types, countries, ingredients, packagings, cuisine_st
         ["No", "No"],
       ],
       widget: widgets.select(),
-      // cssClasses: {
-      //   label: ["form-check-label", "my-check-label"],
-      // },
-      // choices: { 1: "Yes", 2: "No" },
-      // widget: widgets.multipleRadio({
-      //   classes: ["form-check-input"],
-      // }),
+
     }),
     halal: fields.string({
       required: true,
@@ -136,18 +130,9 @@ const createProductForm = (types, countries, ingredients, packagings, cuisine_st
         ["No", "No"],
       ],
       widget: widgets.select(),
-      // cssClasses: {
-      //   label: ["form-check-label", "my-check-label"],
-      // },
-      // choices: { yes: "Yes", no: "No" },
-      // widget: widgets.multipleRadio({
-      //   classes: ["form-check-input", "my-check-input"],
-      // }),
+
     }),
-    // image_url: fields.string({
-    //   required: true,
-    //   errorAfterField: true,
-    // }),
+
     image_url: fields.string({
       widget: widgets.hidden(),
     }),
@@ -195,16 +180,7 @@ const createVariantForm = (spiciness, sizes) => {
       //   label: ["form-label", "mt-3"],
       // },
     }),
-    // product_id: fields.string({
-    //     label: 'Product',
-    //     required: true,
-    //     errorAfterField: true,
-    //     cssClasses: {
-    //         label: ['form-label', 'mt-2']
-    //     },
-    //     widget: widgets.select(),
-    //     choices: products
-    // }),
+ 
     spiciness_id: fields.string({
       label: "Spiciness",
       required: true,

@@ -23,7 +23,6 @@ router.get("/", async (req, res) => {
 
   const cuisine_styles = await dataLayer.getAllCuisineStyles();
 
-  // const ingredients = await dataLayer.getAllIngredients();
 
   // create an instance of the search form
   const searchForm = createSearchForm(types, countries, packagings, cuisine_styles);

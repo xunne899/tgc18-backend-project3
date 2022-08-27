@@ -99,9 +99,9 @@ router.post("/", async (req, res) => {
     query.where("packaging_id", "=", req.body.packaging_id);
   }
 
-  /*
-  if (form != undefined) {
-    if (form.data.cuisine_style) {
+  
+  if (req.body != undefined) {
+    if (req.body.cuisine_style) {
       // first arg: sql clause
       // second arg: which table?
       // third arg: one of the keys
@@ -113,7 +113,7 @@ router.post("/", async (req, res) => {
       query.query("join", "cuisine_styles_products", "products.id", "product_id").where("cuisine_style_id", "in", req.body.cuisine_style.split(","));
     }
 
-    if (form.data.ingredient) {
+    if (req.body.ingredient) {
       // first arg: sql clause
       // second arg: which table?
       // third arg: one of the keys
@@ -125,7 +125,7 @@ router.post("/", async (req, res) => {
       query.query("join", "ingredients_products", "products.id", "product_id").where("ingredient_id", "in", req.body.ingredient.split(","));
     }
   }
-  */
+  
 
   if (req.body.vegan == "Yes") {
     query.where("vegan", "=", "Yes");

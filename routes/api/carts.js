@@ -30,6 +30,19 @@ router.post("/:variant_id/add", async function (req, res) {
   res.redirect("/cart/");
 });
 
+router.post("/:variant_id/update", async function (req, res) {
+  const userId = req.session.user.id;
+  const variantId = req.params.variant_id;
+  if (req.body.newQuantity > 0) {
+    await cartServices.updateQuantity(userId, variantId, req.body.newQuantity);
+    req.flash("success_messages", "New Quantity updated");
+    res.redirect("/cart");
+  } else {
+    req.flash("error_messages", "Quantity must be > 0");
+    res.redirect("/cart/");
+  }
+});
+
 router.put("/:variant_id/update", async function (req, res) {
   const userId = req.session.user.id;
   const variantId = req.params.variant_id;

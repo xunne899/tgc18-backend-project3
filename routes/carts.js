@@ -1,6 +1,6 @@
 const cartServices = require("../services/carts");
 const express = require("express");
-const { checkIfAuthenticated } = require("../../middlewares");
+const { checkIfAuthenticated } = require("../middlewares");
 // const { Router } = require('express')
 
 const router = express.Router();

@@ -6,7 +6,9 @@ const { checkIfAuthenticated } = require("../../middlewares");
 const router = express.Router();
 
 router.get("/", async function (req, res) {
-  const cartItems = await cartServices.getCart(req.session.user.id);
+  const jwtInfo = req.customer; // comes from jwt processing
+  const userId = jwtInfo.id;
+  const cartItems = await cartServices.getCart(userId);
   res.status(200);
   res.json({
     cartItems: cartItems.toJSON(),
@@ -17,7 +19,8 @@ router.get("/", async function (req, res) {
 });
 
 router.post("/:variant_id/add", async function (req, res) {
-  const userId = req.session.user.id;
+  const jwtInfo = req.customer; // comes from jwt processing
+  const userId = jwtInfo.id;
   const variantId = req.params.variant_id;
   const variantQty = req.body.quantity;
   await cartServices.addToCart(userId, variantId, variantQty);
@@ -28,7 +31,8 @@ router.post("/:variant_id/add", async function (req, res) {
 });
 
 router.put("/:variant_id/update", async function (req, res) {
-  const userId = req.session.user.id;
+  const jwtInfo = req.customer; // comes from jwt processing
+  const userId = jwtInfo.id;
   const variantId = req.params.variant_id;
   if (req.body.newQuantity > 0) {
     await cartServices.updateQuantity(userId, variantId, req.body.newQuantity);
@@ -45,7 +49,9 @@ router.put("/:variant_id/update", async function (req, res) {
 });
 
 router.delete("/:variant_id/delete", async function (req, res) {
-  await cartServices.removeCartItem(req.session.user.id, req.params.variant_id);
+  const jwtInfo = req.customer; // comes from jwt processing
+  const userId = jwtInfo.id;
+  await cartServices.removeCartItem(userId, req.params.variant_id);
   res.status(200);
   res.json({
     statusMessage: "Item has been removed from cart",

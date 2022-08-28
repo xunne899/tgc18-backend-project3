@@ -12,6 +12,15 @@ router.get("/", async function (req, res) {
   });
 });
 
+router.get("/:variant_id/add", async function (req, res) {
+  const userId = req.session.user.id;
+  const variantId = req.params.variant_id;
+  const variantQty = 1;
+  await cartServices.addToCart(userId, variantId, variantQty);
+  req.flash("success_messages", "Item Added to cart successfully");
+  res.redirect("/cart/");
+});
+
 router.post("/:variant_id/add", async function (req, res) {
   const userId = req.session.user.id;
   const variantId = req.params.variant_id;
@@ -32,6 +41,12 @@ router.put("/:variant_id/update", async function (req, res) {
     req.flash("error_messages", "Quantity must be > 0");
     res.redirect("/cart/");
   }
+});
+
+router.get("/:variant_id/delete", async function (req, res) {
+  await cartServices.removeCartItem(req.session.user.id, req.params.variant_id);
+  req.flash("success_messages", "Item has been removed from cart");
+  res.redirect("/cart/");
 });
 
 router.delete("/:variant_id/delete", async function (req, res) {

@@ -11,7 +11,7 @@
         <h5>Spiciness : {{this.variant.spiciness.spiciness}}</h5>
         <h5>Cost (In cents):{{this.variant.cost}}</h5>
         <h5>
-            <form method="POST" action="/cart/{{this.variant_id}}/update">
+            <form method="PUT" action="/cart/{{this.variant_id}}/update">
                 <input type="hidden" name="_csrf" value="{{../csrfToken}}" />
                 Quantity: <input type="text" style="width:30px" value="{{this.quantity}}"
                     name="newQuantity" />

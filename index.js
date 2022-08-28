@@ -321,11 +321,11 @@ app.use("/orders", [checkIfAuthenticated], orderPathRoutes);
 app.use("/checkout", checkoutAPIPathRoutes);
 app.use("/cart", [checkIfAuthenticated], cartAPIPathRoutes);
 
-app.use("/api/carts", [checkIfAuthenticatedJWT], express.json(), api.carts);
+app.use("/api/carts", express.json(),checkIfAuthenticatedJWT, api.carts);
 app.use("/api/customers", express.json(), api.customers);
 app.use("/api/products", express.json(), api.products);
-app.use("/api/orders", [checkIfAuthenticatedJWT], express.json(), api.orders);
-app.use("/api/checkout", [checkIfAuthenticatedJWT], express.json(), api.checkout);
+app.use("/api/orders", express.json(), checkIfAuthenticatedJWT, api.orders);
+app.use("/api/checkout", express.json(), checkIfAuthenticatedJWT, api.checkout);
 
 // app.use("/api/carts", express.json(), api.carts);
 

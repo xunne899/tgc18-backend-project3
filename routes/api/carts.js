@@ -12,15 +12,16 @@ router.get("/", async function (req, res) {
   });
 });
 
-router.get("/:variant_id/add", async function (req, res) {
+router.post("/:variant_id/add", async function (req, res) {
   const userId = req.session.user.id;
   const variantId = req.params.variant_id;
-  await cartServices.addToCart(userId, variantId, 1);
+  const variantQty = req.body.quantity;
+  await cartServices.addToCart(userId, variantId, variantQty);
   req.flash("success_messages", "Item Added to cart successfully");
   res.redirect("/cart/");
 });
 
-router.post("/:variant_id/update", async function (req, res) {
+router.put("/:variant_id/update", async function (req, res) {
   const userId = req.session.user.id;
   const variantId = req.params.variant_id;
   if (req.body.newQuantity > 0) {
@@ -33,8 +34,8 @@ router.post("/:variant_id/update", async function (req, res) {
   }
 });
 
-router.get("/:variant_id/delete", async function (req, res) {
-  await cartServices.removeSingleCartItem(req.session.user.id, req.params.variant_id);
+router.delete("/:variant_id/delete", async function (req, res) {
+  await cartServices.removeCartItem(req.session.user.id, req.params.variant_id);
   req.flash("success_messages", "Item has been removed from cart");
   res.redirect("/cart/");
 });

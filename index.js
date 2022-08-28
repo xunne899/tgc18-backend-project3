@@ -193,27 +193,18 @@ const FileStore = require("session-file-store")(session);
 const csrf = require("csurf");
 require("dotenv").config();
 
-
 const app = express();
-
 
 app.set("view engine", "hbs");
 
-
-
-
-
 app.use(express.static("public"));
-
 
 wax.on(hbs.handlebars);
 wax.setLayoutPath("./views/layouts");
 
 const PORT = process.env.PORT || 3000;
 
-
 app.use(cors());
-
 
 app.use(
   express.urlencoded({
@@ -221,22 +212,18 @@ app.use(
   })
 );
 
-
 app.use(
   session({
-    store: new FileStore(), 
-    secret: process.env.SESSION_SECRET, 
-    resave: false, 
-    saveUninitialized: true, 
+    store: new FileStore(),
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true,
   })
 );
 
-
 app.use(flash());
 
-
 app.use(function (req, res, next) {
-
   res.locals.success_messages = req.flash("success_messages");
   res.locals.error_messages = req.flash("error_messages");
   next();
@@ -251,10 +238,8 @@ app.use(function (req, res, next) {
   }
 });
 
-
 app.use(function (err, req, res, next) {
   if (err && err.code === "EBADCSRFTOKEN") {
-
     req.flash("error_messages", "The form has expired. Please try again");
 
     res.redirect("back");
@@ -263,21 +248,17 @@ app.use(function (err, req, res, next) {
   }
 });
 
-
 app.use(function (req, res, next) {
-
   if (req.csrfToken) {
     res.locals.csrfToken = req.csrfToken();
   }
   next();
 });
 
-
 app.use(function (req, res, next) {
   res.locals.user = req.session.user;
   next();
 });
-
 
 app.use(function (req, res, next) {
   res.locals.cloudinaryName = process.env.CLOUDINARY_NAME;
@@ -293,7 +274,7 @@ const cloudinaryPathRoutes = require("./routes/cloudinary");
 const loginPathRoutes = require("./routes/login");
 const orderPathRoutes = require("./routes/orders");
 
-const cartAPIPathRoutes = require("./routes/api/carts");
+const cartAPIPathRoutes = require("./routes/carts");
 const checkoutAPIPathRoutes = require("./routes/api/checkout");
 // const productAPIPathRoutes = require("./routes/api/products");
 // const orderAPIPathRoutes = require("./routes/api/orders");
@@ -321,7 +302,7 @@ app.use("/orders", [checkIfAuthenticated], orderPathRoutes);
 app.use("/checkout", checkoutAPIPathRoutes);
 app.use("/cart", [checkIfAuthenticated], cartAPIPathRoutes);
 
-app.use("/api/carts", express.json(),checkIfAuthenticatedJWT, api.carts);
+app.use("/api/carts", express.json(), checkIfAuthenticatedJWT, api.carts);
 app.use("/api/customers", express.json(), api.customers);
 app.use("/api/products", express.json(), api.products);
 app.use("/api/orders", express.json(), checkIfAuthenticatedJWT, api.orders);

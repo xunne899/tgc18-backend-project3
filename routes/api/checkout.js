@@ -127,11 +127,16 @@ router.get("/", checkIfAuthenticated, async function (req, res) {
   // step 3: register the payment session
   let stripeSession = await stripe.checkout.sessions.create(payment);
 
-  // step 4: use stripe to pay
-  res.render("checkout/checkout", {
+  // step 4: use stripe to pay'
+  res.status(200);
+  res.json({
     sessionId: stripeSession.id,
     publishableKey: process.env.STRIPE_PUBLISHABLE_KEY,
   });
+  // res.render("checkout/checkout", {
+  //   sessionId: stripeSession.id,
+  //   publishableKey: process.env.STRIPE_PUBLISHABLE_KEY,
+  // });
 });
 
 router.get("/success", function (req, res) {

@@ -21,7 +21,10 @@ router.get("/", checkIfAuthenticated, async function (req, res) {
   // step 1: create the line items
   // one line in the invoice is one line item4
   // each item in the shopping cart will become line item
-  const selecteditem = await cartServices.getCart(req.session.user.id);
+  // const selecteditem = await cartServices.getCart(req.session.user.id);
+  const jwtInfo = req.customer; // comes from jwt processing
+  const userId = jwtInfo.id;
+  const selecteditem = await cartServices.getCart(userId);
 
   let lineItems = [];
   let orderList = []; // orderList -- and we are going store for
@@ -122,11 +125,11 @@ router.get("/", checkIfAuthenticated, async function (req, res) {
     },
   };
 
-  console.log("Hello");
+  console.log("stripeSession Hello");
   transactionData = {};
   // step 3: register the payment session
   let stripeSession = await stripe.checkout.sessions.create(payment);
-
+  console.log("stripeSession Completed");
   // step 4: use stripe to pay'
   res.status(200);
   res.json({

@@ -121,7 +121,7 @@ router.get("/", async function (req, res) {
     // but the value MUST BE A STRING
     metadata: {
       orders: orderListJsonStr,
-      user_id: req.session.user.id,
+      user_id: userId,
     },
   };
 

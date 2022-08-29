@@ -174,6 +174,7 @@ router.post("/refresh", async function (req, res) {
       if (!err) {
         // generate a new access token and send back
         const accessToken = generateAccessToken(tokenData.userName, tokenData.id, tokenData.email, process.env.TOKEN_SECRET, "1h");
+        res.status(200);
         res.json({
           accessToken,
         });
@@ -203,6 +204,7 @@ router.post("/logout", async function (req, res) {
         token.set("token", refreshToken);
         token.set("date_created", new Date());
         await token.save();
+        res.status(200);
         res.json({
           message: "Logged out",
         });

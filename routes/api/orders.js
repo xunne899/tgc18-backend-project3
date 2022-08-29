@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { getOrderByCustomerId, getallOrders } = require("../../dal/orders");
+const { getOrderByCustomerId, getOrderByOrderId } = require("../../dal/orders");
 
 router.get("/", async (req, res) => {
   try {
@@ -16,6 +16,17 @@ router.get("/", async (req, res) => {
     });
     res.status(200);
     res.json({ pendingOrder: pendingOrders, completedOrder: successfulOrders });
+  } catch {
+    res.sendStatus(500);
+  }
+});
+
+router.get("/:order_id", async (req, res) => {
+  try {
+    const orderId = req.params.order_id;
+    const orderlist = await getOrderByOrderId(orderId);
+    res.status(200);
+    res.json(orderlist);
   } catch {
     res.sendStatus(500);
   }

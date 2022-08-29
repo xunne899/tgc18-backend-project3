@@ -12,7 +12,7 @@ const getOrderByOrderId = async (orderId) => {
 const getOrderByCustomerId = async (customerId) => {
   return await Order.collection()
     .where({
-      id: customerId,
+      customer_id: customerId,
     })
     .fetch({
       require: false,

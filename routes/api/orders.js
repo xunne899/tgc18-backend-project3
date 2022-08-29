@@ -6,9 +6,16 @@ router.get("/", async (req, res) => {
   try {
     const jwtInfo = req.customer; // comes from jwt processing
     const userId = jwtInfo.id;
-    const orders = await getOrderByCustomerId(userId);
+    const orderlist = await getOrderByCustomerId(userId);
+    const pendingOrders = orderlist.toJSON().filter((order) => {
+      // console.log(order.order_statuses);
+      return order.orderStatus.order_status !== "Paid";
+    });
+    const successfulOrders = orderlist.toJSON().filter((order) => {
+      return order.orderStatus.order_status === "Paid";
+    });
     res.status(200);
-    res.json(orders);
+    res.json({ pendingOrder: pendingOrders, completedOrder: successfulOrders });
   } catch {
     res.sendStatus(500);
   }

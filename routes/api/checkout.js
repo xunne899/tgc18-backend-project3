@@ -142,15 +142,15 @@ router.get("/", async function (req, res) {
   // });
 });
 
-router.get("/success", function (req, res) {
-  res.send(
-    "Payment Success: <a href='https://pay.stripe.com/receipts/payment/CAcaFwoVYWNjdF8xTFMxRzFHSFRYOTc2R1JmKJK1hJgGMgam9a_GXCg6LBYko_1AyqcSvp-kcnz6YGJXSKwVBfVgkKIsAV3Ki21AxFQovmr4HAJv7tMw'>Receipt URL</a>"
-  );
-});
+// router.get("/success", function (req, res) {
+//   res.send(
+//     "Payment Success: <a href='https://pay.stripe.com/receipts/payment/CAcaFwoVYWNjdF8xTFMxRzFHSFRYOTc2R1JmKJK1hJgGMgam9a_GXCg6LBYko_1AyqcSvp-kcnz6YGJXSKwVBfVgkKIsAV3Ki21AxFQovmr4HAJv7tMw'>Receipt URL</a>"
+//   );
+// });
 
-router.get("/cancelled", function (req, res) {
-  res.send("Payment cancelled");
-});
+// router.get("/cancelled", function (req, res) {
+//   res.send("Payment cancelled");
+// });
 
 // Webhook for Stripe
 // has to be POST -- 1) we are changing our database on based on payment info
@@ -213,15 +213,15 @@ router.post("/process_payment", express.raw({ type: "application/json" }), async
       console.log("Complete transactionData==>", transactionData);
       orderServices.addNewOrder(transactionData, orderList);
       cartServices.removeAllCartItems(metadata.user_id, orderList);
-
-      res.send({
+      res.status(200);
+      res.json({
         success: true,
       });
     } // checkout.session.completed ==> the payment is done
     // res.status(200);
   } catch (e) {
     console.log(e);
-    res.sendStatus(500);
+    res.status(500);
   }
 });
 

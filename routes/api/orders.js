@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const serviceLayer = require("../../services/orders");
 const { getOrderByCustomerId, getOrderByOrderId } = require("../../dal/orders");
 
 router.get("/", async (req, res) => {
@@ -24,9 +25,14 @@ router.get("/", async (req, res) => {
 router.get("/:order_id", async (req, res) => {
   try {
     const orderId = req.params.order_id;
-    const orderlist = await getOrderByOrderId(orderId);
+    const orderlist = await serviceLayer.getOrderByOrderId(orderId);
+    const orderItems = await serviceLayer.getOrderItemByOrderId(orderId);
+
     res.status(200);
-    res.json(orderlist);
+    res.json({
+      order: orderlist,
+      orderItems: orderItems,
+    });
   } catch {
     res.sendStatus(500);
   }

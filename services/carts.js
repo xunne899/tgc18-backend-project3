@@ -3,9 +3,9 @@ const cartDataLayer = require("../dal/carts");
 async function addToCart(customerId, productId, quantity) {
   const cartItem = await cartDataLayer.getCartByCustomerVariant(customerId, productId);
   if (!cartItem) {
-    await cartDataLayer.createCartItem(customerId, productId, quantity);
+    await cartDataLayer.createCartItem(customerId, productId, parseInt(quantity));
   } else {
-    await cartDataLayer.updateQuantity(customerId, productId, cartItem.get("quantity") + quantity);
+    await cartDataLayer.updateQuantity(customerId, productId, parseInt(cartItem.get("quantity")) + parseInt(quantity));
   }
   return true;
 }

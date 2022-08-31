@@ -190,7 +190,7 @@ router.post("/process_payment", express.raw({ type: "application/json" }), async
     //   transactionData["delivery_date"] = undefined;
     //   console.log("Charge transactionData==>", transactionData);
     // }
-    if (event.type == "checkout.session.completed") {
+    if (event.type == "checkout.session.completed" || event.type == 'checkout.session.async_payment_succeeded') {
       console.log("Event completed==>", event);
       const eventDataObject = event.data.object;
       // convert JsonStr back into list of javascript object

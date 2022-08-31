@@ -112,41 +112,37 @@ router.post("/register", async function (req, res) {
     name,
     username,
     email,
-    password : getHashedPassword(password),
+    password: getHashedPassword(password),
     contact_number,
     created_date: new Date(),
   });
-  if(customer){
-  await customer.save();
-  console.log(customer);
-  // res.json({
-  //   status: status,
-  //   data: data
-  // });
-  res.status(201);
-  res.json(customer);
-  }
-  else {
-    // error
+  try {
+    await customer.save();
+    console.log(customer);
+    // res.json({
+    //   status: status,
+    //   data: data
+    // });
+    res.status(201);
+    res.json(customer);
+  } catch (e) {
+    console.log(e);
 
-    res.status(401);
+    res.status(400);
     res.json({
       error: "Invalid input",
     });
   }
-})
+});
 
-
-
-
-  // } catch (haveError) {
-  //   console.log(fielderror);
-  // res.status(500);
-  // res.json({
-  //   check: "checks",
-  //   status: "Server error",
-  // });
-  // }
+// } catch (haveError) {
+//   console.log(fielderror);
+// res.status(500);
+// res.json({
+//   check: "checks",
+//   status: "Server error",
+// });
+// }
 // });
 
 router.get("/profile", checkIfAuthenticatedJWT, async function (req, res) {

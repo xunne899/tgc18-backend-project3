@@ -196,6 +196,16 @@ router.post("/process_payment", express.raw({ type: "application/json" }), async
       // convert JsonStr back into list of javascript object
       const metadata = eventDataObject.metadata;
       console.log("Metadata user_id=====>", metadata.user_id); // orderList and customer id
+      const paymentInformation = await Stripe.paymentIntents.retrieve(eventDataObject.payment_intent);
+
+      console.log("paymentIntents paymentInformation=====>", paymentInformation);
+      console.log("paymentInformation charges=====>", paymentInformation.charges.data);
+      const chargeId = paymentInformation.charges.data[0].id;
+      const charge = await Stripe.charges.retrieve(chargeId);
+      console.log("paymentIntents charge=====>", charge);
+
+      const shippingRate = await Stripe.shippingRates.retrieve(eventDataObject.shipping_rate);
+      console.log("shippingRate=====>", shippingRate);
 
       const orderList = JSON.parse(metadata.orders);
       console.log("Metadata orderList=====>", orderList); // orderList and customer id
@@ -210,14 +220,14 @@ router.post("/process_payment", express.raw({ type: "application/json" }), async
 
       //transactionData["payment_type"] = eventDataObject.payment_method_details.type;
       transactionData["receipt_url"] = ""; //eventDataObject.receipt_url;
-      // transactionData["billing_address_line1"] = eventDataObject.billing_details.address.line1;
-      // transactionData["billing_address_line2"] = eventDataObject.billing_details.address.line2 || "";
-      // transactionData["billing_address_postal"] = eventDataObject.billing_details.address.postal_code;
-      // transactionData["billing_address_country"] = eventDataObject.billing_details.address.country;
-      // transactionData["shipping_address_line1"] = eventDataObject.shipping.address.line1;
-      // transactionData["shipping_address_line2"] = eventDataObject.shipping.address.line2 || "";
-      // transactionData["shipping_address_postal"] = eventDataObject.shipping.address.postal_code;
-      // transactionData["shipping_address_country"] = eventDataObject.shipping.address.country;
+      transactionData["billing_address_line1"] = eventDataObject.customer_details.address.line1;
+      transactionData["billing_address_line2"] = eventDataObject.customer_details.address.line2 || "";
+      transactionData["billing_address_postal"] = eventDataObject.customer_details.address.postal_code;
+      transactionData["billing_address_country"] = eventDataObject.customer_details.address.country;
+      transactionData["shipping_address_line1"] = eventDataObject.shipping.address.line1;
+      transactionData["shipping_address_line2"] = eventDataObject.shipping.address.line2 || "";
+      transactionData["shipping_address_postal"] = eventDataObject.shipping.address.postal_code;
+      transactionData["shipping_address_country"] = eventDataObject.shipping.address.country;
       transactionData["shipping_option"] = "-";
       transactionData["delivery_date"] = undefined;
       //---

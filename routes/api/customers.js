@@ -116,6 +116,7 @@ router.post("/register", async function (req, res) {
     contact_number,
     created_date: new Date(),
   });
+  if(customer){
   await customer.save();
   console.log(customer);
   // res.json({
@@ -124,6 +125,20 @@ router.post("/register", async function (req, res) {
   // });
   res.status(201);
   res.json(customer);
+  }
+  else {
+    // error
+
+    res.status(401);
+    res.json({
+      error: "Invalid input",
+    });
+  }
+})
+
+
+
+
   // } catch (haveError) {
   //   console.log(fielderror);
   // res.status(500);
@@ -132,7 +147,7 @@ router.post("/register", async function (req, res) {
   //   status: "Server error",
   // });
   // }
-});
+// });
 
 router.get("/profile", checkIfAuthenticatedJWT, async function (req, res) {
   const jwtInfo = req.customer; // comes from jwt processing

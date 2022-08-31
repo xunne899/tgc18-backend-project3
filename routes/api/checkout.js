@@ -200,20 +200,27 @@ router.post("/process_payment", express.raw({ type: "application/json" }), async
       const orderList = JSON.parse(metadata.orders);
       console.log("Metadata orderList=====>", orderList); // orderList and customer id
       console.log("Payment Type ==>", eventDataObject.payment_method_types);
-//---
-      transactionData["payment_type"] = eventDataObject.payment_method_details.type;
-      transactionData["receipt_url"] = eventDataObject.receipt_url;
-      transactionData["billing_address_line1"] = eventDataObject.billing_details.address.line1;
-      transactionData["billing_address_line2"] = eventDataObject.billing_details.address.line2 || "";
-      transactionData["billing_address_postal"] = eventDataObject.billing_details.address.postal_code;
-      transactionData["billing_address_country"] = eventDataObject.billing_details.address.country;
-      transactionData["shipping_address_line1"] = eventDataObject.shipping.address.line1;
-      transactionData["shipping_address_line2"] = eventDataObject.shipping.address.line2 || "";
-      transactionData["shipping_address_postal"] = eventDataObject.shipping.address.postal_code;
-      transactionData["shipping_address_country"] = eventDataObject.shipping.address.country;
+      //---
+
+      console.log("Metadata customer_details=====>", eventDataObject.customer_details);
+      console.log("Metadata total_details=====>", eventDataObject.total_details);
+      console.log("Metadata metadata=====>", eventDataObject.metadata);
+      console.log("Metadata shipping=====>", eventDataObject.shipping);
+      console.log("Metadata shipping_address_collection=====>", eventDataObject.shipping_address_collection);
+
+      //transactionData["payment_type"] = eventDataObject.payment_method_details.type;
+      transactionData["receipt_url"] = ""; //eventDataObject.receipt_url;
+      // transactionData["billing_address_line1"] = eventDataObject.billing_details.address.line1;
+      // transactionData["billing_address_line2"] = eventDataObject.billing_details.address.line2 || "";
+      // transactionData["billing_address_postal"] = eventDataObject.billing_details.address.postal_code;
+      // transactionData["billing_address_country"] = eventDataObject.billing_details.address.country;
+      // transactionData["shipping_address_line1"] = eventDataObject.shipping.address.line1;
+      // transactionData["shipping_address_line2"] = eventDataObject.shipping.address.line2 || "";
+      // transactionData["shipping_address_postal"] = eventDataObject.shipping.address.postal_code;
+      // transactionData["shipping_address_country"] = eventDataObject.shipping.address.country;
       transactionData["shipping_option"] = "-";
       transactionData["delivery_date"] = undefined;
-//---
+      //---
       transactionData["total_cost"] = eventDataObject.amount_total;
       transactionData["order_date"] = new Date(event.created * 1000); // convert timestamp to  datetime, 1000 to change s to ms.
       transactionData["customer_id"] = metadata.user_id;
@@ -222,13 +229,13 @@ router.post("/process_payment", express.raw({ type: "application/json" }), async
       transactionData["order_status_id"] = 1; // 1 means successful,
       console.log("shipping==>", eventDataObject.shipping);
 
-      console.log("shipping_options==>", eventDataObject.shipping_options);
+      // console.log("shipping_options==>", eventDataObject.shipping_options);
       console.log("Complete transactionData==>", transactionData);
-      orderServices.addNewOrder(transactionData, orderList);
-      cartServices.removeAllCartItems(metadata.user_id, orderList);
-      res.status(200);
+      // orderServices.addNewOrder(transactionData, orderList);
+      // cartServices.removeAllCartItems(metadata.user_id, orderList);
+      res.status(400);
       res.json({
-        success: true,
+        success: false,
       });
     } // checkout.session.completed ==> the payment is done
     // res.status(200);

@@ -5,7 +5,7 @@ async function addToCart(customerId, productId, quantity) {
   if (!cartItem) {
     await cartDataLayer.createCartItem(customerId, productId, quantity);
   } else {
-    await cartDataLayer.updateQuantity(customerId, productId, cartItem.get("quantity") + 1);
+    await cartDataLayer.updateQuantity(customerId, productId, cartItem.get("quantity") + quantity);
   }
   return true;
 }

@@ -33,7 +33,7 @@ const getHashedPassword = (password) => {
 router.post("/login", async function (req, res) {
   const customer = await Customer.where({
     email: req.body.email,
-    password: req.body.password,
+    password: getHashedPassword(req.body.password),
   }).fetch({
     require: false,
   });
@@ -112,7 +112,7 @@ router.post("/register", async function (req, res) {
     name,
     username,
     email,
-    password,
+    password : getHashedPassword(password),
     contact_number,
     created_date: new Date(),
   });

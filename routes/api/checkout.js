@@ -168,14 +168,39 @@ router.post("/process_payment", express.raw({ type: "application/json" }), async
   try {
     event = stripe.webhooks.constructEvent(payload, sigHeader, endpointSecret);
 
-    if (event.type == "charge.succeeded") {
-      console.log("Charge SucceededEvent==>", event);
+    // if (event.type == "charge.succeeded") {
+    //   console.log("Charge SucceededEvent==>", event);
 
+    //   const eventDataObject = event.data.object;
+    //   console.log("billing_details==>", eventDataObject.billing_details);
+    //   console.log("payment_method_details==>", eventDataObject.payment_method_details);
+    //   console.log("receipt_url==>", eventDataObject.receipt_url);
+    //   console.log("shipping==>", eventDataObject.shipping);
+    //   transactionData["payment_type"] = eventDataObject.payment_method_details.type;
+    //   transactionData["receipt_url"] = eventDataObject.receipt_url;
+    //   transactionData["billing_address_line1"] = eventDataObject.billing_details.address.line1;
+    //   transactionData["billing_address_line2"] = eventDataObject.billing_details.address.line2 || "";
+    //   transactionData["billing_address_postal"] = eventDataObject.billing_details.address.postal_code;
+    //   transactionData["billing_address_country"] = eventDataObject.billing_details.address.country;
+    //   transactionData["shipping_address_line1"] = eventDataObject.shipping.address.line1;
+    //   transactionData["shipping_address_line2"] = eventDataObject.shipping.address.line2 || "";
+    //   transactionData["shipping_address_postal"] = eventDataObject.shipping.address.postal_code;
+    //   transactionData["shipping_address_country"] = eventDataObject.shipping.address.country;
+    //   transactionData["shipping_option"] = "-";
+    //   transactionData["delivery_date"] = undefined;
+    //   console.log("Charge transactionData==>", transactionData);
+    // }
+    if (event.type == "checkout.session.completed") {
+      console.log("Event completed==>", event);
       const eventDataObject = event.data.object;
-      console.log("billing_details==>", eventDataObject.billing_details);
-      console.log("payment_method_details==>", eventDataObject.payment_method_details);
-      console.log("receipt_url==>", eventDataObject.receipt_url);
-      console.log("shipping==>", eventDataObject.shipping);
+      // convert JsonStr back into list of javascript object
+      const metadata = eventDataObject.metadata;
+      console.log("Metadata user_id=====>", metadata.user_id); // orderList and customer id
+
+      const orderList = JSON.parse(metadata.orders);
+      console.log("Metadata orderList=====>", orderList); // orderList and customer id
+      console.log("Payment Type ==>", eventDataObject.payment_method_types);
+//---
       transactionData["payment_type"] = eventDataObject.payment_method_details.type;
       transactionData["receipt_url"] = eventDataObject.receipt_url;
       transactionData["billing_address_line1"] = eventDataObject.billing_details.address.line1;
@@ -188,19 +213,7 @@ router.post("/process_payment", express.raw({ type: "application/json" }), async
       transactionData["shipping_address_country"] = eventDataObject.shipping.address.country;
       transactionData["shipping_option"] = "-";
       transactionData["delivery_date"] = undefined;
-      console.log("Charge transactionData==>", transactionData);
-    }
-    if (event.type == "checkout.session.completed") {
-      console.log("Event completed==>", event);
-      const eventDataObject = event.data.object;
-      // convert JsonStr back into list of javascript object
-      const metadata = eventDataObject.metadata;
-      console.log("Metadata user_id=====>", metadata.user_id); // orderList and customer id
-
-      const orderList = JSON.parse(metadata.orders);
-      console.log("Metadata orderList=====>", orderList); // orderList and customer id
-      console.log("Payment Type ==>", eventDataObject.payment_method_types);
-
+//---
       transactionData["total_cost"] = eventDataObject.amount_total;
       transactionData["order_date"] = new Date(event.created * 1000); // convert timestamp to  datetime, 1000 to change s to ms.
       transactionData["customer_id"] = metadata.user_id;

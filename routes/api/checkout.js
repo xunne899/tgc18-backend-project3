@@ -196,15 +196,15 @@ router.post("/process_payment", express.raw({ type: "application/json" }), async
       // convert JsonStr back into list of javascript object
       const metadata = eventDataObject.metadata;
       console.log("Metadata user_id=====>", metadata.user_id); // orderList and customer id
-      const paymentInformation = await Stripe.paymentIntents.retrieve(eventDataObject.payment_intent);
+      const paymentInformation = await stripe.paymentIntents.retrieve(eventDataObject.payment_intent);
 
       console.log("paymentIntents paymentInformation=====>", paymentInformation);
       console.log("paymentInformation charges=====>", paymentInformation.charges.data);
       const chargeId = paymentInformation.charges.data[0].id;
-      const charge = await Stripe.charges.retrieve(chargeId);
+      const charge = await stripe.charges.retrieve(chargeId);
       console.log("paymentIntents charge=====>", charge);
 
-      const shippingRate = await Stripe.shippingRates.retrieve(eventDataObject.shipping_rate);
+      const shippingRate = await stripe.shippingRates.retrieve(eventDataObject.shipping_rate);
       console.log("shippingRate=====>", shippingRate);
 
       const orderList = JSON.parse(metadata.orders);

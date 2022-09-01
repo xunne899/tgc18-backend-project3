@@ -14,6 +14,7 @@ const getOrderByCustomerId = async (customerId) => {
     .where({
       customer_id: customerId,
     })
+    .orderBy("order_date", "DESC")
     .fetch({
       require: false,
       withRelated: [
@@ -66,7 +67,7 @@ const getOrderItemByOrderId = async (orderId) => {
     order_id: orderId,
   }).fetchAll({
     require: false,
-    withRelated: ["variant", "variant.product", "variant.spiciness", "variant.size"  ],
+    withRelated: ["variant", "variant.product", "variant.spiciness", "variant.size"],
   });
 };
 

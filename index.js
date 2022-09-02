@@ -274,8 +274,8 @@ const cloudinaryPathRoutes = require("./routes/cloudinary");
 const loginPathRoutes = require("./routes/login");
 const orderPathRoutes = require("./routes/orders");
 
-const cartAPIPathRoutes = require("./routes/carts");
-const checkoutAPIPathRoutes = require("./routes/api/checkout");
+// const cartAPIPathRoutes = require("./routes/carts");
+// const checkoutAPIPathRoutes = require("./routes/api/checkout");
 // const productAPIPathRoutes = require("./routes/api/products");
 // const orderAPIPathRoutes = require("./routes/api/orders");
 
@@ -299,8 +299,8 @@ app.use("/login", loginPathRoutes);
 app.use("/cloudinary", cloudinaryPathRoutes);
 app.use("/orders", [checkIfAuthenticated], orderPathRoutes);
 
-app.use("/checkout", checkoutAPIPathRoutes);
-app.use("/cart", [checkIfAuthenticated], cartAPIPathRoutes);
+// app.use("/checkout", checkoutAPIPathRoutes);
+// app.use("/cart", [checkIfAuthenticated], cartAPIPathRoutes);
 
 app.use("/api/carts", express.json(), checkIfAuthenticatedJWT, api.carts);
 app.use("/api/customers", express.json(), api.customers);

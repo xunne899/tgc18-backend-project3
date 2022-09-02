@@ -14,7 +14,6 @@ const getOrderByCustomerId = async (customerId) => {
     .where({
       customer_id: customerId,
     })
-    .orderBy("order_date", "DESC")
     .fetch({
       require: false,
       withRelated: [

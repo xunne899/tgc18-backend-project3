@@ -299,7 +299,7 @@ app.use("/login", loginPathRoutes);
 app.use("/cloudinary", cloudinaryPathRoutes);
 app.use("/orders", [checkIfAuthenticated], orderPathRoutes);
 
-app.use("/checkout", checkoutAPIPathRoutes);
+// app.use("/checkout", checkoutAPIPathRoutes);
 // app.use("/cart", [checkIfAuthenticated], cartAPIPathRoutes);
 
 app.use("/api/carts", express.json(), checkIfAuthenticatedJWT, api.carts);

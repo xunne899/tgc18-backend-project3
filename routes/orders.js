@@ -17,21 +17,31 @@ router.get("/", async (req, res) => {
       // if (form.data.id) {
       //   query.where("id", "in", `${form.data.id}`);
       // }
-    //  console.log("id ===",form.data.id )
-    //   if (form.data.id) {
-    //     query.where("id", "=", form.data.id);
-    //   }
+      //  console.log("id ===",form.data.id )
+      //   if (form.data.id) {
+      //     query.where("id", "=", form.data.id);
+      //   }
 
-    // if (form.data.id && form.data.id != "0") {
-    //   query.where("id", "=", form.data.id);
-    // }
+      // if (form.data.id && form.data.id != "0") {
+      //   query.where("id", "=", form.data.id);
+      // }
+      console.log(form.data.min_total_cost)
+      
+      if (form.data.min_total_cost !== undefined && !isNaN(parseFloat(form.data.min_total_cost))) {
 
-      console.log("id ===",form.data.email )
+        query.where("total_cost", ">=", form.data.min_total_cost * 100);
+      }
+      console.log("mmax===>",form.data.max_total_cost)
+      if (form.data.max_total_cost !== undefined && !isNaN(parseFloat(form.data.max_total_cost))) {
+       
+        query.where("total_cost", "<=", form.data.max_total_cost * 100);
+      }
+
+      console.log("id ===", form.data.email);
       if (form.data.email) {
         query.query("join", "customers", "customers.id", "customer_id").where("email", "like", `%${form.data.email}%`);
       }
 
-   
       if (form.data.order_date) {
         let orderDate = new Date(form.data.order_date);
         let nextDay = new Date(form.data.order_date);

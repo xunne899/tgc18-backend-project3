@@ -288,6 +288,17 @@ const createOrderSearchForm = (order_statuses) => {
     //   required: false,
     //   errorAfterField: true,
     // }),
+
+    min_total_cost: fields.number({
+      required: false,
+      errorAfterField: true,
+      validators: [validators.integer()],
+    }),
+    max_total_cost: fields.number({
+      required: false,
+      errorAfterField: true,
+      validators: [validators.integer()],
+    }),
     email: fields.email({
       required: false,
       errorAfterField: true,

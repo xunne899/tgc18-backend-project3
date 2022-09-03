@@ -4,7 +4,6 @@ const router = express.Router();
 const cartServices = require("../../services/carts");
 const orderServices = require("../../services/orders");
 
-
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY, {
   apiVersion: "2020-08-27",
 });
@@ -14,8 +13,7 @@ const paymentIntent = stripe.paymentIntents.create({
   payment_method_types: ["card"],
 });
 
-let transactionData = {}; // for creating order to link to list of order items
-router.get("/", checkIfAuthenticatedJWT,  express.json(),async function (req, res) {
+router.get("/", checkIfAuthenticatedJWT, express.json(), async function (req, res) {
   //  create the line items
 
   const jwtInfo = req.customer; // comes from jwt processing
@@ -36,7 +34,6 @@ router.get("/", checkIfAuthenticatedJWT,  express.json(),async function (req, re
 
     // check if there's an image
     if (selected.related("variant").get("image_url")) {
- 
       eachLineItem.images = [selected.related("variant").get("image_url")];
     }
 
@@ -50,8 +47,6 @@ router.get("/", checkIfAuthenticatedJWT,  express.json(),async function (req, re
     });
   }
 
-  
-
   let orderListJsonStr = JSON.stringify(orderList);
   // the key/value pairs in the payment are defined by Stripes
   const payment = {
@@ -59,7 +54,7 @@ router.get("/", checkIfAuthenticatedJWT,  express.json(),async function (req, re
     line_items: lineItems,
     success_url: process.env.STRIPE_SUCCESS_URL + "?sessionId={CHECKOUT_SESSION_ID}",
     cancel_url: process.env.STRIPE_CANCEL_URL,
-  
+
     shipping_address_collection: {
       allowed_countries: ["SG", "AU", "GB", "US", "TH", "BN", "TR", "SA", "MY", "ID"],
     },
@@ -108,7 +103,7 @@ router.get("/", checkIfAuthenticatedJWT,  express.json(),async function (req, re
       },
     ],
     billing_address_collection: "required",
- 
+
     metadata: {
       orders: orderListJsonStr,
       user_id: userId,
@@ -116,19 +111,16 @@ router.get("/", checkIfAuthenticatedJWT,  express.json(),async function (req, re
   };
 
   console.log("stripeSession Hello");
-  transactionData = {};
 
   let stripeSession = await stripe.checkout.sessions.create(payment);
   console.log("stripeSession Completed");
- 
+
   res.status(200);
   res.json({
     sessionId: stripeSession.id,
     publishableKey: process.env.STRIPE_PUBLISHABLE_KEY,
   });
-
 });
-
 
 router.post("/process_payment", express.raw({ type: "application/json" }), async function (req, res) {
   console.log("Hello2");
@@ -143,8 +135,8 @@ router.post("/process_payment", express.raw({ type: "application/json" }), async
   try {
     event = stripe.webhooks.constructEvent(payload, sigHeader, endpointSecret);
 
-  
     if (event.type == "checkout.session.completed") {
+      let transactionData = {}; // for creating order to link to list of order items
       console.log("Event completed==>", event);
       const eventDataObject = event.data.object;
       // convert JsonStr back into list of javascript object
@@ -187,8 +179,6 @@ router.post("/process_payment", express.raw({ type: "application/json" }), async
       transactionData["payment_intent"] = eventDataObject.payment_intent;
       transactionData["order_status_id"] = 1; // 1 means successful,
       console.log("shipping==>", eventDataObject.shipping);
-
- ;
       console.log("Complete transactionData==>", transactionData);
       orderServices.addNewOrder(transactionData, orderList);
       cartServices.removeAllCartItems(metadata.user_id, orderList);

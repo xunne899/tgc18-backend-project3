@@ -158,6 +158,10 @@ router.get("/profile", checkIfAuthenticatedJWT, async function (req, res) {
   res.json({ profile: customerInfo.toJSON() });
 });
 
+
+
+
+
 // this route to get a new access token
 router.post("/refresh", async function (req, res) {
   // get the refreshtoken from the body

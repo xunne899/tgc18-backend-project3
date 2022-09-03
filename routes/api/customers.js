@@ -159,7 +159,7 @@ router.get("/profile", checkIfAuthenticatedJWT, async function (req, res) {
 });
 
 // this route to get a new access token
-router.post("/refresh", checkIfAuthenticatedJWT, async function (req, res) {
+router.post("/refresh", async function (req, res) {
   // get the refreshtoken from the body
   const refreshToken = req.body.refreshToken;
 

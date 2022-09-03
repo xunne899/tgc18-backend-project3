@@ -1,5 +1,5 @@
 const express = require("express");
-const { checkIfAuthenticated } = require("../../middlewares");
+const { checkIfAuthenticatedJWT } = require("../../middlewares");
 const router = express.Router();
 const cartServices = require("../../services/carts");
 const orderServices = require("../../services/orders");
@@ -17,7 +17,7 @@ const paymentIntent = stripe.paymentIntents.create({
 });
 
 let transactionData = {}; // for creating order to link to list of order items
-router.get("/", async function (req, res) {
+router.get("/", checkIfAuthenticatedJWT, async function (req, res) {
   // step 1: create the line items
   // one line in the invoice is one line item4
   // each item in the shopping cart will become line item

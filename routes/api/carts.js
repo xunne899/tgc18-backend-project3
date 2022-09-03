@@ -1,7 +1,7 @@
 const cartServices = require("../../services/carts");
 const express = require("express");
 const { checkIfAuthenticated } = require("../../middlewares");
-// const { Router } = require('express')
+
 
 const router = express.Router();
 
@@ -13,9 +13,7 @@ router.get("/", async function (req, res) {
   res.json({
     cartItems: cartItems.toJSON(),
   });
-  // res.render("cart/index", {
-  //   cartItems: cartItems.toJSON(),
-  // });
+ 
 });
 
 router.post("/:variant_id/add", async function (req, res) {

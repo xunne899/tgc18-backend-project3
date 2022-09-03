@@ -10,9 +10,9 @@ const getHashedPassword = (password) => {
 // import in User Model
 
 const { User } = require("../models");
-// const dataLayer = require("../dal/users");
+
 const { createLoginForm,  bootstrapField } = require("../forms");
-// const { checkIfAuthenticated } = require("../middlewares");
+
   
   router.get("/", (req, res) => {
     const loginForm = createLoginForm();
@@ -45,7 +45,7 @@ const { createLoginForm,  bootstrapField } = require("../forms");
               username: user.get("username"),
               email: user.get("email"),
             };
-            // req.flash("success_messages", "Welcome back, " + user.get("username"));
+
             res.redirect("/products");
           } else {
             req.flash("error_messages", "Invalid username or password. Please try again.");

@@ -94,11 +94,7 @@ async function getallOrders() {
   });
 }
 
-// async function getAllProducts() {
-//   return await Product.fetchAll({
-//       withRelated:["type", "country", "packaging", "cuisine_styles", "ingredients","variants"]
-//   });
-// }
+
 
 module.exports = {
   getOrderByCustomerId,

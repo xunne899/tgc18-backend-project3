@@ -38,12 +38,5 @@ router.get("/:order_id", async (req, res) => {
   }
 });
 
-// router.get("/", async (req, res) => {
-//   try {
-//     const orders = await dataLayer.getallOrders();
-//     res.send(orders);
-//   } catch {
-//     res.sendStatus(500);
-//   }
-// });
+
 module.exports = router;

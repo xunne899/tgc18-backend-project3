@@ -78,13 +78,7 @@ router.post("/:user_id/update", async (req, res) => {
       req.flash("success_messages", `User Successfully Updated`);
       res.redirect("/users");
     },
-    // error: async (form) => {
-    //   res.render("users/update", {
-    //     user: user.toJSON(),
-    //     userUpdateForm: form.toHTML(bootstrapField),
 
-    //   });
-    // },
   });
 });
 
@@ -103,18 +97,7 @@ router.post("/:user_id/delete", async (req, res) => {
 });
 
 
-//       else {
-//         req.session.user = {
-//           id: user.get("id"),
-//           email: user.get("email"),
-//           username: user.get("username"),
-//         };
-//         req.flash("success_messages", "Welcome back, " + user.get("username"));
-//         res.redirect("/products");
-//       }
-//     },
-//   });
-// });
+
 
 router.get("/profile",checkIfAuthenticated, async function (req, res) {
   const user = req.session.user;

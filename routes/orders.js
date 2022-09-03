@@ -13,27 +13,25 @@ router.get("/", async (req, res) => {
   SearchOrderForm.handle(req, {
     success: async (form) => {
       console.log("search data =>", form.data);
-      //console.log(form.data.email, "data");
-      if (form.data.id) {
-        query.where("id", "=", form.data.id);
-      }
-
-      if (form.data.email) {
-        const customer = await getCustomerEmail(form.data.email);
-        console.log(customer);
-
-        customer ? query.where("customer_id", "=", customer.get("id")) : query.where("customer_id", "=", "");
-        // if (customer) {
-        //   query.where("customer_id", "=", customer.get("id"));
-        // }else {
-        //     query.where('customer_id', '=', '')
-        // }
-      }
-      //   if (form.data.customer_email) {
-      //     searchQuery.query('join', 'customers', 'customers.id', 'customer_id')
-      //         .where('email', 'like', `%${form.data.customer_email}%`)
+      console.log(form.data.email, "data");
+      // if (form.data.id) {
+      //   query.where("id", "in", `${form.data.id}`);
       // }
+    //  console.log("id ===",form.data.id )
+    //   if (form.data.id) {
+    //     query.where("id", "=", form.data.id);
+    //   }
 
+    // if (form.data.id && form.data.id != "0") {
+    //   query.where("id", "=", form.data.id);
+    // }
+
+      console.log("id ===",form.data.email )
+      if (form.data.email) {
+        query.query("join", "customers", "customers.id", "customer_id").where("email", "like", `%${form.data.email}%`);
+      }
+
+   
       if (form.data.order_date) {
         let orderDate = new Date(form.data.order_date);
         let nextDay = new Date(form.data.order_date);
@@ -99,6 +97,31 @@ router.get("/", async (req, res) => {
         successful,
       });
     },
+    error: async (form) => {
+      const orderlist = await query.fetch({
+        withRelated: ["customer", "orderStatus", "orderItems"],
+      });
+
+      const resultsNum = orderlist.toJSON().length;
+
+      const pending = orderlist.toJSON().filter((order) => {
+        // console.log(order.orderStatus.order_status);
+        return order.orderStatus.order_status !== "Paid";
+      });
+      const successful = orderlist.toJSON().filter((order) => {
+        return order.orderStatus.order_status === "Paid";
+      });
+      const numberFound = orderlist.toJSON().length;
+      console.log("order num=>", numberFound);
+      console.log("show success", successful);
+      res.render("orders/index", {
+        form: form.toHTML(bootstrapField),
+        numberFound,
+        resultsNum,
+        pending,
+        successful,
+      });
+    },
   });
 });
 // })
@@ -122,33 +145,12 @@ router.post("/:order_id/update", async (req, res) => {
   const orderId = req.params.order_id;
   //const order = await serviceLayer.getOrderByOrderId(orderId);
   const orderStatus = await serviceLayer.getAllStatuses();
-  // const services = new serviceLayer(req.params.order_id);
-  // await services.updateStatus(req.body.id);
 
   // Process update order form
   const orderForm = createStatusForm({
     orderStatus,
   });
   orderForm.handle(req, {
-    // success: async function (form) {
-    //   const { order_date, orderData } = form.data;
-
-    //   try {
-    //     await dataLayer.updateOrder(orderId, orderData);
-
-    //     req.flash('success_messages', 'Order successfully updated');
-    //     res.redirect('/orders');
-    //   } catch (error) {
-    //     console.log(error);
-    //     req.flash('error_messages', 'An error occurred while updating order. Please try again');
-    //     res.redirect(`/orders/${orderId}/update`);
-    //   }
-    // },
-    // error: async function (form) {
-    //   res.render('orders/update', {
-    //     form: form.toHTML(bootstrapField)
-    //   });
-    // },
     success: async (form) => {
       try {
         await serviceLayer.updateStatus(orderId, form.data.order_status_id);
@@ -166,48 +168,5 @@ router.post("/:order_id/update", async (req, res) => {
     },
   });
 });
-
-// router.post('/:order_id/update', async function (req, res) {
-//   // Get order to be updated
-//   const orderId = req.params.order_id;
-//   const order = await dataLayer.getOrderById(orderId);
-
-//   // Fetch all choices for update order form
-//   const orderStatuses = await dataLayer.getAllOrderStatuses();
-
-//   // Process update order form
-//   const orderForm = createUpdateOrderForm({
-//     orderStatuses
-//   });
-//   orderForm.handle(req, {
-//     success: async function (form) {
-//       const { order_date, orderData } = form.data;
-
-//       try {
-//         await dataLayer.updateOrder(orderId, orderData);
-
-//         req.flash('success_messages', 'Order successfully updated');
-//         res.redirect('/orders');
-//       }
-
-// router.get("/:order_id/delete", async (req, res) => {
-//   const services = new orderItem(req.params.order_id);
-//   const order = await services.getOrderByOrderId();
-//   if (order.toJSON().order_status.order_status === "Paid") {
-//     req.flash("error_messages", "Completed orders cannot be deleted.");
-//     res.redirect("/orders");
-//   } else {
-//     res.render("orders/delete", {
-//       order: order.toJSON(),
-//     });
-//   }
-// });
-
-// router.post("/:order_id/delete", async (req, res) => {
-//   const services = new orderItem(req.params.order_id);
-//   await services.deleteOrder();
-//   req.flash("success_messages", "Order has been deleted.");
-//   res.redirect("/orders");
-// });
 
 module.exports = router;

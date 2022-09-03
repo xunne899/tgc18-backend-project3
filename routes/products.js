@@ -231,7 +231,6 @@ router.get("/:product_id/update", async (req, res) => {
   res.render("products/update", {
     form: productForm.toHTML(bootstrapField),
     product: product.toJSON(),
-    // 2 - send to the HBS file the cloudinary information
     cloudinaryName: process.env.CLOUDINARY_NAME,
     cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
     cloudinaryPreset: process.env.CLOUDINARY_UPLOAD_PRESET,
@@ -250,7 +249,6 @@ router.post("/:product_id/update", async (req, res) => {
 
   const ingredients = await dataLayer.getAllIngredients();
 
-  // fetch the product that we want to update
 
   const product = await dataLayer.getProductByID(req.params.product_id);
 
@@ -305,7 +303,7 @@ router.post("/:product_id/update", async (req, res) => {
 });
 
 router.get("/:product_id/delete", async (req, res) => {
-  // fetch the product that we want to delete
+ 
 
   const product = await dataLayer.getProductByID(req.params.product_id);
 
@@ -406,8 +404,7 @@ router.get("/:product_id/variant/:variant_id/update", async (req, res) => {
   spiciness.unshift([0, "---- Select One ----"]);
 
   const variant = await dataLayer.getVariantById(req.params.variant_id);
-  // const product = await dataLayer.getProductByID(req.params.product_id);
-  // const products = await dataLayer.getAllProducts();
+
 
   const variantForm = createVariantForm(spiciness, sizes);
 

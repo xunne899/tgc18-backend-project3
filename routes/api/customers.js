@@ -100,14 +100,7 @@ router.post("/register", async function (req, res) {
   }
 
   console.log("haveError ========> ", haveError);
-  // try {
-  // const customer = await dataLayer.createCustomer({
-  //   name,
-  //   username,
-  //   email,
-  //   password,
-  //   contact_number,
-  // });
+ 
   const customer = new Customer({
     name,
     username,
@@ -119,10 +112,7 @@ router.post("/register", async function (req, res) {
   try {
     await customer.save();
     console.log(customer);
-    // res.json({
-    //   status: status,
-    //   data: data
-    // });
+ 
     res.status(201);
     res.json(customer);
   } catch (e) {
@@ -135,15 +125,7 @@ router.post("/register", async function (req, res) {
   }
 });
 
-// } catch (haveError) {
-//   console.log(fielderror);
-// res.status(500);
-// res.json({
-//   check: "checks",
-//   status: "Server error",
-// });
-// }
-// });
+
 
 router.get("/profile", checkIfAuthenticatedJWT, async function (req, res) {
   const jwtInfo = req.customer; // comes from jwt processing

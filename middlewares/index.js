@@ -20,7 +20,6 @@ const checkIfAuthenticatedJWT = function (req, res, next) {
     jwt.verify(token, process.env.TOKEN_SECRET, function (tokenerr, tokenData) {
       // err argument -- is null if there is no error
       // tokenData argument -- data embedded into the JWT as payload
-      //console.log("authHeader=>", authHeader);
       if (tokenerr) {
         res.status(401);
         res.json({

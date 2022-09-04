@@ -13,7 +13,6 @@
          {{/if}}
   <div class="d-flex justify-content-between mt-4">
     <h2>Order Details</h2> 
-   {{!-- <a href="/users/register" class="btn btn-dark btn-sm mt-3" style="width:80px;height:30px">Register</a> --}}
 </div>
  <div class="accordion mt-3 mb-3" id="accordion">
   <div class="accordion-item shadow-lg">
@@ -33,8 +32,6 @@
       </div>
     </div>
   </div>
-    
-  
       <div class="row mt-3" id="productTable">
  <div class="overflow-auto mt-2 p-3 shadow-lg rounded-3 col-12 col-md-12 col-sm-12"> 
      <h3 class="mt-2 ">Completed</h3> 
@@ -49,16 +46,10 @@
                  <th>Order Date</th>
                 <th>Status</th>
                 <th></th>
-                
-
-
             </tr>
         </thead>
-
         <tbody>
-       
             {{#each successful}}
-           
             <tr>
                 <td>{{this.id}}</td>
                 <td>{{this.customer.email}}</td>
@@ -69,8 +60,6 @@
                    <td>{{this.orderStatus.order_status}}</td>
                 <td>
                     <a href="/orders/{{this.id}}/item" ><i class="fa fa-edit" style="font-size:23px;color:black"></i></a>
-                    {{!-- <a href="users/{{this.id}}/delete" class="ms-2"><i class="fa fa-trash " style="font-size:23px;color:black"></i></a> --}}
-
                 </td>
             </tr>
             {{/each}}
@@ -80,8 +69,6 @@
 </div>
    </div>
 
-
-    {{!-- <h3 class="mt-4">Pending</h3>  --}}
       <div class="row mt-3" id="productTable">
  <div class="overflow-auto mt-2 p-3 shadow-lg rounded-3 col-12 col-md-12 col-sm-12">
     <h3 class="mt-2">Pending</h3>  
@@ -115,8 +102,6 @@
                    <td>{{this.orderStatus.order_status}}</td>
                 <td>
                     <a href="/orders/{{this.id}}/item" ><i class="fa fa-edit" style="font-size:23px;color:black"></i></a>
-                    {{!-- <a href="#" class="ms-2"  data-oneid="{{this.id}}" data-email="{{this.customer.email}}" ><i class="fa fa-trash delete-order" style="font-size:23px;color:black" data-oneid="{{this.id}}" data-email="{{this.customer.email}}"></i></a> --}}
-
                 </td>
             </tr>
             {{/each}}
@@ -150,14 +135,11 @@
             // process the delete
             const form = document.createElement('form');
             form.method = "POST"; // <form method="POST">...</form>
-            // form.action = `/products/${event.target.dataset.id}/delete`
            form.action = "/orders/" + evt.target.dataset.id + "/delete";
              form.innerHTML ='<input type = "hidden" value="{{csrfToken}}" name="_csrf"/>'
             document.querySelector('body').appendChild(form);
             form.submit(); // submit the form with a function call
-            
         }
-   
     })
   }
 </script>

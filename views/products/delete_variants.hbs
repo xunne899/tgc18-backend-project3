@@ -7,11 +7,8 @@
     <div class="alert alert-danger">
         <p>Are you sure you want to delete {{variant.product.name}}, Variant ID : {{variant.id}}?</p>
         <input type="submit" class="btn btn-danger" value="Yes"/>
-        {{!-- <a href="javascript:history.back()" class="btn btn-success">No</a> --}}
         <a href="/products/{{product.id}}/variant" class="btn btn-success">No</a>
-        <input type="hidden" value="{{csrfToken}}" name="_csrf"/>
-        {{!-- <a href=`/products/${req.params.product_id}/variant` class="btn btn-success">No</a> --}}
-       
+        <input type="hidden" value="{{csrfToken}}" name="_csrf"/> 
     </div>
 </form>
 {{/block}}

@@ -1,5 +1,4 @@
 const dataLayer = require("../dal/orders");
-// const router = express.Router();
 
 async function addNewOrder(transactionData, orderList) {
   const newOrder = await dataLayer.createOrder(transactionData);
@@ -20,13 +19,12 @@ async function getOrderItemByOrderId(id) {
 
 async function deleteOrder() {
   const orderItems = await dataLayer.getOrderItemByOrderId(order_id);
-  // if (orderItems.toJSON().length !== 0) {
   for (let item of orderItems.toJSON()) {
     const variant = await getVariantById(item.variant_id);
     variant.set("stock", variant.get("stock") + item.quantity);
     await variant.save();
   }
-  // }
+
   await dataLayer.deleteOrder(order_id);
 }
 

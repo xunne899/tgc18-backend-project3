@@ -32,13 +32,13 @@ const { createLoginForm,  bootstrapField } = require("../forms");
           require: false,
         });
   
-        // check if the user does not exist
+        // check the user does not exist
         if (!user) {
           req.flash("error_messages", "Invalid credentials. Please try again.");
           res.redirect("/login");
-          // form: loginForm.toHTML(bootstrapField)
+
         } else {
-          //check if the password matches
+          //check the password matches
           if (user.get("password") === getHashedPassword(form.data.password)) {
             req.session.user = {
               id: user.get("id"),

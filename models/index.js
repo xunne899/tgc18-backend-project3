@@ -85,9 +85,7 @@ const Variant = bookshelf.model("Variant", {
   cartItems() {
     return this.hasMany("CartItem");
   },
-  // orders() {
-  //   return this.belongsToMany("Order");
-  // },
+
   orderItems() {
     return this.hasMany("OrderItem");
   },
@@ -135,9 +133,7 @@ const OrderItem = bookshelf.model("OrderItem", {
 
 const Order = bookshelf.model("Order", {
   tableName: "orders",
-  // variants() {
-  //   return this.belongsToMany("Variant");
-  // },
+
   customer() {
     return this.belongsTo("Customer");
   },

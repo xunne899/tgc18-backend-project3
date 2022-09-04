@@ -1,6 +1,5 @@
-// require in caolan-forms
+//caolan-forms
 const forms = require("forms");
-// create some shortcuts
 const fields = forms.fields;
 const validators = forms.validators;
 const widgets = forms.widgets;
@@ -283,12 +282,6 @@ const createUserForm = () => {
 
 const createOrderSearchForm = (order_statuses) => {
   return forms.create({
-    // id: fields.string({
-    //   label: "ID",
-    //   required: false,
-    //   errorAfterField: true,
-    // }),
-
     min_total_cost: fields.number({
       required: false,
       errorAfterField: true,

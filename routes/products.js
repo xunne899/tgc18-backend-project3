@@ -259,7 +259,6 @@ router.post("/:product_id/update", async (req, res) => {
       let { cuisine_style, ingredient, ...productData } = form.data;
       console.log(cuisine_styles);
       product.set(productData);
-      // product.set(form.data);
       product.save();
       // update the tags
 
@@ -411,8 +410,6 @@ router.get("/:product_id/variant/:variant_id/update", async (req, res) => {
   // fill in the existing values
   variantForm.fields.stock.value = variant.get("stock");
   variantForm.fields.cost.value = variant.get("cost");
-
-  // variantForm.fields.product_id.value = variant.get("product_id");
 
   variantForm.fields.spiciness_id.value = variant.get("spiciness_id");
   variantForm.fields.size_id.value = variant.get("size_id");

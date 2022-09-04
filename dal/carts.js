@@ -30,7 +30,6 @@ const createCartItem = async (customerId, variantId, quantity) => {
 }
 
 const removeCartItem = async (customerId, variantId) => {
-    //always have a try catch
     let cartItem = await getCartByCustomerVariant(customerId, variantId);
     // await cartItem.destroy()
     if (cartItem) {

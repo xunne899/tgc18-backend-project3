@@ -1,46 +1,28 @@
 {{#extends 'base'}}
 
 {{#block 'content'}}
-{{!-- <h3 class="mt-4">Products</h3> --}}
-
   <div class="row " id="productTable">
  <div class="overflow-auto mt-3 p-3 shadow-lg rounded-3 col-12 col-md-12 col-sm-12"> 
      <h2 > {{product.name}}  </h2>
                 <img src="{{product.image_url}}" style=" width:300px" class="img-fluid"/>
                 
            <div class="mt-3 mb-3"> 
-            <h5 >Description</h5>
-            
-            <div >
+            <h5>Description</h5>
+            <div>
             {{product.description}}
             </div>
-
-            </div>
-            
             </div>
             </div>
-    {{!-- <tbody>
-            <tr >
-              
-           
-                <td>
-                    
-                </td> --}}
-               
-{{!--      
-</table> --}}
+            </div>
   <div class="row mt-3 mb-3 " id="productTable">
  <div class="overflow-auto mt-3 p-3 shadow-lg rounded-3 col-12 col-md-12 col-sm-12"> 
    <div class="d-flex justify-content-between mt-2">
     <h3 >Variants</h3>
     <a href="/products/{{product.id}}/variant/create" class="btn btn-dark btn-sm d-flex align-items-center text-center mt-2" style="width: 88px; height:30px">Add Variant</a>
 </div>
-{{!-- <h3 class="mt-5">Variants</h3> --}}
-
     <table class="table">
     <thead>
         <tr>
-             {{!-- <th></th> --}}
             <th>ID</th>
             <th>Stock</th>
              <th>Cost</th>
@@ -48,18 +30,12 @@
             <th>Size</th>
                <th></th>
             <th></th>
-            
         </tr>
-
     </thead>
-   
     <tbody>
         {{#each variants}}
-            <tr >
-                  {{!-- <td >
-                  <img src="{{this.image_url}}" width="100"  class="img-fluid"/>
-                </td> --}}
-                <td >
+            <tr>
+                <td>
                     {{this.id}}
                 </td>
                   <td >
@@ -74,20 +50,13 @@
                 <td>
                     {{this.size.size}}
                 </td>
-           
                 <td>
-                       {{!-- <br> --}}
-                    {{!-- <a href="/products/{{product.id}}/variant/create" class="ms-1" ><i class="fa fa-plus " style="font-size:23px;color:black"></i></a> --}}
                        <a href="/products/{{product.id}}/variant/{{this.id}}/update"><i class="fa fa-edit" style="font-size:23px;color:black"></i></a>
                        <a href="/products/{{product.id}}/variant/{{this.id}}/delete" data-product-id="{{this.product_id}}" data-id="{{this.id}}" data-name="{{this.id}}"><i class="fa fa-trash delete-ntc" style="font-size:23px;color:black"  data-product-id="{{this.product_id}}" data-id="{{this.id}}" data-name="{{this.id}}"></i></a>
-                       {{!-- <a href="/cart/{{this.id}}/add" class="btn btn-secondary btn-sm ms-2 ">Add to cart</a> --}}
                   </td>
                    <td></td>
                 </tr>
                   {{/each}}
-                   
-               
-                    {{!-- <a  href="/products/create-variants" class="btn btn-primary">Add Variant</a> --}}
                    </tbody>
                    
 </table>
@@ -121,8 +90,6 @@
     }, (error, result) => {
         if (!error && result && result.event === "success") {
             console.log('Done! Here is the image info: ', result.info);
-            // hide the upload widget 
-            //document.querySelector('#upload_widget').style.display = "block";
 
             // display the image
             document.querySelector('#id_image_url').value = result.info.url;

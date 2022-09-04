@@ -14,16 +14,9 @@
                  <th>Order Date</th>
                 <th>Status</th>
                 <th></th>
-                
-
-
             </tr>
         </thead>
-
         <tbody>
-       
-        
-           
             <tr>
                 <td>{{order.id}}</td>
                 <td>{{order.customer.email}}</td>
@@ -33,10 +26,8 @@
                   <td>{{moment order.order_date format="DD/MM/YYYY"}}</td>
                     <td scope="row">
                                 <form method="POST" action="/orders/{{order.id}}/update">
-                                    {{!-- {{> csrfToken}} --}}
                                     {{{form}}}
                                     <div class="custom-btn-group">
-                                    {{!-- <input type="submit" value="Update" class="btn btn-dark mt-3"> --}}
                                      <td>
                                      <input type="submit" value="Update" class="btn btn-dark my-auto"/>
                                        <input type="hidden" value="{{csrfToken}}" name="_csrf"/>
@@ -44,19 +35,10 @@
                                     </div>
                                 </form>
                             </td>
-                {{!-- <td>
-                    <input type="submit" value="Update" class="btn btn-dark my-auto"/>
-
-                </td> --}}
             </tr>
-  
         </tbody>
     </table>
 </div>
-
-
-
-
 <div class="overflow-auto mt-5 mb-3 p-3 shadow-lg rounded-3 col-12 col-md-12 col-sm-12"> 
   <div class="d-flex justify-content-between mt-2">
     <h2>Order Items</h2>
@@ -71,17 +53,10 @@
                 <th>Size</th>
                  <th>Quantity</th>
                 <th>Cost</th>
-               
-                
-
-
             </tr>
         </thead>
-
         <tbody>
-           {{#each orderItems}}
-        
-           
+           {{#each orderItems}}  
             <tr>
                 <td><img src="{{this.variant.image_url}}" width="100"  class="img-fluid"/></td>
                 <td>{{this.variant.product.name}}</td>
@@ -89,35 +64,12 @@
                 <td>{{this.variant.size.size}}</td>
                   <td>{{this.quantity}}</td>
                    <td>{{divide this.variant.cost 100}}</td>
-               
-                                    {{!-- </div>
-                                </form>
-                            </td> --}}
-                {{!-- <td>
-                    <input type="submit" value="Update" class="btn btn-dark my-auto"/>
-
-                </td> --}}
             </tr>
    {{/each}}
         </tbody>
     </table>
-
 </div>
-
-
-
-
-
    </div>
-
-
-
-
-
-
-
-
-
 {{/block}}
 {{/extends}}
  

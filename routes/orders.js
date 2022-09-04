@@ -7,31 +7,18 @@ const { Order } = require("../models");
 
 router.get("/", async (req, res) => {
   const SearchOrderForm = createOrderSearchForm(await serviceLayer.getAllStatuses());
-  // console.log(SearchOrderForm, "Searchorder");
+  
   const query = Order.collection();
 
   SearchOrderForm.handle(req, {
     success: async (form) => {
-      console.log("search data =>", form.data);
-      console.log(form.data.email, "data");
-      // if (form.data.id) {
-      //   query.where("id", "in", `${form.data.id}`);
-      // }
-      //  console.log("id ===",form.data.id )
-      //   if (form.data.id) {
-      //     query.where("id", "=", form.data.id);
-      //   }
-
-      // if (form.data.id && form.data.id != "0") {
-      //   query.where("id", "=", form.data.id);
-      // }
-      console.log(form.data.min_total_cost)
+   
       
       if (form.data.min_total_cost !== undefined && !isNaN(parseFloat(form.data.min_total_cost))) {
 
         query.where("total_cost", ">=", form.data.min_total_cost * 100);
       }
-      console.log("mmax===>",form.data.max_total_cost)
+    
       if (form.data.max_total_cost !== undefined && !isNaN(parseFloat(form.data.max_total_cost))) {
        
         query.where("total_cost", "<=", form.data.max_total_cost * 100);
@@ -66,7 +53,7 @@ router.get("/", async (req, res) => {
       const resultsNum = orderlist.toJSON().length;
 
       const pending = orderlist.toJSON().filter((order) => {
-        // console.log(order.order_statuses);
+
         return order.orderStatus.order_status !== "Paid";
       });
       const successful = orderlist.toJSON().filter((order) => {

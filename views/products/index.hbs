@@ -2,8 +2,6 @@
 
 {{#block 'content'}}
 
-{{!-- <h3 class="mt-2">Products</h3> --}}
-
         {{#if numberFound}}
             <div class="alert alert-success mt-4">
                 <span>{{numberFound}} product(s) was found</span>
@@ -37,11 +35,6 @@
       </div>
     </div>
   </div>
-  {{!-- <div class="d-flex justify-content-between mt-3">
-    <h3>All Products</h3>
-<a href="/products/create" class="btn btn-dark btn-sm">Add Products</a>
-</div> --}}
-
   <div class="row mt-3" id="productTable">
  <div class="overflow-auto mt-3 p-3 shadow-lg rounded-3 col-12 col-md-12 col-sm-12"> 
 <table class="table mt-3">
@@ -60,12 +53,8 @@
             <th>Cuisine Style</th>
              <th>Vegan</th>
              <th>Halal</th>
-          
             <th></th>
-            {{!-- <th></th>  --}}
-            
         </tr>
-
     </thead>
     <tbody>
         {{#each products}}
@@ -97,20 +86,12 @@
                      <div  class="badge bg-dark">{{this.ingredient}}</div>
                       {{/each}}
                 </td>
-                  {{!-- <td >
-                    {{this.sizes.size}}
-                </td> --}}
                  <td>
                     {{this.packaging.packaging}}
                 </td>
                  <td>
                     {{this.shelf_life}}
                 </td>
-               {{!-- <td >
-                    
-                     {{this.spiciness.spiciness}}</span>
-                   
-                </td> --}}
                   <td >
                      {{#each this.cuisine_styles}}
                      <span>{{this.cuisine_style}}</span>
@@ -124,13 +105,10 @@
                 </td>
                   <td >
                    <br>
-                
                 <a href="products/{{this.id}}/update" ><i class="fa fa-edit " style="font-size:23px;color:black"></i></a>
                 <a href="#"  data-id="{{this.id}}" data-name="{{this.name}}" ><i class="fa fa-trash delete-ntc" style="font-size:23px;color:black"  data-id="{{this.id}}" data-name="{{this.name}}" ></i></a>
-                <a href="products/{{this.id}}/variant" class="btn btn-dark btn-sm mt-4" >Variant</a>
-               
+                <a href="products/{{this.id}}/variant" class="btn btn-dark btn-sm mt-4" >Variant</a>      
             </td>
-            {{!-- <td ></td> --}}
              </tr>
         {{/each}}
        </tbody>
@@ -162,7 +140,6 @@
             // process the delete
             const form = document.createElement('form');
             form.method = "POST"; // <form method="POST">...</form>
-            // form.action = `/products/${event.target.dataset.id}/delete`
            form.action = "/products/" + evt.target.dataset.id + "/delete";
              form.innerHTML ='<input type = "hidden" value="{{csrfToken}}" name="_csrf"/>'
             document.querySelector('body').appendChild(form);

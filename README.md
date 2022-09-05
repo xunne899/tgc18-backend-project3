@@ -14,7 +14,7 @@
 - API endpoint CRUD was created
 - Deployed to Heroku
 
-## Test Accounts (Backend admin)
+## Test Account (Backend admin)
 
 | Email              | Password |
 | ------------------ | -------- |

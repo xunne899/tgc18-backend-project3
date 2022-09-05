@@ -84,6 +84,32 @@ DELETE products/:product_id/delete
 product with id is deleted from database
 ```
 
+### Backend Environment Variables
+
+#### This project makes use of the environment variables as shown below:
+```
+DB_DRIVER=
+DB_USER=
+DB_PASSWORD=
+DB_DATABASE=
+DB_HOST=
+
+CLOUDINARY_NAME=
+CLOUDINARY_API_KEY=
+CLOUDINARY_API_SECRET=
+CLOUDINARY_UPLOAD_PRESET=
+
+STRIPE_PUBLISHABLE_KEY=
+STRIPE_SECRET_KEY=
+STRIPE_SUCCESS_URL=
+STRIPE_CANCELLED_URL=
+STRIPE_ENDPOINT_SECRET=
+
+SESSION_SECRET_KEY=
+
+TOKEN_SECRET=
+REFRESH_TOKEN_SECRET=
+```
 
 ## Testing
 

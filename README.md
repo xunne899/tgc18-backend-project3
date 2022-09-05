@@ -26,7 +26,7 @@
 | -------- | ----------- |
 | Owner / Staff Management (login, logout and register new account) | Only Owner and staff are able to access backend webpage through account, edit and delete admin profile|
 | Products and Variants Management | Products search, create(add), update, delete on products and variants | 
-| Orders Management | Orders Search and able to change update status on orders |
+| Orders Management | Orders search and able to change update status on orders |
 
 
 ### Database Name

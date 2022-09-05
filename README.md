@@ -2,8 +2,12 @@
 
 ### Frontend Web Interface
 - Refer to github frontend react webpage over [here](https://github.com/xunne899/tgc18-project3-frontend) for more details.
+
 ### BackEnd Database
 - Refer [here](https://github.com/xunne899/tgc18-backend-project3) for more gitub backend database details
+
+### Live Demo
+  Link of live backend demo can be found [here](https://project3-spice-sauce.herokuapp.com/login)
 
 # Summary
 
@@ -15,6 +19,7 @@ Test Accounts for backend admin
 | Email              | Password |
 | ------------------ | -------- |
 | test@gmail.com     | 123      |
+
 
 ### Database Name
 

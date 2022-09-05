@@ -57,7 +57,7 @@ POST /products/create
 ### Results/Response
 
 ```
-New product will be added to  database
+New product will be added to database
 ```
 
 ### Edit a product

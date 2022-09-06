@@ -134,11 +134,24 @@ REFRESH_TOKEN_SECRET=
 
 ## Main Tehnology Used (BackEnd Database)
 
+- flash-sessions - using middleware display flash messsages
+- csurf - Cross-Site Request Forgery (CSRF) protection
+- wax-on - template inheritance using block, extend hbs
+- handlebar-helpers - handlebar-helpers
+- cloudinary - external supporting  widget for image uploading
+- caolan forms - validate and create forms
+- knex - MySQL Query builder
+- CORS - share access, Cross-Origin Resource Sharing 
+- doteenv - loading of environment variables
 - db-migrate - migrate backend files
-- Bookshelf- backend database
+- json web token - authentication tools for frontend
+- bookshelf- backend SQL database ORM
 - hbs - for backend file display
 - SQL- backend database
 - Express Node JS- Backend programming
-- knex
-- CORS
-- doteenv file
+- DB Beaver, postgress - store backend data after live deployment
+- SweetAlert2 - alert box for successfully deleted and added
+- Bootstrap - styling, sizing, aligning content, match its mobile responsiveness
+- React Boostrap 5.0 - accordian, cards ,modal, forms, col, rows
+- Heroku - hosting live for backend project
+- Github & Gitpod - storing respositories/project

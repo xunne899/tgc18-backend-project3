@@ -150,8 +150,8 @@ REFRESH_TOKEN_SECRET=
 - SQL- backend database
 - Express Node JS- Backend programming
 - DB Beaver, postgress - store backend data after live deployment
-- SweetAlert2 - alert box for successfully deleted and added
+- SweetAlert2 - alert box for successful deletion
 - Bootstrap - styling, sizing, aligning content, match its mobile responsiveness
-- React Boostrap 5.0 - accordian, cards ,modal, forms, col, rows
+- React Boostrap 5.0 - accordian, cards, forms, col, rows
 - Heroku - hosting live for backend project
 - Github & Gitpod - storing respositories/project
